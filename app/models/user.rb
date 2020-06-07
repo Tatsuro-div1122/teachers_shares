@@ -34,6 +34,8 @@ class User < ApplicationRecord
   validates :family_name, :last_name, :school_type, :prefecture, :school_name, :subject, presence: :true
   validates :introduction, length: {maximum: 250}
 
+  has_one_attached :avatar
+
   enum school_type: {"--未選択--": 0, 小学校: 1, 中学校: 2, 高等学校: 3}, _suffix: true
   enum prefecture:  {
                       "--未選択--": 0,

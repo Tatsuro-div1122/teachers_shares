@@ -1,2 +1,26 @@
-<h1>Users#index</h1>
-<p>Find me in app/views/users/index.html.erb</p>
+<div class="container">
+  <div class="row">
+    <div class="col.lg.8">
+      <h1>参加している先生たち</h1>
+      <span>1~10件表示 (全<%= @users.count %>件)</span>
+      <table class="table">
+        <tbody>
+          <% @users.each do |user| %>
+          <tr>
+              <td>
+                <%= link_to user_path(user) do %>
+                <%= image_tag user.avatar.variant(resize: "50x50") %>
+                <ul>
+                  <li><%= user.family_name+user.last_name %></li>
+                  <li><%= user.school_name %></li>
+                  <li><%= user.subject %></li>
+                </ul>
+                <% end %>
+              </td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

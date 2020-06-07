@@ -8,10 +8,10 @@ class ApplicationController < ActionController::Base
 
   protected
   def configure_permitted_parameters
-    devise_parameter_sanitizer.permit(:sign_up, keys: [:family_name, :last_name, :school_type, :prefecture, :school_name, :subject, :year])
+    devise_parameter_sanitizer.permit(:sign_up, keys: [:family_name, :last_name, :school_type, :prefecture, :school_name, :subject, :year, :user_status])
     # サインアップするときのストロングパロメーター
 
-    devise_parameter_sanitizer.permit(:account_update, keys: [:family_name, :last_name, :school_type, :prefecture, :school_name, :subject, :year, :introduction])
-    # アカウント編集するときのストロングパロメーター
+    devise_parameter_sanitizer.permit(:account_update, keys: [:avatar, :family_name, :last_name, :school_type, :prefecture, :school_name, :subject, :year, :introduction])
+    # アカウント編集するときのストロングパロメーター   avatarはactive_storageのカラム
   end
 end
