@@ -10,6 +10,11 @@
   </head>
 
   <body>
+    <% if user_signed_in? %>
+      <%= link_to "ログアウト", destroy_user_session_path, method: :delte %>
+    <% else %>
+      <%= link_to "新規登録", new_user_registration_path %>
+      <%= link_to "ログイン", new_user_session_path %>
     <%= yield %>
   </body>
 </html>
