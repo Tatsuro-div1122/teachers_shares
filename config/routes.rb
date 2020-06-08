@@ -3,7 +3,7 @@
 #                    Prefix Verb   URI Pattern                                                                              Controller#Action
 #          new_user_session GET    /users/sign_in(.:format)                                                                 users/sessions#new
 #              user_session POST   /users/sign_in(.:format)                                                                 users/sessions#create
-#      destroy_user_session DELETE /users/sign_out(.:format)                                                                users/sessions#destroy
+#      destroy_user_session POST   /users/sign_out(.:format)                                                                users/sessions#destroy
 #         new_user_password GET    /users/password/new(.:format)                                                            devise/passwords#new
 #        edit_user_password GET    /users/password/edit(.:format)                                                           devise/passwords#edit
 #             user_password PATCH  /users/password(.:format)                                                                devise/passwords#update
@@ -24,6 +24,8 @@
 #                           PATCH  /users/:id(.:format)                                                                     users#update
 #                           PUT    /users/:id(.:format)                                                                     users#update
 #                           DELETE /users/:id(.:format)                                                                     users#destroy
+#                      root GET    /                                                                                        home#top
+#                home_about GET    /home/about(.:format)                                                                    home#about
 #        rails_service_blob GET    /rails/active_storage/blobs/:signed_id/*filename(.:format)                               active_storage/blobs#show
 # rails_blob_representation GET    /rails/active_storage/representations/:signed_blob_id/:variation_key/*filename(.:format) active_storage/representations#show
 #        rails_disk_service GET    /rails/active_storage/disk/:encoded_key/*filename(.:format)                              active_storage/disk#show
@@ -33,6 +35,10 @@
 Rails.application.routes.draw do
   devise_for :users, controllers: { registrations: 'users/registrations', sessions: 'users/sessions' }
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+
+  devise_scope :user do
+    get 'users/edit/delete_account' => 'users/registrations#delete_account', as: :delete_account
+  end
 
   resources :users
 
