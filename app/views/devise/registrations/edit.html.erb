@@ -79,11 +79,6 @@
         <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
       </div>
 
-      <div class="field">
-        <%= f.label :current_password %> <i>(変更を保存するためパスワードを入力してください)</i><br />
-        <%= f.password_field :current_password, autocomplete: "current-password" %>
-      </div>
-
       <div class="actions">
         <span><%= f.submit "変更内容を保存する", class: "btn btn-success" %></span>
         <span><%= link_to "退会する", delete_account_path, class: "btn btn-danger btn-xs" %></span>

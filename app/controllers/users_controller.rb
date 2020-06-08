@@ -1,10 +1,20 @@
 class UsersController < ApplicationController
   def index
-    @users = User.all
+    @users = User.where(deleted_at: nil)
   end
 
   def show
     @user = User.find(params[:id])
+  end
+
+  def follows
+    user = User.find(params[:id])
+    @users = user.followings
+  end
+
+  def followers
+    user = User.find(params[:id])
+    @users = user.followers
   end
 
   private
