@@ -3,6 +3,7 @@
 # Table name: users
 #
 #  id                     :integer          not null, primary key
+#  deleted_at             :datetime
 #  email                  :string           default(""), not null
 #  encrypted_password     :string           default(""), not null
 #  family_name            :string           not null
@@ -50,5 +51,21 @@ class User < ApplicationRecord
                     }, _suffix: true
   enum subject: {"--未選択--":0, 国語: 1, 社会: 2, 数学: 3, 理科: 4, 英語: 5, 保健体育: 6, 家庭: 7, 技術: 8, 音楽: 9, 美術: 10, 情報: 11, その他: 12}, _suffix: true
   enum user_status: {会員: true, 退会: false}
+
+
+   # instead of deleting, indicate the user requested a delete & timestamp it
+  def soft_delete
+    update_attribute(:deleted_at, Time.current)
+  end
+
+  # ensure user account is active
+  def active_for_authentication?
+    super && !deleted_at
+  end
+
+  # provide a custom message for a deleted account
+  def inactive_message
+    !deleted_at ? super : :deleted_account
+  end
 end
 

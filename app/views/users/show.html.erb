@@ -5,31 +5,44 @@
     </div>
     <div class="col-lg-8">
       <h1>先生プロフィール</h1>
-      <div class="profile_image">
-      <% if @user.avatar.attached? %>
-        <%= image_tag @user.avatar.variant(resize: "400x300") %>
-      <% else %>
-        <%= image_tag("default_user.png", size: "400x300") %>
-      <% end %>
-      </div>
-      <ul class="profile-items">
-        <li><p><strong><%= @user.family_name+@user.last_name %></strong></p></li>
-        <li><p><strong>所属所在地</strong></p>
-            <p><%= @user.prefecture %></p>
-        </li>
-        <li><p><strong>所属</strong></p>
-            <p><%= @user.school_name %></p>
-        </li>
-        <li><p><strong>教科</strong></p>
-            <p><%= @user.subject %></p>
-        </li>
-        <li><p><strong>教員歴</strong></p>
-            <p><%= @user.year %>年</p>
-        </li>
-        <li><p><strong>自己紹介</strong></p>
-            <p><%= @user.introduction %></p>
-        </li>
-      </ul>
+      <table>
+        <tbody>
+          <tr>
+            <td>
+              <div class="profile_image">
+                <% if @user.avatar.attached? %>
+                  <%= image_tag @user.avatar.variant(resize: "400x300") %>
+                <% else %>
+                  <%= image_tag("default_user.png", size: "400x300") %>
+                <% end %>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <th><%= @user.family_name+@user.last_name %></th>
+          </tr>
+          <tr>
+            <th>所属所在地</th>
+            <td><%= @user.prefecture %></td>
+          </tr>
+          <tr>
+            <th>所属</th>
+            <td><%= @user.school_name %></td>
+          </tr>
+          <tr>
+            <th>教科</th>
+            <td><%= @user.subject %></td>
+          </tr>
+          <tr>
+            <th>教員歴</th>
+            <td><%= @user.year %>年</td>
+          </tr>
+          <tr>
+            <th>自己紹介</th>
+            <td><p><%= @user.introduction %></p><td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </div>
