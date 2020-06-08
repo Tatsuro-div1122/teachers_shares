@@ -40,7 +40,6 @@ class DeviseCreateUsers < ActiveRecord::Migration[5.2]
       t.integer   :subject,      null: false
       t.string    :year,         null: false
       t.text      :introduction
-      t.boolean   :user_status,  null: false
       t.timestamps null: false
     end
 
