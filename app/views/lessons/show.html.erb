@@ -15,6 +15,7 @@
         <p><%= @lesson.subject %></p>
         <p><%= date_format(@lesson.created_at) %></p>
         <span><%= render 'shared/follow', user: @user %></span>
+        <span><%= render 'shared/lesson_like', lesson: @lesson %></span>
       </section>
       <section>
         <h1><%= @lesson.title %></h1>
