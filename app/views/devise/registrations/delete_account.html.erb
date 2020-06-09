@@ -1,0 +1,13 @@
+<div class="container">
+  <div class="row">
+    <h3><strong>アカウントを削除しますか？</strong></h3>
+    <p>アカウント削除後は、一切の本サービスを利用することができなくなります。<br>
+      なお、投稿した記事などはすべて削除されます。<br>
+      退会する場合は、「退会する」をクリックしてください。
+    </p>
+  </div>
+  <div class="row">
+    <span><%= link_to "退会しない", edit_user_registration_path, class: "btn btn-primary" %></span>
+    <span><%= link_to "削除する", registration_path(resource_name), data: { confirm: "削除後は一切の本サービスを利用することができなくなります。本当によろしいですか?" }, method: :delete, class: "btn btn-danger" %></span>
+  </div>
+</div>

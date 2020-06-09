@@ -3,6 +3,7 @@
 # Table name: users
 #
 #  id                     :integer          not null, primary key
+#  deleted_at             :datetime
 #  email                  :string           default(""), not null
 #  encrypted_password     :string           default(""), not null
 #  family_name            :string           not null
@@ -15,7 +16,6 @@
 #  school_name            :string           not null
 #  school_type            :integer          not null
 #  subject                :integer          not null
-#  user_status            :boolean          not null
 #  year                   :string           not null
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
@@ -35,6 +35,20 @@ class User < ApplicationRecord
   validates :introduction, length: {maximum: 250}
 
   has_one_attached :avatar
+  #active storageの画像カラム
+
+  #フォローフォロワー関連
+  has_many :active_relationships, class_name: "Relationship", foreign_key: :following_id, dependent: :destroy
+    # フォローする側のUserから見て、フォローされる側のUserを(中間テーブルを介して)集める。なので親はfollowing_id(フォローする側)
+  has_many :followings, through: :active_relationships, source: :follower
+    # 中間テーブルを介して「follower」モデルのUser(フォローされた側)を集めることを「followings」と定義
+  has_many :passive_relationships, class_name: "Relationship", foreign_key: :follower_id, dependent: :destroy
+    # フォローされる側のUserから見て、フォローしてくる側のUserを(中間テーブルを介して)集める。なので親はfollower_id(フォローされる側)
+  has_many :followers, through: :passive_relationships, source: :following
+    # 中間テーブルを介して「following」モデルのUser(フォローする側)を集めることを「followers」と定義
+
+  has_many :lessons, dependent: :destroy
+
 
   enum school_type: {"--未選択--": 0, 小学校: 1, 中学校: 2, 高等学校: 3}, _suffix: true
   enum prefecture:  {
@@ -49,6 +63,25 @@ class User < ApplicationRecord
                       福岡県:40,佐賀県:41,長崎県:42,熊本県:43,大分県:44,宮崎県:45,鹿児島県:46,沖縄県:47
                     }, _suffix: true
   enum subject: {"--未選択--":0, 国語: 1, 社会: 2, 数学: 3, 理科: 4, 英語: 5, 保健体育: 6, 家庭: 7, 技術: 8, 音楽: 9, 美術: 10, 情報: 11, その他: 12}, _suffix: true
-  enum user_status: {会員: true, 退会: false}
+
+
+   # instead of deleting, indicate the user requested a delete & timestamp it
+  def soft_delete
+    update_attribute(:deleted_at, Time.current)
+  end
+
+  # ensure user account is active
+  def active_for_authentication?
+    super && !deleted_at
+  end
+
+  # provide a custom message for a deleted account
+  def inactive_message
+    !deleted_at ? super : :deleted_account
+  end
+
+  def followed_by?(user)
+    passive_relationships.find_by(following_id: user.id).present?
+  end
 end
 

@@ -1,0 +1,48 @@
+<div class="container">
+  <div class="row">
+    <div class="col-lg-10 col-lg-offset-1">
+      <h1>授業アイデア提出</h1>
+      <%= form_with(model: @lesson, url: lessons_path, method: :post, local: true) do |f| %>
+
+      <div class="field">
+        <%= f.label :school_type, "学校種" %><br />
+        <%= f.radio_button :school_type, :小学校, checked:"checked" %>
+        <%= f.label :小学校 %>
+        <%= f.radio_button :school_type, :中学校  %>
+        <%= f.label :中学校 %>
+        <%= f.radio_button :school_type, :高校  %>
+        <%= f.label :高校 %>
+      </div>
+
+      <div class="field">
+        <%= f.label :grade, "学年" %><br />
+        <%= f.select :grade, Lesson.grades.keys, {prompt: '選択してください'}, class: 'form-control btn btn-info' %>
+      </div>
+
+      <div class="field">
+        <%= f.label :subject, "教科" %><br />
+        <%= f.select :subject, Lesson.subjects.keys, {prompt: '選択してください'}, class: 'form-control btn btn-info' %>
+      </div>
+
+      <div class="field">
+        <%= f.label :file, "資料アップロード" %><br />
+        <%= f.file_field :file, placeholder: "ファイルを選択" %>
+      </div>
+
+      <div class="field">
+        <%= f.label :title, "タイトル" %><br />
+        <%= f.text_field :title, autofocus: true, placeholder: "わかりやすいタイトルを入力してください" %>
+      </div>
+
+      <div class="field">
+        <%= f.label :description, "授業について" %><br />
+        <%= f.text_area :description, autofocus: true, placeholder: "授業について書いてください　例）授業の展開や資料の使い方など" %>
+      </div>
+
+      <div class="actions">
+        <%= f.submit "提出内容を確認する", class: "btn btn-primary" %>
+      </div>
+      <% end %>
+    </div>
+  </div>
+</div>

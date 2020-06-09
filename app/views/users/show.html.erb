@@ -1,7 +1,11 @@
 <div class="container">
   <div class="row">
     <div class="col-lg-2">
-      <%= link_to "プロフィールを編集する", edit_user_registration_path %>
+      <% if @user == current_user %>
+      <span><%= link_to "プロフィールを編集する", edit_user_registration_path, class: "btn btn-outline-secondary" %></span>
+      <% end %>
+      <span><%= link_to "フォロー中の先生を見る", follows_user_path(@user), class: "btn" %></span>
+      <span><%= link_to "フォロワーの先生を見る", followers_user_path(@user), class: "btn" %></span>
     </div>
     <div class="col-lg-8">
       <h1>先生プロフィール</h1>
@@ -13,7 +17,10 @@
       <% end %>
       </div>
       <ul class="profile-items">
-        <li><p><strong><%= @user.family_name+@user.last_name %></strong></p></li>
+        <li>
+          <p><strong><%= @user.family_name+@user.last_name %></strong></p>
+          <span><%= render 'shared/follow', user: @user%></span>
+        </li>
         <li><p><strong>所属所在地</strong></p>
             <p><%= @user.prefecture %></p>
         </li>

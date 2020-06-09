@@ -3,6 +3,7 @@
 # Table name: users
 #
 #  id                     :integer          not null, primary key
+#  deleted_at             :datetime
 #  email                  :string           default(""), not null
 #  encrypted_password     :string           default(""), not null
 #  family_name            :string           not null
@@ -15,7 +16,6 @@
 #  school_name            :string           not null
 #  school_type            :integer          not null
 #  subject                :integer          not null
-#  user_status            :boolean          not null
 #  year                   :string           not null
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
