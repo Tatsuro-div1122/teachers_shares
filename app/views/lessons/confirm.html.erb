@@ -1,0 +1,68 @@
+<div class="container">
+  <div class="row">
+    <div class="col-lg-10 col-lg-offset-1">
+      <h1>提出内容の確認</h1>
+      <section>
+      <table class="table">
+        <tr>
+          <th>学校種</th>
+          <td><p><%= @lesson.school_type %></p></td>
+        </tr>
+        <tr>
+          <th>学年</th>
+          <td><p><%= @lesson.grade %></p></td>
+        </tr>
+        <tr>
+          <th>教科</th>
+          <td><p><%= @lesson.subject %></p></td>
+        </tr>
+        <tr>
+          <th>アップロード資料</th>
+          <td><p><%= link_to "資料を見る", @lesson.file %></p></td>
+        </tr>
+        <tr>
+          <th>タイトル</th>
+          <td><p><%= @lesson.title %></p></td>
+        </tr>
+        <tr>
+          <th>授業について</th>
+          <td><p><%= @lesson.description %></p></td>
+        </tr>
+      </table>
+      </section>
+      <section>
+        <p>こちらの内容でよろしいですか？</p>
+
+      <!-- 提出フォーム -->
+      <%= form_with(model: @lesson, url: lessons_path, local: true) do |f| %>
+
+        <%= f.hidden_field :school_type %>
+        <%= f.hidden_field :grade %>
+        <%= f.hidden_field :subject %>
+        <%= f.hidden_field :file %>
+        <%= f.hidden_field :title %>
+        <%= f.hidden_field :description %>
+
+      <div class="actions">
+        <%= f.submit "提出する", class: "btn btn-success" %>
+      </div>
+    <% end %>
+
+     <!-- 修正フォーム -->
+      <%= form_with(model: @lesson, url: new_lesson_path, local: true) do |f| %>
+
+        <%= f.hidden_field :school_type %>
+        <%= f.hidden_field :grade %>
+        <%= f.hidden_field :subject %>
+        <%= f.hidden_field :file %>
+        <%= f.hidden_field :title %>
+        <%= f.hidden_field :description %>
+
+      <div class="actions">
+        <%= f.submit "修正する", class: "btn btn-primary" %>
+      </div>
+    <% end %>
+    </section>
+    </div>
+  </div>
+</div>
