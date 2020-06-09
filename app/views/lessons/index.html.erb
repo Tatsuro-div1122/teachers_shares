@@ -24,6 +24,7 @@
                 </ul>
                 <p><strong><%= lesson.title %></strong></p>
                 <p><%= lesson.description %></p>
+                <%= render 'shared/lesson_like', lesson: lesson %>
                 <%if lesson.user = current_user %>
                   <span><%= link_to "編集する", edit_lesson_path(lesson), class: "btn btn-primary" %></span>
                   <span><%= link_to "削除する", lesson_path(lesson), method: :delete, data: {confirm:"本当に削除してもよろしいですか？"}, class: "btn btn-danger" %></span>

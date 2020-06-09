@@ -46,8 +46,8 @@ class User < ApplicationRecord
     # フォローされる側のUserから見て、フォローしてくる側のUserを(中間テーブルを介して)集める。なので親はfollower_id(フォローされる側)
   has_many :followers, through: :passive_relationships, source: :following
     # 中間テーブルを介して「following」モデルのUser(フォローする側)を集めることを「followers」と定義
-
   has_many :lessons, dependent: :destroy
+  has_many :lesson_likes, dependent: :destroy
 
 
   enum school_type: {"--未選択--": 0, 小学校: 1, 中学校: 2, 高等学校: 3}, _suffix: true

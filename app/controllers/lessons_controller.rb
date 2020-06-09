@@ -1,6 +1,7 @@
 class LessonsController < ApplicationController
   def index
-    @lessons = Lesson.joins(:user).where(users:{deleted_at: nil})
+    @lessons = Lesson.all
+    # @lessons = Lesson.joins(:user).where(users:{deleted_at: nil})
     # users.each do |user|
     #   user.lessons.each do |lesson|
     #     lesson.append(lesson)
