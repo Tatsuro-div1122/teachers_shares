@@ -26,6 +26,8 @@
 #                      user GET    /users/:id(.:format)                                                                     users#show
 #        lesson_lesson_like DELETE /lessons/:lesson_id/lesson_like(.:format)                                                lesson_likes#destroy
 #                           POST   /lessons/:lesson_id/lesson_like(.:format)                                                lesson_likes#create
+#    lesson_lesson_bookmark DELETE /lessons/:lesson_id/lesson_bookmark(.:format)                                            lesson_bookmarks#destroy
+#                           POST   /lessons/:lesson_id/lesson_bookmark(.:format)                                            lesson_bookmarks#create
 #                   lessons GET    /lessons(.:format)                                                                       lessons#index
 #                           POST   /lessons(.:format)                                                                       lessons#create
 #                new_lesson GET    /lessons/new(.:format)                                                                   lessons#new
@@ -63,7 +65,9 @@ Rails.application.routes.draw do
   #     post :new, path: :new, as: :new, action: :back
   #     post :confirm
   #   end
-    resource :lesson_like, only: [:create, :destroy]
+    resource :lesson_likes, only: [:create, :destroy]
+    resource :lesson_bookmarks, only: [:create, :destroy]
+    get      :lesson_bookmarks, on: :collection
   end
 
 
