@@ -1,12 +1,9 @@
 class LessonsController < ApplicationController
   def index
-    @lessons = Lesson.all
+    @title = "授業アイデア"
+    @lessons = Lesson.includes(:user).order("created_at DESC")
     # @lessons = Lesson.joins(:user).where(users:{deleted_at: nil})
-    # users.each do |user|
-    #   user.lessons.each do |lesson|
-    #     lesson.append(lesson)
-    #   end
-    # end
+    # deleted_atスタンプがないユーザの投稿一覧を取得
   end
 
   def show
@@ -58,6 +55,12 @@ class LessonsController < ApplicationController
     lesson.file.purge
     lesson.destroy
     redirect_to lessons_path
+  end
+
+  def lesson_bookmarks
+    @title = "ブックマークリスト"
+    @lessons = current_user.bookmark_lessons.includes(:user).order("created_at DESC")
+    render 'index'
   end
 
   private
