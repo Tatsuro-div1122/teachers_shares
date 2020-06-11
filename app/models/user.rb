@@ -50,6 +50,9 @@ class User < ApplicationRecord
   has_many :lesson_likes, dependent: :destroy
   has_many :lesson_bookmarks, dependent: :destroy
   has_many :bookmark_lessons, through: :lesson_bookmarks, source: :lesson
+  has_many :lesson_comments, dependent: :destroy
+  has_many :lesson_comment_likes, dependent: :destroy
+
 
 
   enum school_type: {"--未選択--": 0, 小学校: 1, 中学校: 2, 高等学校: 3}, _suffix: true
@@ -89,5 +92,6 @@ class User < ApplicationRecord
   def own_lesson?(lesson)
     self.id == lesson.user_id
   end
+
 end
 

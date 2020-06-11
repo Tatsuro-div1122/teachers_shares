@@ -10,6 +10,11 @@
   </head>
 
   <body>
+    <header>
+      <h1 class="headline"><%= link_to "TEACHERS' SHARES", root_path %></h1>
+      <% unless user_signed_in? %>
+      <%= link_to "ログイン", session_path%>
+    </header>
     <p class="notice"><%= notice %></p>
     <p class="alert"><%= alert %></p>
     <% if user_signed_in? %>
@@ -20,5 +25,6 @@
       <%= link_to "ログイン", new_user_session_path %>
     <% end %>
     <%= yield %>
+    <footer></footer>
   </body>
 </html>
