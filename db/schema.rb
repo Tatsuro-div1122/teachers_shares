@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_10_005407) do
+ActiveRecord::Schema.define(version: 2020_06_10_134813) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -40,6 +40,25 @@ ActiveRecord::Schema.define(version: 2020_06_10_005407) do
     t.datetime "updated_at", null: false
     t.index ["lesson_id"], name: "index_lesson_bookmarks_on_lesson_id"
     t.index ["user_id"], name: "index_lesson_bookmarks_on_user_id"
+  end
+
+  create_table "lesson_comment_likes", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "lesson_comment_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["lesson_comment_id"], name: "index_lesson_comment_likes_on_lesson_comment_id"
+    t.index ["user_id"], name: "index_lesson_comment_likes_on_user_id"
+  end
+
+  create_table "lesson_comments", force: :cascade do |t|
+    t.text "comment", null: false
+    t.integer "user_id", null: false
+    t.integer "lesson_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["lesson_id"], name: "index_lesson_comments_on_lesson_id"
+    t.index ["user_id"], name: "index_lesson_comments_on_user_id"
   end
 
   create_table "lesson_likes", force: :cascade do |t|

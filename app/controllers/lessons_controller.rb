@@ -9,6 +9,8 @@ class LessonsController < ApplicationController
   def show
     @lesson = Lesson.find(params[:id])
     @user = @lesson.user
+    @lesson_comment = LessonComment.new
+    @lesson_comments = @lesson.lesson_comments.includes(:user).order("created_at DESC")
   end
 
   def new
