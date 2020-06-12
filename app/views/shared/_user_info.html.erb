@@ -1,0 +1,37 @@
+<div class="profile-image">
+<%= link_to user_path(user) do %>
+<% if user.avatar.attached? %>
+  <%= image_tag user.avatar.variant(resize: "70x70") %>
+<% else %>
+  <%= image_tag("default_user.png", size: "70x70") %>
+<% end %>
+</div>
+<div>
+  <ul class="profile_list">
+    <li class="profile_item">
+      <p><strong><%= user.family_name+user.last_name %> 先生</strong></p>
+    </li>
+    <li class="profile_item">
+        <p><%= user.school_name %></p>
+    </li>
+    <li class="profile_item">
+        <p><%= user.subject %></p>
+    </li>
+  </ul>
+</div>
+<% end %>
+<div>
+  <ul class="count-list">
+    <li class="count-list"><strong>授業アイデア</strong>      <%= link_to user.lessons.count, user_own_lessons_path(current_user) %></li>
+    <li class="count-list"><strong>参考になった！</strong>     <%= LessonLike.where(user_id: current_user.id).count + LessonCommentLike.where(user_id: current_user.id).count %></li>
+    <li class="count-list">
+      <strong>教員仲間</strong><br>
+      フォロー中     <%= link_to user.active_relationships.count, follows_user_path(user) %><br>
+      フォロワー     <%= link_to user.passive_relationships.count, followers_user_path(user) %>
+    </li>
+  </ul>
+</div>
+<div>
+  <span><%= link_to "授業を提出する", new_lesson_path, class: "btn btn-outline-success" %></span>
+  <span><%= link_to "悩みを相談する", "#", class: "btn btn-outline-primary" %></span>
+</div>

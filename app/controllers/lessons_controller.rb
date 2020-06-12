@@ -65,6 +65,13 @@ class LessonsController < ApplicationController
     render 'index'
   end
 
+  def own_lessons
+    user = User.find(params[:user_id])
+    @title = "#{user.family_name + user.last_name} 先生の授業アイデア"
+    @lessons = user.lessons.includes(:user).order("created_at DESC")
+    render 'index'
+  end
+
   private
 
   def lesson_params

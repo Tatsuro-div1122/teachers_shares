@@ -50,19 +50,21 @@
 
 Rails.application.routes.draw do
 
+  get 'search/search'
   root 'home#top'
 
   devise_for :users, controllers: { registrations: 'users/registrations', sessions: 'users/sessions' }
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 
   devise_scope :user do
-    get 'users/edit/delete_account' => 'users/registrations#delete_account', as: :delete_account
+    get 'users/edit/delete_account', to: 'users/registrations#delete_account', as: :delete_account
   end
 
   resources :users, only: [:index, :show] do
     resource :relationships, only: [:create, :destroy]
     get :follows,   on: :member
     get :followers, on: :member
+    get 'lessons', to: 'lessons#own_lessons', as: 'own_lessons'
   end
 
   resources :lessons do
@@ -73,12 +75,12 @@ Rails.application.routes.draw do
     resource  :lesson_likes, only: [:create, :destroy]
     resource  :lesson_bookmarks, only: [:create, :destroy]
     resources :lesson_comments, only: [:create, :destroy]
-    get      :lesson_bookmarks, on: :collection
-  end
+    get       :lesson_bookmarks, on: :collection
+ end
 
 
   get 'home/about'
+  get '/search' => 'search#search'
   post 'lesson_comments/:id/lesson_comment_likes', to: 'lesson_comment_likes#create', as: 'lesson_comment_likes'
   delete 'lesson_comments/:id/lesson_comment_likes', to: 'lesson_comment_likes#destroy', as: 'lesson_comment_like'
-
 end

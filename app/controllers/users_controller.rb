@@ -6,7 +6,8 @@ class UsersController < ApplicationController
   end
 
   def show
-
+    @total_likes = LessonLike.where(user_id: current_user.id).count + LessonCommentLike.where(user_id: current_user.id).count
+    @users = User.where(deleted_at: nil, prefecture: current_user.prefecture).where.not(id: current_user.id).order("RANDOM()").limit(5)
   end
 
   def follows
