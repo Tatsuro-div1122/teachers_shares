@@ -12,10 +12,10 @@ class SearchController < ApplicationController
           next if keyword == ""
           @users += User.where(['family_name LIKE ?', "%#{keyword}%"])
                         .or(User.where(['last_name LIKE ?', "%#{keyword}%"]))
-                        #.or(User.where(['subject LIKE ?', "%#{keyword}%"]))
-                        #.or(User.where(['school_type LIKE ?', "%#{keyword}%"]))
-                        #.or(User.where(['school_name LIKE ?', "%#{keyword}%"]))
-                        #.or(User.where(['prefecture LIKE ?', "%#{keyword}%"]))
+                        .or(User.where(['subject LIKE ?', "%#{keyword}%"]))
+                        .or(User.where(['school_type LIKE ?', "%#{keyword}%"]))
+                        .or(User.where(['school_name LIKE ?', "%#{keyword}%"]))
+                        .or(User.where(['prefecture LIKE ?', "%#{keyword}%"]))
                         .or(User.where(['introduction LIKE ?', "%#{keyword}%"]))
         end
         @users.uniq!
@@ -26,9 +26,9 @@ class SearchController < ApplicationController
           next if keyword == ""
           @lessons += Lesson.where("title LIkE ?", "%#{keyword}")
                             .or(Lesson.where(['description LIKE ?', "%#{keyword}%"]))
-                            #.or(Lesson.where(['subject LIKE ?', "%#{keyword}%"]))
-                            #.or(Lesson.where(['school_type LIKE ?', "%#{keyword}%"]))
-                            #.or(Lesson.where(['grade LIKE ?', "%#{keyword}%"]))
+                            .or(Lesson.where(['subject LIKE ?', "%#{keyword}%"]))
+                            .or(Lesson.where(['school_type LIKE ?', "%#{keyword}%"]))
+                            .or(Lesson.where(['grade LIKE ?', "%#{keyword}%"]))
         end
           @lessons.uniq!
     end

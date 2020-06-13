@@ -27,9 +27,9 @@ ja:
       deleted_account: 'このアカウントは既に削除されています。'
 #      deleted_account: "You've deleted your account. Thanks!"
     sessions:
-      signed_in: 'ログインしました。'
+      signed_in: 'ようこそ先生！ログインしました。'
 #      signed_in: 'Signed in successfully.'
-      signed_out: 'ログアウトしました。'
+      signed_out: 'さようなら先生！ログアウトしました。'
 #      signed_out: 'Signed out successfully.'
     passwords:
       send_instructions: 'パスワードのリセット方法を数分以内にメールでご連絡します。'
