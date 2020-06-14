@@ -13,15 +13,26 @@
     <header>
       <h1 class="headline"><%= link_to "TEACHERS' SHARES", root_path %></h1>
       <p>先生のアイデア共有サイト<p>
-      <% unless user_signed_in? %>
+      <% if admin_signed_in? %>
+        <%= link_to "ログアウト", destroy_admin_session_path, method: :delete, class: "btn btn-primary" %>
+      <% elsif user_signed_in? %>
+        <%= link_to "ログアウト", destroy_user_session_path, method: :delete, class: "btn btn-primary" %>
+        <%= render 'shared/search_form' %>
+      <% else %>
         <%= link_to "新規登録", new_user_registration_path, class: "btn btn-success" %>
         <%= link_to "ログイン", new_user_session_path, class: "btn btn-primary" %>
-      <% else %>
-        <%= link_to "ログアウト", destroy_user_session_path, method: :post, class: "btn btn-primary" %>
-        <%= render 'shared/search_form' %>
       <% end %>
     </header>
-      <% if user_signed_in? %>
+      <% if admin_signed_in? %>
+        <nav>
+          <ul>
+            <li><%= link_to "トップ", root_path, class: "btn btn-default" %></li>
+            <li><%= link_to "先生一覧", users_path, class: "btn btn-default" %></li>
+            <li><%= link_to "授業一覧", lessons_path, class: "btn btn-default" %></li>
+            <li><%= link_to "悩み相談一覧", "#", class: "btn btn-default" %></li>
+          </ul>
+        </nav>
+      <% elsif user_signed_in? %>
         <nav>
           <ul>
             <li><%= link_to "トップ", root_path, class: "btn btn-default" %></li>

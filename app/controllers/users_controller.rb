@@ -6,7 +6,7 @@ class UsersController < ApplicationController
   end
 
   def show
-    @total_likes = LessonLike.where(user_id: current_user.id).count + LessonCommentLike.where(user_id: current_user.id).count
+    @total_likes = LessonLike.where(user_id: @user.id).count + LessonCommentLike.where(user_id: @user.id).count
     @users = User.where(deleted_at: nil, prefecture: current_user.prefecture).where.not(id: current_user.id).order("RANDOM()").limit(5)
   end
 
@@ -25,6 +25,6 @@ class UsersController < ApplicationController
   private
   def set_user
     @user = User.find(params[:id])
-    redirect_to root_path, alert: "すでに退会された先生です" unless @user.deleted_at == nil
+    redirect_to root_path, alert: "すでに退会された先生です" if @user.deleted_at != nil
   end
 end

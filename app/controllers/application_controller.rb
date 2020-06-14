@@ -1,10 +1,21 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
-  before_action :authenticate_user!
+  before_action :authenticate_user!, unless: :admin_signed_in?
+  before_action :authenticate_admin!
 
   before_action :configure_permitted_parameters, if: :devise_controller?
   # devise利用の機能（ユーザ登録、ログイン認証など）が使われる場合、その前にconfigure_permitted_parametersを実行
+
+    # ログイン後の遷移先設定
+  def after_sign_in_path_for(resource)
+    root_path
+  end
+
+  # ログアウト後の遷移先設定
+  def after_sign_out_path_for(resource)
+    root_path
+  end
 
   protected
   def configure_permitted_parameters
