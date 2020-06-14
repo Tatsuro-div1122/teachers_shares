@@ -1,4 +1,4 @@
-class LessonsController < ApplicationController
+class Users::LessonsController < ApplicationController
   def index
     @title = "授業アイデア"
     @lessons = Lesson.includes(:user).order("created_at DESC")
@@ -57,19 +57,6 @@ class LessonsController < ApplicationController
     lesson.file.purge
     lesson.destroy
     redirect_to lessons_path
-  end
-
-  def lesson_bookmarks
-    @title = "ブックマークリスト"
-    @lessons = current_user.bookmark_lessons.includes(:user).order("created_at DESC")
-    render 'index'
-  end
-
-  def own_lessons
-    user = User.find(params[:user_id])
-    @title = "#{user.family_name + user.last_name} 先生の授業アイデア"
-    @lessons = user.lessons.includes(:user).order("created_at DESC")
-    render 'index'
   end
 
   private

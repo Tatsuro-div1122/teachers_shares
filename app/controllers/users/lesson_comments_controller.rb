@@ -1,4 +1,4 @@
-class LessonCommentsController < ApplicationController
+class Users::LessonCommentsController < ApplicationController
   def create
     @lesson = Lesson.find(params[:lesson_id])
     lesson_comment = current_user.lesson_comments.new(lesson_comment_params)

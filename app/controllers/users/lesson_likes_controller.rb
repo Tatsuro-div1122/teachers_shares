@@ -1,4 +1,4 @@
-class LessonLikesController < ApplicationController
+class Users::LessonLikesController < ApplicationController
   def create
     lesson = Lesson.find(params[:lesson_id])
     lesson_like = current_user.lesson_likes.new(lesson_id: lesson.id)

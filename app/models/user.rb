@@ -70,17 +70,17 @@ class User < ApplicationRecord
   enum subject: {"--未選択--":0, 国語: 1, 社会: 2, 数学: 3, 理科: 4, 英語: 5, 保健体育: 6, 家庭: 7, 技術: 8, 音楽: 9, 美術: 10, 情報: 11, その他: 12}, _suffix: true
 
 
-   # instead of deleting, indicate the user requested a delete & timestamp it
+   # ユーザーアカウントを削除する代わりにdelete_atカラムにタイムスタンプを押す（論理削除）
   def soft_delete
     update_attribute(:deleted_at, Time.current)
   end
 
-  # ensure user account is active
+  # ユーザーアカウントが有効か確認する
   def active_for_authentication?
     super && !deleted_at
   end
 
-  # provide a custom message for a deleted account
+  # 削除済みのユーザーにメッセージ
   def inactive_message
     !deleted_at ? super : :deleted_account
   end

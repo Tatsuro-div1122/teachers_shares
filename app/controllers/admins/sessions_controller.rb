@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-class Users::SessionsController < Devise::SessionsController
+class Admins::SessionsController < Devise::SessionsController
+  # before_action :configure_sign_in_params, only: [:create]
   # include Accessible
   # skip_before_action :check_user, only: :destroy
-  # before_action :configure_sign_in_params, only: [:create]
 
   # GET /resource/sign_in
   # def new
@@ -27,9 +27,8 @@ class Users::SessionsController < Devise::SessionsController
 
   # ログアウト後の遷移先設定
   def after_sign_out_path_for(resource)
-    root_path
+    new_admin_session_path
   end
-
 
   # protected
 

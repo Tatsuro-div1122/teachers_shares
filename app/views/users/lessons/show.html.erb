@@ -21,10 +21,10 @@
         <p><%= @lesson.subject %></p>
         <p><%= date_format(@lesson.created_at) %></p>
         <% unless @lesson.user_deleted?(@user) %>
-          <span><%= render 'shared/follow', user: @user %></span>
+          <span><%= render 'users/shared/follow', user: @user %></span>
         <% end %>
-        <span><%= render 'shared/lesson_like', lesson: @lesson %></span>
-        <span><%= render 'shared/lesson_bookmark', lesson: @lesson %></span>
+        <span><%= render 'users/shared/lesson_like', lesson: @lesson %></span>
+        <span><%= render 'users/shared/lesson_bookmark', lesson: @lesson %></span>
       </section>
       <section>
         <h1><%= @lesson.title %></h1>
@@ -80,7 +80,7 @@
                         <li><%= date_format(lesson_comment.created_at) %></li>
                       </ul>
                       <p><%= lesson_comment.comment %></p>
-                      <%= render 'shared/lesson_comment_like', {lesson_comment: lesson_comment} %>
+                      <%= render 'users/shared/lesson_comment_like', {lesson_comment: lesson_comment} %>
                   <% if lesson_comment.user == current_user %>
                     <span>
                       <%= link_to lesson_lesson_comment_path(lesson_comment), method: :delete, data: {confirm:"本当に削除してもよろしいですか？"}, class: "btn btn-xs btn-default" do %>

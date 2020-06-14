@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :follows, :followers]
+  before_action :set_user, except: [:index]
   def index
     @users = User.where(deleted_at: nil)
     @title = "参加している先生たち"
@@ -20,6 +20,18 @@ class UsersController < ApplicationController
     @users = @user.followers.where(deleted_at: nil)
     @title = "フォロワーの先生たち"
     render 'index'
+  end
+
+  def lesson_bookmarks
+    @title = "ブックマークリスト"
+    @lessons = user.bookmark_lessons.includes(:user).order("created_at DESC")
+    render 'lessons/index'
+  end
+
+  def own_lessons
+    @title = "#{user.family_name + user.last_name} 先生の授業アイデア"
+    @lessons = user.lessons.includes(:user).order("created_at DESC")
+    render 'lessons/index'
   end
 
   private

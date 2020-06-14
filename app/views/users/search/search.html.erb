@@ -1,4 +1,4 @@
-<% if @model == "先生" %>
+<% if @model == "User" %>
 <div class="container">
   <div class="row">
     <div class="col.lg.8">
@@ -21,7 +21,7 @@
                   <li><%= user.subject %></li>
                 </ul>
                 <% end %>
-                <%= render 'shared/follow', user: user %>
+                <%= render 'users/shared/follow', user: user %>
               </td>
           </tr>
           <% end %>
@@ -30,7 +30,7 @@
     </div>
   </div>
 </div>
-<% elsif @model == "授業アイデア" %>
+<% elsif @model == "Lesson" %>
 <div class="container">
   <div class="row">
     <div class="col.lg.8">
@@ -58,11 +58,11 @@
                       <li><%= lesson.subject %></li>
                       <li><%= date_format(lesson.created_at) %></li>
                     </ul>
-                    <span><%= render 'shared/lesson_bookmark', lesson: lesson %></span>
+                    <span><%= render 'users/shared/lesson_bookmark', lesson: lesson %></span>
                   <% end %>
                   <p><strong><%= lesson.title %></strong></p>
                   <p><%= lesson.description %></p>
-                  <span><%= render 'shared/lesson_like', lesson: lesson %></span>
+                  <span><%= render 'users/shared/lesson_like', lesson: lesson %></span>
                   <% if current_user.own_lesson?(lesson) %>
                     <span><%= link_to "編集する", edit_lesson_path(lesson), class: "btn btn-primary" %></span>
                     <span><%= link_to "削除する", lesson_path(lesson), method: :delete, data: {confirm:"本当に削除してもよろしいですか？"}, class: "btn btn-danger" %></span>

@@ -14,4 +14,14 @@ class ApplicationController < ActionController::Base
     devise_parameter_sanitizer.permit(:account_update, keys: [:avatar, :family_name, :last_name, :school_type, :prefecture, :school_name, :subject, :year, :introduction])
     # アカウント編集するときのストロングパロメーター   avatarはactive_storageのカラム
   end
+
+  def after_sign_out_path_for(resource_or_scope)
+    if resource_or_scope == :user
+      new_user_session_path
+    elsif resource_or_scope == :admin
+      new_admin_session_path
+    else
+      root_path
+    end
+  end
 end

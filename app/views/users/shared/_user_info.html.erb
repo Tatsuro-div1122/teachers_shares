@@ -22,7 +22,7 @@
 <% end %>
 <div>
   <ul class="count-list">
-    <li class="count-list"><strong>授業アイデア</strong>      <%= link_to user.lessons.count, user_own_lessons_path(current_user) %></li>
+    <li class="count-list"><strong>授業アイデア</strong>      <%= link_to user.lessons.count, own_lessons_user_path(current_user) %></li>
     <li class="count-list"><strong>参考になった！</strong>     <%= LessonLike.where(user_id: current_user.id).count + LessonCommentLike.where(user_id: current_user.id).count %></li>
     <li class="count-list">
       <strong>教員仲間</strong><br>
