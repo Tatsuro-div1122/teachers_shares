@@ -1,4 +1,4 @@
-class Users::SearchController < ApplicationController
+class SearchController < ApplicationController
   def search
     @model = params["search"]["model"]
     # 検索で選択したモデル

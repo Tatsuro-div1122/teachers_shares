@@ -10,7 +10,7 @@
       <span><%= link_to "フォロワーの先生を見る", followers_user_path(@user), class: "btn btn-default" %></span>
       <span><i class="fas fa-lightbulb" aria-hidden="true" style="color: yellow"></i> 参考になった！<%= @total_likes %></span>
       <% if @user == current_user %>
-        <%= render 'users/shared/maybe_friends', users: @users %>
+        <%= render 'shared/maybe_friends', users: @users %>
       <% end %>
     </div>
     <div class="col-lg-8">
@@ -25,7 +25,7 @@
       <ul class="profile-items">
         <li>
           <p><strong><%= @user.family_name+@user.last_name %></strong></p>
-          <span><%= render 'users/shared/follow', user: @user%></span>
+          <span><%= render 'shared/follow', user: @user%></span>
         </li>
         <li><p><strong>所属所在地</strong></p>
             <p><%= @user.prefecture %></p>

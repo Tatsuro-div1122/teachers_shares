@@ -15,7 +15,7 @@
       <p>先生のアイデア共有サイト<p>
       <% if user_signed_in? %>
         <%= link_to "ログアウト", destroy_user_session_path, method: :post, class: "btn btn-primary" %>
-        <%= render 'users/shared/search_form' %>
+        <%= render 'shared/search_form' %>
       <% elsif admin_signed_in? %>
         <%= link_to "ログアウト", destroy_admin_session_path, method: :post, class: "btn btn-primary" %>
         <%#= render 'admins/shared/search_form' %>

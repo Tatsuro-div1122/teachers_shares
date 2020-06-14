@@ -1,4 +1,4 @@
-class Users::LessonBookmarksController < ApplicationController
+class LessonBookmarksController < ApplicationController
   def create
     lesson = Lesson.find(params[:lesson_id])
     lesson_bookmarks = current_user.lesson_bookmarks.build(lesson_id: lesson.id)

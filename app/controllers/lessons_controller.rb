@@ -1,4 +1,4 @@
-class Users::LessonsController < ApplicationController
+class LessonsController < ApplicationController
   def index
     @title = "授業アイデア"
     @lessons = Lesson.includes(:user).order("created_at DESC")

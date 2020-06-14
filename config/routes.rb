@@ -40,25 +40,25 @@
 #          own_lessons_user GET    /users/:id/own_lessons(.:format)                                                         users#own_lessons
 #                     users GET    /users(.:format)                                                                         users#index
 #                      user GET    /users/:id(.:format)                                                                     users#show
-#       lesson_lesson_likes DELETE /lessons/:lesson_id/lesson_likes(.:format)                                               users/lesson_likes#destroy
-#                           POST   /lessons/:lesson_id/lesson_likes(.:format)                                               users/lesson_likes#create
-#   lesson_lesson_bookmarks DELETE /lessons/:lesson_id/lesson_bookmarks(.:format)                                           users/lesson_bookmarks#destroy
-#                           POST   /lessons/:lesson_id/lesson_bookmarks(.:format)                                           users/lesson_bookmarks#create
-#    lesson_lesson_comments POST   /lessons/:lesson_id/lesson_comments(.:format)                                            users/lesson_comments#create
-#     lesson_lesson_comment DELETE /lessons/:lesson_id/lesson_comments/:id(.:format)                                        users/lesson_comments#destroy
-#                   lessons GET    /lessons(.:format)                                                                       users/lessons#index
-#                           POST   /lessons(.:format)                                                                       users/lessons#create
-#                new_lesson GET    /lessons/new(.:format)                                                                   users/lessons#new
-#               edit_lesson GET    /lessons/:id/edit(.:format)                                                              users/lessons#edit
-#                    lesson GET    /lessons/:id(.:format)                                                                   users/lessons#show
-#                           PATCH  /lessons/:id(.:format)                                                                   users/lessons#update
-#                           PUT    /lessons/:id(.:format)                                                                   users/lessons#update
-#                           DELETE /lessons/:id(.:format)                                                                   users/lessons#destroy
-#                    search GET    /search(.:format)                                                                        users/search#search
-#      lesson_comment_likes POST   /lesson_comments/:id/lesson_comment_likes(.:format)                                      users/lesson_comment_likes#create
-#       lesson_comment_like DELETE /lesson_comments/:id/lesson_comment_likes(.:format)                                      users/lesson_comment_likes#destroy
+#       lesson_lesson_likes DELETE /lessons/:lesson_id/lesson_likes(.:format)                                               lesson_likes#destroy
+#                           POST   /lessons/:lesson_id/lesson_likes(.:format)                                               lesson_likes#create
+#   lesson_lesson_bookmarks DELETE /lessons/:lesson_id/lesson_bookmarks(.:format)                                           lesson_bookmarks#destroy
+#                           POST   /lessons/:lesson_id/lesson_bookmarks(.:format)                                           lesson_bookmarks#create
+#    lesson_lesson_comments POST   /lessons/:lesson_id/lesson_comments(.:format)                                            lesson_comments#create
+#     lesson_lesson_comment DELETE /lessons/:lesson_id/lesson_comments/:id(.:format)                                        lesson_comments#destroy
+#                   lessons GET    /lessons(.:format)                                                                       lessons#index
+#                           POST   /lessons(.:format)                                                                       lessons#create
+#                new_lesson GET    /lessons/new(.:format)                                                                   lessons#new
+#               edit_lesson GET    /lessons/:id/edit(.:format)                                                              lessons#edit
+#                    lesson GET    /lessons/:id(.:format)                                                                   lessons#show
+#                           PATCH  /lessons/:id(.:format)                                                                   lessons#update
+#                           PUT    /lessons/:id(.:format)                                                                   lessons#update
+#                           DELETE /lessons/:id(.:format)                                                                   lessons#destroy
 #                      root GET    /                                                                                        home#top
 #                     about GET    /about(.:format)                                                                         home#about
+#                    search GET    /search(.:format)                                                                        search#search
+#      lesson_comment_likes POST   /lesson_comments/:id/lesson_comment_likes(.:format)                                      lesson_comment_likes#create
+#       lesson_comment_like DELETE /lesson_comments/:id/lesson_comment_likes(.:format)                                      lesson_comment_likes#destroy
 #        rails_service_blob GET    /rails/active_storage/blobs/:signed_id/*filename(.:format)                               active_storage/blobs#show
 # rails_blob_representation GET    /rails/active_storage/representations/:signed_blob_id/:variation_key/*filename(.:format) active_storage/representations#show
 #        rails_disk_service GET    /rails/active_storage/disk/:encoded_key/*filename(.:format)                              active_storage/disk#show
@@ -67,10 +67,9 @@
 
 Rails.application.routes.draw do
 
-  devise_for :admins, path: 'admins', controllers: { registrations: 'admins/registrations', sessions: 'admins/sessions', passwords: 'admins/passwords' }
 
-
-  devise_for :users, path: 'users', controllers: { registrations: 'users/registrations', sessions: 'users/sessions', passwords: 'users/passwords' }
+  devise_for :admins, controllers: { registrations: 'admins/registrations', sessions: 'admins/sessions', passwords: 'admins/passwords' }
+  devise_for :users, controllers: { registrations: 'users/registrations', sessions: 'users/sessions', passwords: 'users/passwords' }
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 
   devise_scope :user do
@@ -86,8 +85,8 @@ Rails.application.routes.draw do
       get :own_lessons
     end
   end
-  scope module: :users do
-    resources :lessons do
+
+  resources :lessons do
     #   collection do
     #     post :new, path: :new, as: :new, action: :back
     #     post :confirm
@@ -95,13 +94,12 @@ Rails.application.routes.draw do
       resource  :lesson_likes, only: [:create, :destroy]
       resource  :lesson_bookmarks, only: [:create, :destroy]
       resources :lesson_comments, only: [:create, :destroy]
-    end
-  get '/search' => 'search#search'
-  post 'lesson_comments/:id/lesson_comment_likes', to: 'lesson_comment_likes#create', as: 'lesson_comment_likes'
-  delete 'lesson_comments/:id/lesson_comment_likes', to: 'lesson_comment_likes#destroy', as: 'lesson_comment_like'
- end
+  end
 
   root 'home#top'
   get '/about' => 'home#about'
+  get '/search' => 'search#search'
+  post 'lesson_comments/:id/lesson_comment_likes', to: 'lesson_comment_likes#create', as: 'lesson_comment_likes'
+  delete 'lesson_comments/:id/lesson_comment_likes', to: 'lesson_comment_likes#destroy', as: 'lesson_comment_like'
 
 end
