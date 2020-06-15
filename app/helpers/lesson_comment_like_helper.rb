@@ -1,0 +1,2 @@
+module LessonCommentLikeHelper
+end

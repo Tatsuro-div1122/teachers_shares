@@ -1,0 +1,2 @@
+module LessonBookmarksHelper
+end

@@ -44,7 +44,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # サインイン後の遷移先設定
   def after_sign_up_path_for(resource)
-    user_path(id: current_user.id)
+    root_path
   end
 
   # アカウント編集後の遷移先設定
@@ -55,7 +55,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
 
   protected
-  
+  #アカウント編集をパスなしで行う
   def update_resource(resource, params)
     resource.update_without_password(params)
   end

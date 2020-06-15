@@ -4,21 +4,38 @@
     <title>TeachersShares</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <script src="https://kit.fontawesome.com/22bae51414.js" crossorigin="anonymous"></script>
   </head>
 
   <body>
+    <header>
+      <h1 class="headline"><%= link_to "TEACHERS' SHARES", root_path %></h1>
+      <p>先生のアイデア共有サイト<p>
+      <% unless user_signed_in? %>
+        <%= link_to "新規登録", new_user_registration_path, class: "btn btn-success" %>
+        <%= link_to "ログイン", new_user_session_path, class: "btn btn-primary" %>
+      <% else %>
+        <%= link_to "ログアウト", destroy_user_session_path, method: :post, class: "btn btn-primary" %>
+        <%= render 'shared/search_form' %>
+      <% end %>
+    </header>
+      <% if user_signed_in? %>
+        <nav>
+          <ul>
+            <li><%= link_to "トップ", root_path, class: "btn btn-default" %></li>
+            <li><%= link_to "授業アイデア", lessons_path, class: "btn btn-default" %></li>
+            <li><%= link_to "つながる", users_path, class: "btn btn-default" %></li>
+            <li><%= link_to "マイページ", user_path(current_user), class: "btn btn-default" %></li>
+          </ul>
+        </nav>
+      <% end %>
     <p class="notice"><%= notice %></p>
     <p class="alert"><%= alert %></p>
-    <% if user_signed_in? %>
-      <%= link_to "つながる", users_path %>
-      <%= link_to "ログアウト", destroy_user_session_path, method: :post %>
-    <% else %>
-      <%= link_to "新規登録", new_user_registration_path %>
-      <%= link_to "ログイン", new_user_session_path %>
-    <% end %>
     <%= yield %>
+    <footer>
+      <p><%= link_to "TEACHERS' SHARESとは？", "#"%> | お問い合わせ | 運営会社 | 利用規約 | サイトマップ</p>
+    </footer>
   </body>
 </html>

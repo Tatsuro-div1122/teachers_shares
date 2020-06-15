@@ -20,7 +20,7 @@ class Users::SessionsController < Devise::SessionsController
 
   # ログイン後の遷移先設定
   def after_sign_in_path_for(resource)
-    user_path(id: current_user.id)
+    root_path
   end
 
   # ログアウト後の遷移先設定

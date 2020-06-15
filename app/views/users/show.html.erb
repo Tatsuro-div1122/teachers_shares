@@ -2,10 +2,16 @@
   <div class="row">
     <div class="col-lg-2">
       <% if @user == current_user %>
-      <span><%= link_to "プロフィールを編集する", edit_user_registration_path, class: "btn btn-outline-secondary" %></span>
+        <span><%= link_to "プロフィールを編集する", edit_user_registration_path, class: "btn btn-default" %></span>
+        <span><%= link_to "ブックマークを見る", lesson_bookmarks_lessons_path, class: "btn btn-default" %></span>
       <% end %>
-      <span><%= link_to "フォロー中の先生を見る", follows_user_path(@user), class: "btn" %></span>
-      <span><%= link_to "フォロワーの先生を見る", followers_user_path(@user), class: "btn" %></span>
+      <span><%= link_to "授業アイデアを見る", user_own_lessons_path(user_id: @user.id), class: "btn btn-default" %></span>
+      <span><%= link_to "フォロー中の先生を見る", follows_user_path(@user), class: "btn btn-default" %></span>
+      <span><%= link_to "フォロワーの先生を見る", followers_user_path(@user), class: "btn btn-default" %></span>
+      <span><i class="fas fa-lightbulb" aria-hidden="true" style="color: yellow"></i> 参考になった！<%= @total_likes %></span>
+      <% if @user == current_user %>
+        <%= render 'shared/maybe_friends', users: @users %>
+      <% end %>
     </div>
     <div class="col-lg-8">
       <h1>先生プロフィール</h1>

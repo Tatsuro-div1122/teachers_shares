@@ -1,16 +1,16 @@
 class LessonsController < ApplicationController
   def index
-    @lessons = Lesson.joins(:user).where(users:{deleted_at: nil})
-    # users.each do |user|
-    #   user.lessons.each do |lesson|
-    #     lesson.append(lesson)
-    #   end
-    # end
+    @title = "授業アイデア"
+    @lessons = Lesson.includes(:user).order("created_at DESC")
+    # @lessons = Lesson.joins(:user).where(users:{deleted_at: nil})
+    # deleted_atスタンプがないユーザの投稿一覧を取得
   end
 
   def show
     @lesson = Lesson.find(params[:id])
     @user = @lesson.user
+    @lesson_comment = LessonComment.new
+    @lesson_comments = @lesson.lesson_comments.includes(:user).order("created_at DESC")
   end
 
   def new
@@ -57,6 +57,19 @@ class LessonsController < ApplicationController
     lesson.file.purge
     lesson.destroy
     redirect_to lessons_path
+  end
+
+  def lesson_bookmarks
+    @title = "ブックマークリスト"
+    @lessons = current_user.bookmark_lessons.includes(:user).order("created_at DESC")
+    render 'index'
+  end
+
+  def own_lessons
+    user = User.find(params[:user_id])
+    @title = "#{user.family_name + user.last_name} 先生の授業アイデア"
+    @lessons = user.lessons.includes(:user).order("created_at DESC")
+    render 'index'
   end
 
   private
