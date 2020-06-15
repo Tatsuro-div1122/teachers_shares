@@ -37,6 +37,6 @@ class UsersController < ApplicationController
   private
   def set_user
     @user = User.find(params[:id])
-    redirect_to root_path, alert: "すでに退会された先生です" unless @user.deleted_at == nil
+    redirect_to root_path, alert: "すでに退会された先生です" if @user.deleted_at != nil
   end
 end
