@@ -15,9 +15,10 @@
       <p>先生のアイデア共有サイト<p>
       <% if admin_signed_in? %>
         <%= link_to "ログアウト", destroy_admin_session_path, method: :delete, class: "btn btn-primary" %>
+        <%= render 'admins/shared/search_form' %>
       <% elsif user_signed_in? %>
         <%= link_to "ログアウト", destroy_user_session_path, method: :delete, class: "btn btn-primary" %>
-        <%= render 'shared/search_form' %>
+        <%= render 'users/shared/search_form' %>
       <% else %>
         <%= link_to "新規登録", new_user_registration_path, class: "btn btn-success" %>
         <%= link_to "ログイン", new_user_session_path, class: "btn btn-primary" %>
@@ -26,9 +27,9 @@
       <% if admin_signed_in? %>
         <nav>
           <ul>
-            <li><%= link_to "トップ", root_path, class: "btn btn-default" %></li>
-            <li><%= link_to "先生一覧", users_path, class: "btn btn-default" %></li>
-            <li><%= link_to "授業一覧", lessons_path, class: "btn btn-default" %></li>
+            <li><%= link_to "トップ", admins_admin_top_path, class: "btn btn-default" %></li>
+            <li><%= link_to "先生一覧", admins_users_path, class: "btn btn-default" %></li>
+            <li><%= link_to "授業一覧", admins_lessons_path, class: "btn btn-default" %></li>
             <li><%= link_to "悩み相談一覧", "#", class: "btn btn-default" %></li>
           </ul>
         </nav>
@@ -41,6 +42,7 @@
             <li><%= link_to "マイページ", user_path(current_user), class: "btn btn-default" %></li>
           </ul>
         </nav>
+      <% else %>
       <% end %>
     <p class="notice"><%= notice %></p>
     <p class="alert"><%= alert %></p>

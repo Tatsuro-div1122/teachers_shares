@@ -1,7 +1,8 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
-  # before_action :authenticate_user!, unless: :home_controller?
+  before_action :authenticate_user!
+  before_action :authenticate_admin!
 
   before_action :configure_permitted_parameters, if: :devise_controller?
   # devise利用の機能（ユーザ登録、ログイン認証など）が使われる場合、その前にconfigure_permitted_parametersを実行
@@ -15,13 +16,13 @@ class ApplicationController < ActionController::Base
     # アカウント編集するときのストロングパロメーター   avatarはactive_storageのカラム
   end
 
-  def after_sign_out_path_for(resource_or_scope)
-    if resource_or_scope == :user
-      new_user_session_path
-    elsif resource_or_scope == :admin
-      new_admin_session_path
-    else
-      root_path
-    end
-  end
+  # def after_sign_out_path_for(resource_or_scope)
+  #   if resource_or_scope == :user
+  #     new_user_session_path
+  #   elsif resource_or_scope == :admin
+  #     new_admin_session_path
+  #   else
+  #     root_path
+  #   end
+  # end
 end

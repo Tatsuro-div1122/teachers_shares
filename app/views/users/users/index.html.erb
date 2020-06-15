@@ -1,0 +1,31 @@
+<div class="container">
+  <div class="row">
+    <div class="col.lg.8">
+      <h1><%= @title %></h1>
+      <span>1~10件表示 (全<%= @users.count %>件)</span>
+      <table class="table">
+        <tbody>
+          <% @users.each do |user| %>
+          <tr>
+              <td>
+                <%= link_to user_path(user) do %>
+                <% if user.avatar.attached? %>
+                  <%= image_tag user.avatar.variant(resize: "50x50") %>
+                <% else %>
+                  <%= image_tag("default_user.png", size: "50x50") %>
+                <% end %>
+                <ul>
+                  <li><%= user.family_name+user.last_name %></li>
+                  <li><%= user.school_name %></li>
+                  <li><%= user.subject %></li>
+                </ul>
+                <% end %>
+                <%= render 'users/shared/follow', user: user %>
+              </td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
