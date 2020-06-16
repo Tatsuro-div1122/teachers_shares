@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_10_134813) do
+ActiveRecord::Schema.define(version: 2020_06_13_024856) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -33,9 +33,21 @@ ActiveRecord::Schema.define(version: 2020_06_10_134813) do
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
+  create_table "admins", force: :cascade do |t|
+    t.string "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["email"], name: "index_admins_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_admins_on_reset_password_token", unique: true
+  end
+
   create_table "lesson_bookmarks", force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "lesson_id"
+    t.integer "user_id", null: false
+    t.integer "lesson_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["lesson_id"], name: "index_lesson_bookmarks_on_lesson_id"
@@ -52,7 +64,7 @@ ActiveRecord::Schema.define(version: 2020_06_10_134813) do
   end
 
   create_table "lesson_comments", force: :cascade do |t|
-    t.text "comment", null: false
+    t.text "comment", default: "", null: false
     t.integer "user_id", null: false
     t.integer "lesson_id", null: false
     t.datetime "created_at", null: false
@@ -62,19 +74,21 @@ ActiveRecord::Schema.define(version: 2020_06_10_134813) do
   end
 
   create_table "lesson_likes", force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "lesson_id"
+    t.integer "user_id", null: false
+    t.integer "lesson_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["lesson_id"], name: "index_lesson_likes_on_lesson_id"
+    t.index ["user_id"], name: "index_lesson_likes_on_user_id"
   end
 
   create_table "lessons", force: :cascade do |t|
-    t.string "title"
-    t.text "description"
-    t.integer "school_type"
-    t.integer "grade"
-    t.integer "subject"
-    t.integer "user_id"
+    t.string "title", null: false
+    t.text "description", null: false
+    t.integer "school_type", null: false
+    t.integer "grade", null: false
+    t.integer "subject", null: false
+    t.integer "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_lessons_on_user_id"
@@ -93,8 +107,8 @@ ActiveRecord::Schema.define(version: 2020_06_10_134813) do
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.string "family_name", null: false
     t.string "last_name", null: false
+    t.string "first_name", null: false
     t.integer "school_type", null: false
     t.integer "prefecture", null: false
     t.string "school_name", null: false

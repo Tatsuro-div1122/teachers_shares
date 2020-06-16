@@ -3,14 +3,14 @@
 # Table name: lessons
 #
 #  id          :integer          not null, primary key
-#  description :text
-#  grade       :integer
-#  school_type :integer
-#  subject     :integer
-#  title       :string
+#  description :text             not null
+#  grade       :integer          not null
+#  school_type :integer          not null
+#  subject     :integer          not null
+#  title       :string           not null
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
-#  user_id     :integer
+#  user_id     :integer          not null
 #
 # Indexes
 #

@@ -1,0 +1,99 @@
+<div class="container">
+  <div class="row">
+    <div class="col-lg-9">
+      <section>
+        <% if @lesson.user_deleted?(@user) %>
+          <p>退会済みの先生</p>
+        <% else %>
+          <%= link_to user_path(@user) do %>
+            <span>
+              <% if @user.avatar.attached? %>
+                <%= image_tag @user.avatar.variant(resize: "60x60") %>
+              <% else %>
+                <%= image_tag("default_user.png", size: "60x60") %>
+              <% end %>
+            </span>
+            <p><strong><%= @user.last_name + @user.first_name %></strong></p>
+            <p><%= @user.school_name %></p>
+          <% end %>
+        <% end %>
+        <p><%= @lesson.school_type %></p>
+        <p><%= @lesson.subject %></p>
+        <p><%= @lesson.created_at.to_s(:datetime) %></p>
+        <% unless @lesson.user_deleted?(@user) %>
+          <span><%= render 'users/shared/follow', user: @user %></span>
+        <% end %>
+        <span><%= render 'users/shared/lesson_like', lesson: @lesson %></span>
+        <span><%= render 'users/shared/lesson_bookmark', lesson: @lesson %></span>
+      </section>
+      <section>
+        <h1><%= @lesson.title %></h1>
+        <% if @lesson.file.attached? %>
+        <span>
+          <%= link_to  @lesson.file, download: " ", class: "btn btn-secondary" do %>
+            <i class="fas fa-paperclip"></i> 資料をダウンロード
+          <% end %>
+        </span>
+        <% end %>
+        <p><%= @lesson.description %></p>
+        <% if current_user.own_lesson?(@lesson) %>
+          <span>
+            <%= link_to edit_lesson_path(@lesson) do %>
+              <i class="far fa-edit"></i> 編集する
+            <% end %>
+          </span>
+          <span>
+            <%= link_to lesson_path(@lesson), method: :delete, data: {confirm:"本当に削除してもよろしいですか？"} do %>
+              <i class="far fa-trash-alt"></i> 削除する
+            <% end %>
+          </span>
+        <% end %>
+      </section>
+      <section>
+        <span>
+          <i class="far fa-comments"></i> コメント 全<%= @lesson_comments.count %>件
+        </span>
+        <div class="form-group">
+          <%= form_with model: [@lesson, @lesson_comment], local: true do |f| %>
+            <%= f.text_field :comment, autofocus: true, placeholder: "コメントを記入してください", class: "form-control" %>
+            <%= f.submit "コメント", class: "btn btn-sm btn-primary" %>
+          <% end %>
+        </div>
+        <% if @lesson_comments.any? %>
+        <table>
+           <% @lesson_comments.each do |lesson_comment| %>
+            <tr>
+              <td>
+                  <% if lesson_comment.user_deleted?(lesson_comment.user) %>
+                    <p>退会済みの先生<p>
+                  <% else %>
+                    <%= link_to user_path(lesson_comment.user) do %>
+                      <% if lesson_comment.user.avatar.attached? %>
+                        <%= image_tag lesson_comment.user.avatar.variant(resize: "50x50") %>
+                      <% else %>
+                        <%= image_tag("default_user.png", size: "50x50") %>
+                      <% end %>
+                      <ul>
+                        <li><%= lesson_comment.user.last_name + lesson_comment.user.first_name %></li>
+                    <% end %>
+                  <% end %>
+                        <li><%= lesson_comment.created_at.to_s(:datetime) %></li>
+                      </ul>
+                      <p><%= lesson_comment.comment %></p>
+                      <%= render 'users/shared/lesson_comment_like', {lesson_comment: lesson_comment} %>
+                  <% if lesson_comment.user == current_user %>
+                    <span>
+                      <%= link_to lesson_lesson_comment_path(lesson_comment), method: :delete, data: {confirm:"本当に削除してもよろしいですか？"}, class: "btn btn-xs btn-default" do %>
+                        <i class="far fa-trash-alt"></i> 削除する
+                      <% end %>
+                    </span>
+                  <% end %>
+              </td>
+            </tr>
+           <% end %>
+         </table>
+         <% end %>
+      </section>
+    </div>
+  </div>
+</div>

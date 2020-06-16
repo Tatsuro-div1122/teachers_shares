@@ -5,8 +5,8 @@
 #  id         :integer          not null, primary key
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
-#  lesson_id  :integer
-#  user_id    :integer
+#  lesson_id  :integer          not null
+#  user_id    :integer          not null
 #
 # Indexes
 #

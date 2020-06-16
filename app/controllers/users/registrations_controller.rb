@@ -1,18 +1,21 @@
 # frozen_string_literal: true
 
 class Users::RegistrationsController < Devise::RegistrationsController
+  # include Accessible
+  # skip_before_action :check_user, only: :destroy
+  # skip_before_action :check_user, except: [:new, :create]
   # before_action :configure_sign_up_params, only: [:create]
   # before_action :configure_account_update_params, only: [:update]
 
   # GET /resource/sign_up
-  # def new
-  #   super
-  # end
+  def new
+    super
+  end
 
   # POST /resource
-  # def create
-  #   super
-  # end
+  def create
+    super
+  end
 
   # GET /resource/edit
   # def edit
@@ -25,13 +28,13 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # end
 
   # DELETE /resource
-  def destroy
-    resource.soft_delete
-    Devise.sign_out_all_scopes ? sign_out : sign_out(resource_name)
-    set_flash_message :notice, :destroyed
-    yield resource if block_given?
-    respond_with_navigational(resource){ redirect_to after_sign_out_path_for(resource_name) }
-  end
+  # def destroy
+  #   resource.soft_delete
+  #   Devise.sign_out_all_scopes ? sign_out : sign_out(resource_name)
+  #   set_flash_message :notice, :destroyed
+  #   yield resource if block_given?
+  #   respond_with_navigational(resource){ redirect_to after_sign_out_path_for(resource_name) }
+  # end
 
   # GET /resource/cancel
   # Forces the session data which is usually expired after sign
