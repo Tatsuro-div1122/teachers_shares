@@ -1,0 +1,18 @@
+<section>
+  <div>
+    <%= form_with url: admins_category_users_path, method: :get, local: true do |f| %>
+      <div class="field">
+        <%= f.select :school_type, User.school_types.keys, {prompt: '学校種で検索'}, class: 'form-control btn btn-info' %>
+      </div>
+      <div class="field">
+        <%= f.select :subject, User.subjects.keys, {prompt: '教科で検索'}, class: 'form-control btn btn-info' %>
+      </div>
+      <div class="field">
+        <%= f.select :prefecture, User.prefectures.keys, {prompt: '地域で検索'}, class: 'form-control btn btn-info' %>
+      </div>
+      <div class="actions">
+        <%= f.submit "検索", class: "btn btn-primary" %>
+      </div>
+    <% end %>
+  </div>
+</section>

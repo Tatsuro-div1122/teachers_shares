@@ -6,7 +6,7 @@
 #  deleted_at             :datetime
 #  email                  :string           default(""), not null
 #  encrypted_password     :string           default(""), not null
-#  family_name            :string           not null
+#  first_name             :string           not null
 #  introduction           :text
 #  last_name              :string           not null
 #  prefecture             :integer          not null

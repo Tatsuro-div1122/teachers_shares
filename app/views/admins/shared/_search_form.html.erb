@@ -1,0 +1,7 @@
+<div class="form-group search-form">
+  <%= form_with url: admins_search_path, method: :get, local: true do |f| %>
+    <%= f.select 'search[model]', {"先生"=>"User", "授業アイデア" => "Lesson"}%>
+    <%= f.text_field 'search[keyword]', placeholder: "キーワードを入力してください", class: "form-control" %>
+    <%= f.submit '検索' %>
+  <% end %>
+</div>

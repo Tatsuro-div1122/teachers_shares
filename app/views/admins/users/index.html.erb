@@ -1,0 +1,74 @@
+<div class="container">
+  <div class="row">
+    <div class="col-lg-2">
+      <%= render 'admins/shared/user_category' %>
+    </div>
+    <div class="col-lg-10">
+      <h1><%= @title %></h1>
+      <span>1~10件表示 (全<%= @users.count %>件)</span>
+      <table class="table">
+        <thead>
+          <tr>
+            <th><p>ID</p></th>
+            <th><p>氏名</p></th>
+            <th><p>メールアドレス</p></th>
+            <th><p>所属</p></th>
+            <th><p>会員ステータス</p></th>
+            <th><p>入会日</p></th>
+            <th><p>退会日</p></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @users.each do |user| %>
+            <tr>
+              <td>
+                <p><%= user.id %></p>
+              </td>
+              <td>
+                <%= link_to admins_user_path(user) do %>
+                <p><%= user.last_name+user.first_name %></p>
+                <% end %>
+              </td>
+              <td>
+                <p><%= user.email %></p>
+              </td>
+              <td>
+                <p><%= user.school_name %></p>
+              </td>
+              <td>
+                <% unless user.user_deleted?(user) %>
+                  <p>会員</p>
+                <% else %>
+                  <p>退会</p>
+                <% end %>
+              </td>
+              <td>
+                <p><%= user.created_at.to_s(:datetime) %></p>
+              </td>
+              <td>
+                <% if user.user_deleted?(user) %>
+                  <p><%= user.deleted_at.to_s(:datetime) %></p>
+                <% end %>
+              </td>
+              <td>
+                <%= link_to admins_user_path(user) do %>
+                  <i class="fas fa-info-circle"></i>
+                <% end %>
+                <% if user.user_deleted?(user) %>
+                  <%= link_to admins_user_path(user), method: :patch  do %>
+                    <i class="fas fa-plus-circle"></i>
+                  <% end %>
+                <% else %>
+                  <%= link_to admins_user_path(user), method: :patch, data: {confirm:"本当に削除してもよろしいですか？"} do %>
+                    <i class="fas fa-minus-circle"></i>
+                  <% end %>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,22 @@
+<section>
+  <div>
+    <p>カテゴリーで探す</p>
+    <ul>
+      <% Lesson.school_types.keys.each do |school_type| %>
+        <li>
+          <%= link_to admins_category_lessons_path(school_type: school_type) do %>
+            <%= school_type %>
+          <% end %>
+        </li>
+      <% end %>
+      <% Lesson.subjects.keys.each do |subject| %>
+        <li>
+          <%= link_to admins_category_lessons_path(subject: subject) do %>
+            <%= subject %>
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+</section>
+

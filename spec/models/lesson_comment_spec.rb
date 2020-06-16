@@ -3,7 +3,7 @@
 # Table name: lesson_comments
 #
 #  id         :integer          not null, primary key
-#  comment    :text             not null
+#  comment    :text             default(""), not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  lesson_id  :integer          not null

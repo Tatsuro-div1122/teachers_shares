@@ -1,0 +1,66 @@
+<div class="container">
+  <div class="row">
+    <div class="col-lg-2">
+      <%= render 'admins/shared/lesson_category' %>
+    </div>
+    <div class="col-lg-10">
+      <h1><%= @title %></h1>
+      <span>1~10件表示 (全<%= @lessons.count %>件)</span>
+      <table class="table">
+        <thead>
+          <tr>
+            <th><p>ID</p></th>
+            <th><p>先生</p></th>
+            <th><p>学校種</p></th>
+            <th><p>学年</p></th>
+            <th><p>教科</p></th>
+            <th><p>タイトル</p></th>
+            <th><p>説明文</p></th>
+            <th><p>投稿日</p></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @lessons.each do |lesson| %>
+            <tr>
+              <td>
+                <p><%= lesson.id %></p>
+              </td>
+              <td>
+                <%= link_to admins_user_path(lesson.user_id) do %>
+                <p><%= lesson.user.last_name+lesson.user.first_name %></p>
+                <% end %>
+              </td>
+              <td>
+                <p><%= lesson.school_type %></p>
+              </td>
+              <td>
+                <p><%= lesson.grade %></p>
+              </td>
+              <td>
+                <p><%= lesson.subject %></p>
+              </td>
+              <td>
+                <p><%= link_to "#{lesson.title}", admins_lesson_path(lesson) %></p>
+              </td>
+              <td>
+                <p><%= lesson.description %></p>
+              </td>
+              <td>
+                <p><%= lesson.created_at.to_s(:datetime) %></p>
+              </td>
+              <td>
+                <%= link_to admins_lesson_path(lesson) do %>
+                  <i class="fas fa-info-circle"></i>
+                <% end %>
+                <%= link_to admins_lesson_path(lesson), method: :delete  do %>
+                    <i class="fas fa-minus-circle"></i>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
