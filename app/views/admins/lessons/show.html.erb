@@ -10,7 +10,7 @@
               <%= image_tag("default_user.png", size: "60x60") %>
             <% end %>
           </div>
-          <p><%= @lesson.user.family_name + @lesson.user.last_name %></p>
+          <p><%= @lesson.user.last_name + @lesson.user.first_name %></p>
           <p><%= @lesson.user.school_name %></p>
         <% end %>
         <p><%= @lesson.school_type %></p>
@@ -49,9 +49,9 @@
                   <ul>
                     <li>
                       <% if lesson_comment.user_deleted?(lesson_comment.user) %>
-                        <p><%= lesson_comment.user.family_name + lesson_comment.user.last_name %> (退会済)<p>
+                        <p><%= lesson_comment.user.last_name + lesson_comment.user.first_name %> (退会済)<p>
                       <% else %>
-                        <p><%= lesson_comment.user.family_name + lesson_comment.user.last_name %><p>
+                        <p><%= lesson_comment.user.last_name + lesson_comment.user.first_name %><p>
                       <% end %>
                     </li>
                 <% end %>

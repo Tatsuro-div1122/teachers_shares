@@ -10,9 +10,9 @@ class Users::SearchController < ApplicationController
         @users = []
         keyword.each do |keyword|
           next if keyword == ""
-          #@users += User.where(['family_name LIKE ? OR last_name LIKE ? OR introduction LIKE ? OR subject LIKE ? OR school_type LIKE ? OR school_name LIKE ? OR prefecture LIKE ?',
+          #@users += User.where(['last_name LIKE ? OR first_name LIKE ? OR introduction LIKE ? OR subject LIKE ? OR school_type LIKE ? OR school_name LIKE ? OR prefecture LIKE ?',
                   #{}"%#{keyword}%", "%#{keyword}%", "%#{keyword}%", "%#{keyword}%", "%#{keyword}%", "%#{keyword}%", "%#{keyword}%"]).where(deleted_at: nil)
-                  @users += User.where(['family_name LIKE ? OR last_name LIKE ? OR introduction LIKE ? OR school_name LIKE ?', "%#{keyword}%", "%#{keyword}%", "%#{keyword}%" , "%#{keyword}%"])
+                  @users += User.where(['last_name LIKE ? OR first_name LIKE ? OR introduction LIKE ? OR school_name LIKE ?', "%#{keyword}%", "%#{keyword}%", "%#{keyword}%" , "%#{keyword}%"])
                                 .or(User.where(subject: keyword)).or(User.where(school_type: keyword)).or(User.where(prefecture: keyword)).where(deleted_at: nil).where.not(id: current_user)
         end
         @users.uniq!

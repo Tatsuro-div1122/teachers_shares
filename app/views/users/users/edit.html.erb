@@ -1,0 +1,66 @@
+<div class="container">
+  <div class="row">
+    <div class="col-lg-8">
+    <h2>プロフィールの変更</h2>
+
+      <%= form_with model: @user, local: true do |f| %>
+        <div class="field">
+          <%= f.label :"プロフィール写真" %><br />
+          <%#= image_tag avatar.preview(resize: "50x30") %>
+          <%= f.file_field :avatar, placeholder: "画像選択" %>
+        </div>
+
+        <div class="field">
+          <%= f.label :last_name, "姓" %><br />
+          <%= f.text_field :last_name, autofocus: true, autocomplete: "last_name" %>
+        </div>
+
+        <div class="field">
+          <%= f.label :first_name, "名" %><br />
+          <%= f.text_field :first_name, autofocus: true, autocomplete: "first_name" %>
+        </div>
+
+        <div class="field">
+          <%= f.label :school_type, "学校種" %><br />
+          <%= f.radio_button :school_type, :小学校 %>
+          <%= f.label :小学校 %>
+          <%= f.radio_button :school_type, :中学校  %>
+          <%= f.label :中学校 %>
+          <%= f.radio_button :school_type, :高等学校  %>
+          <%= f.label :高等学校 %>
+        </div>
+
+        <div class="field">
+          <%= f.label :prefecture, "所属都道府県" %><br />
+          <%= f.select :prefecture, User.prefectures.keys, {}, class: 'form-control btn btn-info' %>
+        </div>
+
+        <div class="field">
+          <%= f.label :school_name, "所属" %><br />
+          <%= f.text_field :school_name, autofocus: true, autocomplete: "school_name" %>
+        </div>
+
+        <div class="field">
+          <%= f.label :subject, "教科" %><br />
+          <%= f.select :subject, User.subjects.keys, {}, class: 'form-control btn btn-info' %>
+        </div>
+
+        <div class="field">
+          <%= f.label :year, "教員歴" %><br />
+          <%= f.select :year, options_for_select((1..40).to_a) %>年
+        </div>
+
+        <div class="field">
+          <%= f.label :introduction, "自己紹介" %><br />
+          <%= f.text_area :introduction, autofocus: true, autocomplete: "introduction" %>
+        </div>
+
+        <div class="actions">
+          <span><%= f.submit "変更内容を保存する", class: "btn btn-success" %></span>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+

@@ -17,7 +17,7 @@
                   <%= image_tag("default_user.png", size: "50x50") %>
                 <% end %>
                 <ul>
-                  <li><%= user.family_name+user.last_name %></li>
+                  <li><%= user.last_name+user.first_name %></li>
                   <li><%= user.school_name %></li>
                   <li><%= user.subject %></li>
                 </ul>
@@ -52,7 +52,7 @@
                       <%= image_tag("default_user.png", size: "50x50") %>
                     <% end %>
                     <ul>
-                      <li><%= lesson.user.family_name + lesson.user.last_name %></li>
+                      <li><%= lesson.user.last_name + lesson.user.first_name %></li>
                       <li><%= lesson.user.school_name %></li>
                       <li><%= lesson.school_type %></li>
                       <li><%= lesson.grade %></li>

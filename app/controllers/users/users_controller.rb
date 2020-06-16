@@ -1,5 +1,5 @@
 class Users::UsersController < ApplicationController
-  before_action :set_user, except: [:index, :update]
+  before_action :set_user, except: [:index]
   def index
     @users = User.where(deleted_at: nil)
     @title = "参加している先生たち"
@@ -11,12 +11,15 @@ class Users::UsersController < ApplicationController
   end
 
   def edit
+
   end
 
   def update
-    user = current_user
-    user.update
-    redirect_to user_path(user)
+    if @user.update(user_params)
+      redirect_to user_path(@user), notice: 'プロフィールを変更しました。'
+    else
+      render "edit"
+    end
   end
 
   def follows
@@ -38,9 +41,22 @@ class Users::UsersController < ApplicationController
   end
 
   def own_lessons
-    @title = "#{@user.family_name + @user.last_name} 先生の授業アイデア"
+    @title = "#{@user.last_name}  #{@user.first_name} 先生の授業アイデア"
     @lessons = @user.lessons.includes(:user).order("created_at DESC")
     render 'users/lessons/index'
+  end
+
+  def delete_account
+  end
+
+  def update_account
+    if @user == current_user
+      @user.update(deleted_at: Time.current)
+      reset_session
+      redirect_to root_path, notice: "先生のアカウントは削除されました。ご利用ありがとうございました。"
+    else
+      redirect_to root_path, alert: "他の先生のアカウントページです。"
+    end
   end
 
   private
@@ -48,4 +64,9 @@ class Users::UsersController < ApplicationController
     @user = User.find(params[:id])
     redirect_to root_path, alert: "すでに退会された先生です" if @user.deleted_at != nil
   end
+
+  def user_params
+    params.require(:user).permit(:last_name, :first_name, :school_type, :prefecture, :school_name, :subject, :year, :introduction, :avatar)
+  end
+
 end

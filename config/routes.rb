@@ -31,7 +31,6 @@
 #                           PUT    /users(.:format)                                                                         users/registrations#update
 #                           DELETE /users(.:format)                                                                         users/registrations#destroy
 #                           POST   /users(.:format)                                                                         users/registrations#create
-#            delete_account GET    /users/edit/delete_account(.:format)                                                     users/registrations#delete_account
 #              admins_users GET    /admins/users(.:format)                                                                  admins/users#index
 #               admins_user GET    /admins/users/:id(.:format)                                                              admins/users#show
 #                           PATCH  /admins/users/:id(.:format)                                                              admins/users#update
@@ -42,14 +41,20 @@
 #                           DELETE /admins/lessons/:id(.:format)                                                            admins/lessons#destroy
 #     admins_lesson_comment DELETE /admins/lesson_comments/:id(.:format)                                                    admins/lesson_comments#destroy
 #          admins_admin_top GET    /admins/home/admin_top(.:format)                                                         admins/home#admin_top
+#             admins_search GET    /admins/search(.:format)                                                                 admins/search#search
 #        user_relationships DELETE /users/:user_id/relationships(.:format)                                                  users/relationships#destroy
 #                           POST   /users/:user_id/relationships(.:format)                                                  users/relationships#create
 #              follows_user GET    /users/:id/follows(.:format)                                                             users/users#follows
 #            followers_user GET    /users/:id/followers(.:format)                                                           users/users#followers
 #     lesson_bookmarks_user GET    /users/:id/lesson_bookmarks(.:format)                                                    users/users#lesson_bookmarks
 #          own_lessons_user GET    /users/:id/own_lessons(.:format)                                                         users/users#own_lessons
+#       delete_account_user GET    /users/:id/delete_account(.:format)                                                      users/users#delete_account
+#                           PATCH  /users/:id/delete_account(.:format)                                                      users/users#update_account
 #                     users GET    /users(.:format)                                                                         users/users#index
+#                 edit_user GET    /users/:id/edit(.:format)                                                                users/users#edit
 #                      user GET    /users/:id(.:format)                                                                     users/users#show
+#                           PATCH  /users/:id(.:format)                                                                     users/users#update
+#                           PUT    /users/:id(.:format)                                                                     users/users#update
 #       lesson_lesson_likes DELETE /lessons/:lesson_id/lesson_likes(.:format)                                               users/lesson_likes#destroy
 #                           POST   /lessons/:lesson_id/lesson_likes(.:format)                                               users/lesson_likes#create
 #   lesson_lesson_bookmarks DELETE /lessons/:lesson_id/lesson_bookmarks(.:format)                                           users/lesson_bookmarks#destroy
@@ -64,11 +69,11 @@
 #                           PATCH  /lessons/:id(.:format)                                                                   users/lessons#update
 #                           PUT    /lessons/:id(.:format)                                                                   users/lessons#update
 #                           DELETE /lessons/:id(.:format)                                                                   users/lessons#destroy
+#                      root GET    /                                                                                        users/home#top
+#                     about GET    /about(.:format)                                                                         users/home#about
 #                    search GET    /search(.:format)                                                                        users/search#search
 #      lesson_comment_likes POST   /lesson_comments/:id/lesson_comment_likes(.:format)                                      users/lesson_comment_likes#create
 #       lesson_comment_like DELETE /lesson_comments/:id/lesson_comment_likes(.:format)                                      users/lesson_comment_likes#destroy
-#                      root GET    /                                                                                        users/home#top
-#                     about GET    /about(.:format)                                                                         users/home#about
 #        rails_service_blob GET    /rails/active_storage/blobs/:signed_id/*filename(.:format)                               active_storage/blobs#show
 # rails_blob_representation GET    /rails/active_storage/representations/:signed_blob_id/:variation_key/*filename(.:format) active_storage/representations#show
 #        rails_disk_service GET    /rails/active_storage/disk/:encoded_key/*filename(.:format)                              active_storage/disk#show
@@ -78,11 +83,11 @@
 Rails.application.routes.draw do
 
   devise_for :admins, controllers: { sessions: 'admins/sessions' }
-  devise_for :users,  controllers: { registrations: 'users/registrations', sessions: 'users/sessions' }
+  devise_for :users,  controllers: {
+   registrations: 'users/registrations',
+   sessions: 'users/sessions'
+  }
 
-  devise_scope :user do
-    get 'users/edit/delete_account', to: 'users/registrations#delete_account', as: :delete_account
-  end
 
   namespace :admins do
     resources :users, only: [:index, :show, :update]
@@ -93,13 +98,15 @@ Rails.application.routes.draw do
   end
 
   scope module: :users do
-    resources :users, only: [:index, :show] do
+    resources :users, only: [:index, :show, :edit, :update] do
       resource :relationships, only: [:create, :destroy]
       member do
         get :follows
         get :followers
         get :lesson_bookmarks
         get :own_lessons
+        get     '/delete_account', to: 'users#delete_account'
+        patch   '/delete_account', to: 'users#update_account'
       end
     end
     resources :lessons do
@@ -112,11 +119,12 @@ Rails.application.routes.draw do
         resources :lesson_comments,   only: [:create, :destroy]
     end
 
-    get     '/search' => 'search#search'
+    root    'home#top'
+    get     '/about', to: 'home#about'
+    get     '/search', to: 'search#search'
     post    'lesson_comments/:id/lesson_comment_likes', to: 'lesson_comment_likes#create', as: 'lesson_comment_likes'
     delete  'lesson_comments/:id/lesson_comment_likes', to: 'lesson_comment_likes#destroy', as: 'lesson_comment_like'
-    root  'home#top'
-    get   '/about' => 'home#about'
+
   end
 
 

@@ -6,7 +6,7 @@
 #  deleted_at             :datetime
 #  email                  :string           default(""), not null
 #  encrypted_password     :string           default(""), not null
-#  family_name            :string           not null
+#  first_name             :string           not null
 #  introduction           :text
 #  last_name              :string           not null
 #  prefecture             :integer          not null
@@ -31,7 +31,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  validates :family_name, :last_name, :school_type, :prefecture, :school_name, :subject, presence: :true
+  validates :last_name, :first_name, :school_type, :prefecture, :school_name, :subject, presence: :true
   validates :introduction, length: {maximum: 250}
 
   has_one_attached :avatar

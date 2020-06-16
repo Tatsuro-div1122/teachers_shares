@@ -6,13 +6,13 @@
       <%= render "devise/shared/error_messages", resource: resource %>
 
       <div class="field">
-        <%= f.label :family_name, "姓" %><br />
-        <%= f.text_field :family_name, autofocus: true, autocomplete: "family_name", :placeholder => "姓",  class: "form-control" %>
+        <%= f.label :last_name, "姓" %><br />
+        <%= f.text_field :last_name, autofocus: true, autocomplete: "last_name", :placeholder => "姓",  class: "form-control" %>
       </div>
 
       <div class="field">
-        <%= f.label :last_name, "名" %><br />
-        <%= f.text_field :last_name, autofocus: true, autocomplete: "last_name", :placeholder => "名",class: "form-control" %>
+        <%= f.label :first_name, "名" %><br />
+        <%= f.text_field :first_name, autofocus: true, autocomplete: "first_name", :placeholder => "名",class: "form-control" %>
       </div>
 
       <div class="field">

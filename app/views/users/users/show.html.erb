@@ -2,7 +2,8 @@
   <div class="row">
     <div class="col-lg-2">
       <% if @user == current_user %>
-        <span><%= link_to "プロフィールを編集する", edit_user_registration_path, class: "btn btn-default" %></span>
+        <span><%= link_to "プロフィールを編集する", edit_user_path(@user), class: "btn btn-default" %></span>
+        <span><%= link_to "アカウント設定", edit_user_registration_path, class: "btn btn-danger btn-xs" %></span>
         <span><%= link_to "ブックマークを見る", lesson_bookmarks_user_path(@user), class: "btn btn-default" %></span>
       <% end %>
       <span><%= link_to "授業アイデアを見る", own_lessons_user_path((@user)), class: "btn btn-default" %></span>
@@ -24,7 +25,7 @@
       </div>
       <ul class="profile-items">
         <li>
-          <p><%= @user.family_name+@user.last_name %></p>
+          <p><%= @user.last_name+@user.first_name %></p>
           <span><%= render 'users/shared/follow', user: @user%></span>
         </li>
         <li>

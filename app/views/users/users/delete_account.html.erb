@@ -1,0 +1,14 @@
+<div class="container">
+  <div class="row">
+    <h3>退会について</h3>
+    <p>下記の削除をクリックするとご自身のアカウントがなくなり、退会することができます。<br>
+       アカウント削除後は、本サービスを一切利用することができなくなります。<br>
+       なお、投稿した記事は残ります。その際、先生の名前は出ません。記事を残したくない場合はご自身で削除してください。<br>
+       退会を希望する場合は、「退会する」をクリックしてください。
+    </p>
+  </div>
+  <div class="row">
+    <span><%= link_to "退会しない", root_path, class: "btn btn-primary" %></span>
+    <span><%= link_to "退会する", delete_account_user_path(@user), data: { confirm: "退会後は本サービスを一切ご利用することができなくなります。本当によろしいですか?" }, method: :patch, class: "btn btn-danger" %></span>
+  </div>
+</div>
