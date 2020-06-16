@@ -1,5 +1,8 @@
 <div class="container">
   <div class="row">
+    <div class="col-lg-2">
+      <%= render 'users/shared/lesson_category' %>
+    </div>
     <div class="col-lg-9">
       <section>
         <% if @lesson.user_deleted?(@user) %>

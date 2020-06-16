@@ -1,5 +1,5 @@
 class Users::UsersController < ApplicationController
-  before_action :set_user, except: [:index]
+  before_action :set_user, except: [:index, :category_users]
   def index
     @users = User.where(deleted_at: nil)
     @title = "参加している先生たち"
@@ -22,14 +22,22 @@ class Users::UsersController < ApplicationController
     end
   end
 
+  def category_users
+    @title = "カテゴリー検索結果"
+    @users = User.where(school_type: params[:school_type])
+                 .where(subject: params[:subject])
+                 .where(prefecture: params[:prefecture])
+    render 'index'
+  end
+
   def follows
-    @users = @user.followings.where(deleted_at: nil)
+    @users = @user.followings.where(deleted_at: nil).order("created_at DESC")
     @title = "フォロー中の先生たち"
     render 'index'
   end
 
   def followers
-    @users = @user.followers.where(deleted_at: nil)
+    @users = @user.followers.where(deleted_at: nil).order("created_at DESC")
     @title = "フォロワーの先生たち"
     render 'index'
   end

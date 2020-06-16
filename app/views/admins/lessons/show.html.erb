@@ -1,5 +1,8 @@
 <div class="container">
   <div class="row">
+    <div class="col-lg-2">
+      <%= render 'admins/shared/lesson_category' %>
+    </div>
     <div class="col-lg-10">
       <section>
          <%= link_to admins_user_path(@lesson.user_id) do %>
