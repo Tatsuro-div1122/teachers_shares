@@ -42,6 +42,8 @@
 #     admins_lesson_comment DELETE /admins/lesson_comments/:id(.:format)                                                    admins/lesson_comments#destroy
 #          admins_admin_top GET    /admins/home/admin_top(.:format)                                                         admins/home#admin_top
 #             admins_search GET    /admins/search(.:format)                                                                 admins/search#search
+#     admins_category_users GET    /admins/category/users(.:format)                                                         admins/users#category_users
+#   admins_category_lessons GET    /admins/category/lessons(.:format)                                                       admins/lessons#category_lessons
 #        user_relationships DELETE /users/:user_id/relationships(.:format)                                                  users/relationships#destroy
 #                           POST   /users/:user_id/relationships(.:format)                                                  users/relationships#create
 #              follows_user GET    /users/:id/follows(.:format)                                                             users/users#follows
@@ -72,6 +74,8 @@
 #                      root GET    /                                                                                        users/home#top
 #                     about GET    /about(.:format)                                                                         users/home#about
 #                    search GET    /search(.:format)                                                                        users/search#search
+#            category_users GET    /category/users(.:format)                                                                users/users#category_users
+#          category_lessons GET    /category/lessons(.:format)                                                              users/lessons#category_lessons
 #      lesson_comment_likes POST   /lesson_comments/:id/lesson_comment_likes(.:format)                                      users/lesson_comment_likes#create
 #       lesson_comment_like DELETE /lesson_comments/:id/lesson_comment_likes(.:format)                                      users/lesson_comment_likes#destroy
 #        rails_service_blob GET    /rails/active_storage/blobs/:signed_id/*filename(.:format)                               active_storage/blobs#show
@@ -94,7 +98,9 @@ Rails.application.routes.draw do
     resources :lessons, only: [:index, :show, :edit, :destroy]
     resources :lesson_comments, only: [:destroy]
     get 'home/admin_top', as: :admin_top
-    get '/search', to: 'search#search'
+    get 'search', to: 'search#search'
+    get 'category/users', to: 'users#category_users'
+    get 'category/lessons', to: 'lessons#category_lessons'
   end
 
   scope module: :users do
@@ -105,8 +111,8 @@ Rails.application.routes.draw do
         get :followers
         get :lesson_bookmarks
         get :own_lessons
-        get     '/delete_account', to: 'users#delete_account'
-        patch   '/delete_account', to: 'users#update_account'
+        get   'delete_account', to: 'users#delete_account'
+        patch 'delete_account', to: 'users#update_account'
       end
     end
     resources :lessons do
@@ -120,11 +126,12 @@ Rails.application.routes.draw do
     end
 
     root    'home#top'
-    get     '/about', to: 'home#about'
-    get     '/search', to: 'search#search'
+    get     'about', to: 'home#about'
+    get     'search', to: 'search#search'
+    get     'category/users', to: 'users#category_users'
+    get     'category/lessons', to: 'lessons#category_lessons'
     post    'lesson_comments/:id/lesson_comment_likes', to: 'lesson_comment_likes#create', as: 'lesson_comment_likes'
     delete  'lesson_comments/:id/lesson_comment_likes', to: 'lesson_comment_likes#destroy', as: 'lesson_comment_like'
-
   end
 
 

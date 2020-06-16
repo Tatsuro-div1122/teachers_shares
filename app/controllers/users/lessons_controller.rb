@@ -19,11 +19,11 @@ class Users::LessonsController < ApplicationController
 
   def confirm
     @lesson = Lesson.new(lesson_params)
-    render :new if @lesson.valid?
+    render 'new' if @lesson.valid?
   end
 
   def back
-    render :new
+    render 'new'
   end
 
   def create
@@ -33,7 +33,7 @@ class Users::LessonsController < ApplicationController
       redirect_to lesson_path(@lesson), notice: '新しい授業アイデアが投稿されました'
     else
       flash.now[:alert] = "必須事項を記入してください"
-      render :new
+      render 'new'
     end
   end
 
@@ -48,7 +48,7 @@ class Users::LessonsController < ApplicationController
       redirect_to lesson_path(@lesson), notice: "授業内容が更新されました"
     else
       flash.now[:alert] = "必須事項を記入してください"
-      render :edit
+      render 'edit'
     end
   end
 
@@ -57,6 +57,17 @@ class Users::LessonsController < ApplicationController
     lesson.destroy
     lesson.file.purge
     redirect_to lessons_path
+  end
+
+  def category_lessons
+    if params[:school_type]
+      @title = "#{params[:school_type]} の授業アイデア一覧"
+      @lessons = Lesson.where(school_type: params[:school_type]).includes(:user).order("created_at DESC")
+    elsif params[:subject]
+      @title = "#{params[:subject]} の授業アイデア一覧"
+      @lessons = Lesson.where(subject: params[:subject]).includes(:user).order("created_at DESC")
+    end
+    render 'index'
   end
 
   private
