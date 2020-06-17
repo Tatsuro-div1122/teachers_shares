@@ -1,38 +1,204 @@
-<div class="container">
-  <% if user_signed_in? %>
-      <div class="row">
-        <div class="user-sidebar col-md-3">
-          <%= render 'users/shared/user_info', user: current_user %>
-          <%= render 'users/shared/maybe_friends', users: @users %>
-        </div>
-        <div class="col-md-9">
-          <section>
-            <h1>おすすめ授業</h1>
-            <span><%= link_to "▶もっと見る", lessons_path %></span>
-            <div class="recommended-class">
-              <% @lessons.each do |lesson| %>
-                <%= link_to lesson_path(lesson) do %>
-                  <ul>
-                    <li><%= lesson.title %></li>
-                    <li><%= lesson.created_at.to_s(:datetime) %></li>
-                    <li><%= lesson.description %></li>
-                  </ul>
-                  <span><%= lesson.school_type %></span>
-                  <span><%= lesson.grade %></span>
-                  <span><%= lesson.subject %></span>
-                  <sapn><i class="far fa-lightbulb" aria-hidden="true"></i> <%= lesson.lesson_likes.count %></sapn>
-                  <sapn><i class="far fa-comments"></i> <%= lesson.lesson_comments.count %></sapn>
-                <% end %>
-              <% end %>
-            </div>
-          </section>
-          <section>
-            <h1>悩み相談(coming soon...)</h1>
-            <span><%= link_to "▶もっと見る", "#" %></span>
-          </section>
-        </div>
+<% if user_signed_in? %>
+  <div class="container">
+    <div class="row">
+      <div class="user-sidebar col-md-3">
+        <%= render 'users/shared/user_info', user: current_user %>
+        <%= render 'users/shared/maybe_friends', users: @users %>
       </div>
-      <% else %>
-coming soon
-  <% end %>
+      <div class="col-md-9">
+        <section>
+          <h1>おすすめ授業</h1>
+          <span><%= link_to "▶もっと見る", lessons_path %></span>
+          <div class="recommended-class">
+            <% @lessons.each do |lesson| %>
+              <%= link_to lesson_path(lesson) do %>
+                <ul>
+                  <li><%= lesson.title %></li>
+                  <li><%= lesson.created_at.to_s(:datetime) %></li>
+                  <li><%= lesson.description %></li>
+                </ul>
+                <span><%= lesson.school_type %></span>
+                <span><%= lesson.grade %></span>
+                <span><%= lesson.subject %></span>
+                <sapn><i class="far fa-lightbulb" aria-hidden="true"></i> <%= lesson.lesson_likes.count %></sapn>
+                <sapn><i class="far fa-comments"></i> <%= lesson.lesson_comments.count %></sapn>
+              <% end %>
+            <% end %>
+          </div>
+        </section>
+        <section>
+          <h1>悩み相談(coming soon...)</h1>
+          <span><%= link_to "▶もっと見る", "#" %></span>
+        </section>
+      </div>
+    </div>
+  </div>
+<% else %>
+<!-- スライド -->
+  <section>
+    <div class="container">
+    <div class="row  guest-top" id="theTarget">
+      <div class="about-image1">
+        <p class="about-body">
+          教育を共有する。<br>
+          それが今の教育現場には必要です。<br>
+          先生一人ひとりの取り組みを<br>
+          日本中の子どもたちへ広げよう。<br>
+          TEACHERS' SHARESは教育をつなげます。
+        </p>
+        <span class="registration-btn">
+          <%= link_to "新規会員登録", new_user_registration_path, class: "btn btn-sm btn-success" %>
+        </span>
+      </div>
+      <div class="about-image2">
+        <h3 class="about-title">TEACHERS' SHARESとは？</h3>
+        <p class="about-body">
+          TEACHERS' SHARESは授業のアイデアを共有するためのサイトです。<br>
+          ①授業アイデアの共有<br>
+          ②悩みの相談<br>
+          ③全国の先生とつながる<br>
+        </p>
+        <span class="registration-btn">
+          <%= link_to "新規会員登録", new_user_registration_path, class: "btn btn-sm btn-success" %>
+        </span>
+      </div>
+      <div class="about-image3">
+        <h3 class="about-title">TEACHERS' SHARESでできることは？</h3>
+        <p class="about-body">
+          授業アイデアを共有することができます。<br>
+          ①日々の授業でうまくいった実践を投稿できます。<br>
+          ②資料や教材をアップロードできます。<br>
+          ③投稿された授業アイデアは閲覧できます。<br>
+          ④資料や教材はダウンロードすることができ、明日の授業にすぐに使えます。
+        </p>
+        <span class="registration-btn">
+          <%= link_to "新規会員登録", new_user_registration_path, class: "btn btn-sm btn-success" %>
+        </span>
+      </div>
+      <div class="about-image4">
+        <h3 class="about-title">TEACHERS' SHARESでできることは？</h3>
+        <p class="about-body">
+          全国の先生たちに悩みを相談することができます。<br>
+          ①日々の職場での悩みを投稿できます。<br>
+          ②全国の先生から悩みに対してアドバイスの返信をもらえます。<br>
+          ③他の先生の悩みやアドバイスを閲覧できます。
+        </p>
+        <span class="registration-btn">
+          <%= link_to "新規会員登録", new_user_registration_path, class: "btn btn-sm btn-success" %>
+        </span>
+      </div>
+      <div class="about-image5">
+        <h3 class="about-title">TEACHERS' SHARESでできることは？</h3>
+        <p class="about-body">
+          サイトを通じて全国の先生とつながることができます。<br>
+          ①近隣の学校の先生を探すことができます。<br>
+          ②他の先生をフォローすることができ、先生の輪を広げることができます。<br>
+        </p>
+        <span class="registration-btn">
+          <%= link_to "新規会員登録", new_user_registration_path, class: "btn btn-sm btn-success" %>
+        </span>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- サイト特徴 -->
+<section>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <h2 class="feature-headline">TEACHERS' SHARESの特徴</h2>
+      </div>
+      <div class="col-md-4">
+        <h3 class="feature-title">授業アイデアの共有</h3>
+          <p class="feature-body">
+            日々の授業実践を投稿でき、<br>
+            投稿された授業は閲覧できます。<br>
+            明日の授業にすぐに役立ちます。
+          </p>
+      </div>
+      <div class="col-md-4">
+        <h3 class="feature-title">悩みの相談</h3>
+          <p class="feature-body">
+            日々の悩みを投稿できます。<br>
+            全国の先生からアドバイスをもらえます。<br>
+            様々な意見をもらえ、悩みの解消につながります。
+          </p>
+      </div>
+      <div class="col-md-4">
+        <h3 class="feature-title">全国の先生とつながる</h3>
+          <p class="feature-body">
+            参加している先生の一覧を見たり、<br>
+            先生を検索することができます。<br>
+            フォローすることで教員の輪が広がります。
+          </p>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- サイト紹介 -->
+<section>
+  <div class="container about">
+    <div class="row">
+      <div class="about-image1">
+        <p class="about-body">
+          教育を共有する。<br>
+          それが今の教育現場には必要です。<br>
+          先生一人ひとりの取り組みを<br>
+          日本中の子どもたちへ広げよう。<br>
+          TEACHERS' SHARESは教育をつなげます。
+        </p>
+      </div>
+      <div class="about-image2">
+        <h3 class="about-title">TEACHERS' SHARESとは？</h3>
+        <p class="about-body">
+          TEACHERS' SHARESは授業のアイデアを共有するためのサイトです。<br>
+          ①授業アイデアの共有<br>
+          ②悩みの相談<br>
+          ③全国の先生とつながる<br>
+        </p>
+      </div>
+      <div class="about-image3">
+        <h3 class="about-title">TEACHERS' SHARESでできることは？</h3>
+        <p class="about-body">
+          授業アイデアを共有することができます。<br>
+          ①日々の授業でうまくいった実践を投稿できます。<br>
+          ②資料や教材をアップロードできます。<br>
+          ③投稿された授業アイデアは閲覧できます。<br>
+          ④資料や教材はダウンロードすることができ、明日の授業にすぐに使えます。
+        </p>
+      </div>
+      <div class="about-image4">
+        <h3 class="about-title">TEACHERS' SHARESでできることは？</h3>
+        <p class="about-body">
+          全国の先生たちに悩みを相談することができます。<br>
+          ①日々の職場での悩みを投稿できます。<br>
+          ②全国の先生から悩みに対してアドバイスの返信をもらえます。<br>
+          ③他の先生の悩みやアドバイスを閲覧できます。
+        </p>
+      </div>
+      <div class="about-image5">
+        <h3 class="about-title">TEACHERS' SHARESでできることは？</h3>
+        <p class="about-body">
+          サイトを通じて全国の先生とつながることができます。<br>
+          ①近隣の学校の先生を探すことができます。<br>
+          ②他の先生をフォローすることができ、先生の輪を広げることができます。
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- 新規会員登録 -->
+<section>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <h2 class="call-to-action">さぁ、あなたも始めましょう！</h2>
+        <span class="call-to-action-btn">
+          <%= link_to "新規会員登録", new_user_registration_path, class: "btn btn-sm btn-success" %>
+        </span>
+      </div>
+    </div>
+  </div>
+</section>
+<% end %>
 </div>

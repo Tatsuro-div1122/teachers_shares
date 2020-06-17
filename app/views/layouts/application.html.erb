@@ -6,7 +6,6 @@
     <%= csp_meta_tag %>
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
-    <script src="https://kit.fontawesome.com/22bae51414.js" crossorigin="anonymous"></script>
   </head>
 
   <body>
@@ -14,7 +13,7 @@
       <header>
         <div class="row">
           <div class="col-md-3">
-            <h1 class="logo"><%= link_to "TEACHERS' SHARES", root_path %></h1>
+            <h3 class="logo"><%= link_to "TEACHERS' SHARES", root_path %></h3>
             <p class="sub-title">先生のアイデア共有サイト</p>
           </div>
             <% if admin_signed_in? %>
@@ -40,7 +39,6 @@
           </div>
         </div>
       </header>
-      <
         <nav>
           <% if admin_signed_in? %>
             <ul class="nav-list">
@@ -56,11 +54,6 @@
               <li class="nav-list-item"><%= link_to "つながる", users_path %></li>
               <li class="nav-list-item"><%= link_to "マイページ", user_path(current_user) %></li>
             </ul>
-          <% else %>
-            <ul class="nav-list">
-              <li class="nav-list-item"><%= link_to "トップ", root_path %></li>
-              <li class="nav-list-item"><%= link_to "TEACHERS' SHARESとは?", "#" %></li>
-            </ul>
           <% end %>
         </nav>
     <p class="notice"><%= notice %></p>
@@ -69,5 +62,8 @@
     <footer>
       <p><%= link_to "TEACHERS' SHARESとは？", "#"%> | お問い合わせ | 運営会社 | 利用規約 | サイトマップ</p>
     </footer>
+
+    <script src="https://kit.fontawesome.com/22bae51414.js" crossorigin="anonymous"></script>
+
   </body>
 </html>
