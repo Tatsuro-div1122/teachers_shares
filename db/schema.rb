@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_13_024856) do
+ActiveRecord::Schema.define(version: 2020_06_17_120609) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -43,6 +43,35 @@ ActiveRecord::Schema.define(version: 2020_06_13_024856) do
     t.datetime "updated_at", null: false
     t.index ["email"], name: "index_admins_on_email", unique: true
     t.index ["reset_password_token"], name: "index_admins_on_reset_password_token", unique: true
+  end
+
+  create_table "counsel_comment_likes", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "counsel_comment_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["counsel_comment_id"], name: "index_counsel_comment_likes_on_counsel_comment_id"
+    t.index ["user_id"], name: "index_counsel_comment_likes_on_user_id"
+  end
+
+  create_table "counsel_comments", force: :cascade do |t|
+    t.text "comment", null: false
+    t.integer "user_id", null: false
+    t.integer "counsel_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["counsel_id"], name: "index_counsel_comments_on_counsel_id"
+    t.index ["user_id"], name: "index_counsel_comments_on_user_id"
+  end
+
+  create_table "counsels", force: :cascade do |t|
+    t.integer "category", null: false
+    t.string "title", null: false
+    t.text "description", null: false
+    t.integer "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_counsels_on_user_id"
   end
 
   create_table "lesson_bookmarks", force: :cascade do |t|

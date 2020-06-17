@@ -1,0 +1,70 @@
+<div class="container">
+  <div class="row">
+    <div class="col-lg-2">
+      <%= render 'admins/shared/counsel_category' %>
+    </div>
+    <div class="col-lg-10">
+      <!-- counsel詳細 -->
+      <section>
+         <%= link_to admins_user_path(@counsel.user_id) do %>
+          <div>
+            <% if @counsel.user.avatar.attached? %>
+              <%= image_tag @counsel.user.avatar.variant(resize: "60x60") %>
+            <% else %>
+              <%= image_tag("default_user.png", size: "60x60") %>
+            <% end %>
+          </div>
+          <% if @counsel.user_deleted?(@counsel.user)%>
+            <p><%= @counsel.user.last_name+@counsel.user.first_name %>(退会済)</p>
+          <% else %>
+            <p><%= @counsel.user.last_name+@counsel.user.first_name %></p>
+          <% end %><%= @counsel.user.last_name + @counsel.user.first_name %></p>
+        <% end %>
+        <p><%= @counsel.category %></p>
+        <p><%= @counsel.created_at.to_s(:datetime) %></p>
+        <h1><%= @counsel.title %></h1>
+        <p><%= @counsel.description %></p>
+        <span>
+          <%= link_to "削除する", admins_counsel_path(@counsel), method: :delete, data: {confirm:"本当に削除してもよろしいですか？"}, class: "btn btn-danger" %>
+        </span>
+      </section>
+      <!-- counsel_comment一覧 -->
+      <section>
+        <span>
+          <i class="far fa-comments"></i> コメント 全<%= @counsel.counsel_comments.count %>件
+        </span>
+        <% if @counsel.counsel_comments.any? %>
+        <table>
+           <% @counsel.counsel_comments.each do |counsel_comment| %>
+            <tr>
+              <td>
+                <%= link_to admins_user_path(counsel_comment.user) do %>
+                  <% if counsel_comment.user.avatar.attached? %>
+                    <%= image_tag counsel_comment.user.avatar.variant(resize: "50x50") %>
+                  <% else %>
+                    <%= image_tag("default_user.png", size: "50x50") %>
+                  <% end %>
+                  <ul>
+                    <li>
+                      <% if counsel_comment.user_deleted?(counsel_comment.user) %>
+                        <p><%= counsel_comment.user.last_name + counsel_comment.user.first_name %> (退会済)<p>
+                      <% else %>
+                        <p><%= counsel_comment.user.last_name + counsel_comment.user.first_name %><p>
+                      <% end %>
+                    </li>
+                <% end %>
+                    <li><%= counsel_comment.created_at.to_s(:datetime) %></li>
+                  </ul>
+                <p><%= counsel_comment.comment %></p>
+                <span>
+                  <%= link_to "削除", admins_counsel_comment_path(counsel_comment.id), method: :delete, data: {confirm:"本当に削除してもよろしいですか？"}, class: "btn btn-xs btn-danger" %>
+                </span>
+              </td>
+            </tr>
+           <% end %>
+        </table>
+        <% end %>
+      </section>
+    </div>
+  </div>
+</div>

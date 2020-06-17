@@ -10,12 +10,8 @@ class Users::SearchController < ApplicationController
         @users = []
         keyword.each do |keyword|
           next if keyword == ""
-          @users += User.where(['last_name LIKE ? OR first_name LIKE ? OR introduction LIKE ? OR subject LIKE ? OR school_type LIKE ? OR school_name LIKE ? OR prefecture LIKE ?',
-                      "%#{keyword}%", "%#{keyword}%", "%#{keyword}%", "%#{keyword}%", "%#{keyword}%", "%#{keyword}%", "%#{keyword}%"]).where(deleted_at: nil)
-                      .where.not(id: current_user).order("created_at DESC")
-                  # @users += User.where(['last_name LIKE ? OR first_name LIKE ? OR introduction LIKE ? OR school_name LIKE ?', "%#{keyword}%", "%#{keyword}%", "%#{keyword}%" , "%#{keyword}%"])
-                  #              .or(User.where(subject: keyword)).or(User.where(school_type: keyword)).or(User.where(prefecture: keyword))
-                   #             .where(deleted_at: nil).where.not(id: current_user)
+           @users += User.where(['last_name LIKE ? OR first_name LIKE ? OR introduction LIKE ? OR school_name LIKE ?', "%#{keyword}%", "%#{keyword}%", "%#{keyword}%", "%#{keyword}%"]).or(User.where(subject: keyword)).or(User.where(school_type: keyword)).or(User.where(prefecture: keyword)).where.not(id: current_user).order("created_at DESC")
+          #@users += User.where('last_name LIKE ?', "%#{keyword}%").or(User.where('first_name LIKE ?', "%#{keyword}%")).or(User.where('introduction LIKE ?', "%#{keyword}%")).or(User.where('school_name LIKE ?', "%#{keyword}%")).or(User.where(subject: keyword)).or(User.where(school_type: keyword)).or(User.where(prefecture: keyword)).where(deleted_at: nil).where.not(id: current_user)
         end
         @users.uniq!
         render 'users/users/index'
@@ -25,12 +21,21 @@ class Users::SearchController < ApplicationController
         @lessons = []
         keyword.each do |keyword|
           next if keyword == ""
-          @lessons += Lesson.where(['title LIkE ? OR description LIKE ? OR subject LIKE ? OR school_type LIKE ? OR grade LIKE ?',
-                        "%#{keyword}%", "%#{keyword}%", "%#{keyword}%", "%#{keyword}%", "%#{keyword}%"])
-                        .where.not(user_id: current_user.id).order("created_at DESC")
+           @lessons += Lesson.where(['title LIkE ? OR description LIKE ?', "%#{keyword}%", "%#{keyword}%"]).or(Lesson.where(subject: keyword)).or(Lesson.where(school_type: keyword)).or(Lesson.where(grade: keyword)).where.not(user_id: current_user).order("created_at DESC")
+          #@lessons += Lesson.where('title LIKE ?', "%#{keyword}%").or(Lesson.where('description LIKE ?', "%#{keyword}%")).or(Lesson.where(subject: keyword)).or(Lesson.where(school_type: keyword)).or(Lesson.where(grade: keyword)).where.not(user_id: current_user).order("created_at DESC")
         end
         @lessons.uniq!
         render 'users/lessons/index'
+        return
+    elsif @model == "Counsel"
+        @title = "悩み相談の検索結果"
+        @counsels = []
+        keyword.each do |keyword|
+          next if keyword == ""
+          @counsels += Counsel.where(['title LIkE ? OR description LIKE ?', "%#{keyword}%", "%#{keyword}%"]).or(Counsel.where(category: keyword)).where.not(user_id: current_user).order("created_at DESC")
+        end
+        @counsels.uniq!
+        render 'users/counsels/index'
         return
     end
   end

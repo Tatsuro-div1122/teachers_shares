@@ -36,14 +36,18 @@
 #                           PATCH  /admins/users/:id(.:format)                                                              admins/users#update
 #                           PUT    /admins/users/:id(.:format)                                                              admins/users#update
 #            admins_lessons GET    /admins/lessons(.:format)                                                                admins/lessons#index
-#        edit_admins_lesson GET    /admins/lessons/:id/edit(.:format)                                                       admins/lessons#edit
 #             admins_lesson GET    /admins/lessons/:id(.:format)                                                            admins/lessons#show
 #                           DELETE /admins/lessons/:id(.:format)                                                            admins/lessons#destroy
 #     admins_lesson_comment DELETE /admins/lesson_comments/:id(.:format)                                                    admins/lesson_comments#destroy
+#           admins_counsels GET    /admins/counsels(.:format)                                                               admins/counsels#index
+#            admins_counsel GET    /admins/counsels/:id(.:format)                                                           admins/counsels#show
+#                           DELETE /admins/counsels/:id(.:format)                                                           admins/counsels#destroy
+#    admins_counsel_comment DELETE /admins/counsel_comments/:id(.:format)                                                   admins/counsel_comments#destroy
 #          admins_admin_top GET    /admins/home/admin_top(.:format)                                                         admins/home#admin_top
 #             admins_search GET    /admins/search(.:format)                                                                 admins/search#search
 #     admins_category_users GET    /admins/category/users(.:format)                                                         admins/users#category_users
 #   admins_category_lessons GET    /admins/category/lessons(.:format)                                                       admins/lessons#category_lessons
+#  admins_category_counsels GET    /admins/category/counsels(.:format)                                                      admins/counsels#category_counsels
 #        user_relationships DELETE /users/:user_id/relationships(.:format)                                                  users/relationships#destroy
 #                           POST   /users/:user_id/relationships(.:format)                                                  users/relationships#create
 #              follows_user GET    /users/:id/follows(.:format)                                                             users/users#follows
@@ -71,6 +75,16 @@
 #                           PATCH  /lessons/:id(.:format)                                                                   users/lessons#update
 #                           PUT    /lessons/:id(.:format)                                                                   users/lessons#update
 #                           DELETE /lessons/:id(.:format)                                                                   users/lessons#destroy
+#  counsel_counsel_comments POST   /counsels/:counsel_id/counsel_comments(.:format)                                         users/counsel_comments#create
+#   counsel_counsel_comment DELETE /counsels/:counsel_id/counsel_comments/:id(.:format)                                     users/counsel_comments#destroy
+#                  counsels GET    /counsels(.:format)                                                                      users/counsels#index
+#                           POST   /counsels(.:format)                                                                      users/counsels#create
+#               new_counsel GET    /counsels/new(.:format)                                                                  users/counsels#new
+#              edit_counsel GET    /counsels/:id/edit(.:format)                                                             users/counsels#edit
+#                   counsel GET    /counsels/:id(.:format)                                                                  users/counsels#show
+#                           PATCH  /counsels/:id(.:format)                                                                  users/counsels#update
+#                           PUT    /counsels/:id(.:format)                                                                  users/counsels#update
+#                           DELETE /counsels/:id(.:format)                                                                  users/counsels#destroy
 #                      root GET    /                                                                                        users/home#top
 #                     about GET    /about(.:format)                                                                         users/home#about
 #                    search GET    /search(.:format)                                                                        users/search#search
@@ -78,6 +92,8 @@
 #          category_lessons GET    /category/lessons(.:format)                                                              users/lessons#category_lessons
 #      lesson_comment_likes POST   /lesson_comments/:id/lesson_comment_likes(.:format)                                      users/lesson_comment_likes#create
 #       lesson_comment_like DELETE /lesson_comments/:id/lesson_comment_likes(.:format)                                      users/lesson_comment_likes#destroy
+#     counsel_comment_likes POST   /counsel_comments/:id/counsel_comment_likes(.:format)                                    users/counsel_comment_likes#create
+#      counsel_comment_like DELETE /counsel_comments/:id/counsel_comment_likes(.:format)                                    users/counsel_comment_likes#destroy
 #        rails_service_blob GET    /rails/active_storage/blobs/:signed_id/*filename(.:format)                               active_storage/blobs#show
 # rails_blob_representation GET    /rails/active_storage/representations/:signed_blob_id/:variation_key/*filename(.:format) active_storage/representations#show
 #        rails_disk_service GET    /rails/active_storage/disk/:encoded_key/*filename(.:format)                              active_storage/disk#show
@@ -95,12 +111,15 @@ Rails.application.routes.draw do
 
   namespace :admins do
     resources :users, only: [:index, :show, :update]
-    resources :lessons, only: [:index, :show, :edit, :destroy]
+    resources :lessons, only: [:index, :show, :destroy]
     resources :lesson_comments, only: [:destroy]
+    resources :counsels, only: [:index, :show, :destroy]
+    resources :counsel_comments, only: [:destroy]
     get 'home/admin_top', as: :admin_top
     get 'search', to: 'search#search'
     get 'category/users', to: 'users#category_users'
     get 'category/lessons', to: 'lessons#category_lessons'
+    get 'category/counsels', to: 'counsels#category_counsels'
   end
 
   scope module: :users do
@@ -111,6 +130,7 @@ Rails.application.routes.draw do
         get :followers
         get :lesson_bookmarks
         get :own_lessons
+        get :own_counsels
         get   'delete_account', to: 'users#delete_account'
         patch 'delete_account', to: 'users#update_account'
       end
@@ -124,14 +144,19 @@ Rails.application.routes.draw do
         resource  :lesson_bookmarks,  only: [:create, :destroy]
         resources :lesson_comments,   only: [:create, :destroy]
     end
-
+    resources :counsels do
+        resources :counsel_comments,   only: [:create, :destroy]
+    end
     root    'home#top'
     get     'about', to: 'home#about'
     get     'search', to: 'search#search'
     get     'category/users', to: 'users#category_users'
     get     'category/lessons', to: 'lessons#category_lessons'
+    get     'category/counsels', to: 'counsels#category_counsels'
     post    'lesson_comments/:id/lesson_comment_likes', to: 'lesson_comment_likes#create', as: 'lesson_comment_likes'
     delete  'lesson_comments/:id/lesson_comment_likes', to: 'lesson_comment_likes#destroy', as: 'lesson_comment_like'
+    post    'counsel_comments/:id/counsel_comment_likes', to: 'counsel_comment_likes#create', as: 'counsel_comment_likes'
+    delete  'counsel_comments/:id/counsel_comment_likes', to: 'counsel_comment_likes#destroy', as: 'counsel_comment_like'
   end
 
 

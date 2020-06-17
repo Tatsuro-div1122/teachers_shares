@@ -30,7 +30,7 @@
             <li><%= link_to "トップ", admins_admin_top_path, class: "btn btn-default" %></li>
             <li><%= link_to "先生一覧", admins_users_path, class: "btn btn-default" %></li>
             <li><%= link_to "授業一覧", admins_lessons_path, class: "btn btn-default" %></li>
-            <li><%= link_to "悩み相談一覧", "#", class: "btn btn-default" %></li>
+            <li><%= link_to "悩み相談一覧", admins_counsels_path, class: "btn btn-default" %></li>
           </ul>
         </nav>
       <% elsif user_signed_in? %>
@@ -38,6 +38,7 @@
           <ul>
             <li><%= link_to "トップ", root_path, class: "btn btn-default" %></li>
             <li><%= link_to "授業アイデア", lessons_path, class: "btn btn-default" %></li>
+            <li><%= link_to "悩み相談", counsels_path, class: "btn btn-default" %></li>
             <li><%= link_to "つながる", users_path, class: "btn btn-default" %></li>
             <li><%= link_to "マイページ", user_path(current_user), class: "btn btn-default" %></li>
           </ul>

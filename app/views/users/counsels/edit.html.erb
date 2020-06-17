@@ -1,0 +1,28 @@
+<div class="container">
+  <div class="row">
+    <div class="col-lg-10 col-lg-offset-1">
+      <h1>悩み相談編集</h1>
+      <%= form_with(model: @counsel, url: counsel_path(@counsel), method: :patch, local: true) do |f| %>
+
+      <div class="field">
+        <%= f.label :category, "カテゴリー" %><br />
+        <%= f.select :category, Counsel.categories.keys, class: 'form-control btn btn-info' %>
+      </div>
+
+      <div class="field">
+        <%= f.label :title, "タイトル" %><br />
+        <%= f.text_field :title, autofocus: true %>
+      </div>
+
+      <div class="field">
+        <%= f.label :description, "悩み相談について" %><br />
+        <%= f.text_area :description, autofocus: true%>
+      </div>
+
+      <div class="actions">
+        <%= f.submit "変更を提出する", class: "btn btn-primary" %>
+      </div>
+      <% end %>
+    </div>
+  </div>
+</div>
