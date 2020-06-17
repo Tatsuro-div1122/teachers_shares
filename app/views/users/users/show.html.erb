@@ -1,6 +1,6 @@
 <div class="container">
   <div class="row">
-    <div class="col-lg-2">
+    <div class="col-md-2">
       <% if @user == current_user %>
         <span><%= link_to "プロフィールを編集する", edit_user_path(@user), class: "btn btn-default" %></span>
         <span><%= link_to "アカウント設定", edit_user_registration_path, class: "btn btn-danger btn-xs" %></span>
@@ -14,7 +14,7 @@
         <%= render 'users/shared/maybe_friends', users: @users %>
       <% end %>
     </div>
-    <div class="col-lg-8">
+    <div class="col-md-8">
       <h1>先生プロフィール</h1>
       <div class="profile_image">
       <% if @user.avatar.attached? %>

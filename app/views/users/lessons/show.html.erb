@@ -1,9 +1,9 @@
 <div class="container">
   <div class="row">
-    <div class="col-lg-2">
+    <div class="col-md-2">
       <%= render 'users/shared/lesson_category' %>
     </div>
-    <div class="col-lg-9">
+    <div class="col-md-9">
       <section>
         <% if @lesson.user_deleted?(@user) %>
           <p>退会済みの先生</p>

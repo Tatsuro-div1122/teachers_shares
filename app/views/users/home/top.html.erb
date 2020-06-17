@@ -1,11 +1,11 @@
 <div class="container">
   <% if user_signed_in? %>
       <div class="row">
-        <div class="user-sidebar col-lg-3">
+        <div class="user-sidebar col-md-3">
           <%= render 'users/shared/user_info', user: current_user %>
           <%= render 'users/shared/maybe_friends', users: @users %>
         </div>
-        <div class="col-lg-9">
+        <div class="col-md-9">
           <section>
             <h1>おすすめ授業</h1>
             <span><%= link_to "▶もっと見る", lessons_path %></span>
