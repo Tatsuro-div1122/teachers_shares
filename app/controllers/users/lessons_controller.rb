@@ -6,24 +6,8 @@ class Users::LessonsController < ApplicationController
     # deleted_atスタンプがないユーザの投稿一覧を取得
   end
 
-  def show
-    @lesson = Lesson.find(params[:id])
-    @user = @lesson.user
-    @lesson_comment = LessonComment.new
-    @lesson_comments = @lesson.lesson_comments.includes(:user).order("created_at DESC")
-  end
-
   def new
     @lesson = Lesson.new
-  end
-
-  def confirm
-    @lesson = Lesson.new(lesson_params)
-    render 'new' if @lesson.valid?
-  end
-
-  def back
-    render 'new'
   end
 
   def create
@@ -35,6 +19,22 @@ class Users::LessonsController < ApplicationController
       flash.now[:alert] = "必須事項を記入してください"
       render 'new'
     end
+  end
+
+  def show
+    @lesson = Lesson.find(params[:id])
+    @user = @lesson.user
+    @lesson_comment = LessonComment.new
+    @lesson_comments = @lesson.lesson_comments.includes(:user).order("created_at DESC")
+  end
+
+  def confirm
+    @lesson = Lesson.new(lesson_params)
+    render 'new' if @lesson.valid?
+  end
+
+  def back
+    render 'new'
   end
 
   def edit
@@ -61,10 +61,10 @@ class Users::LessonsController < ApplicationController
 
   def category_lessons
     if params[:school_type]
-      @title = "#{params[:school_type]} の授業アイデア一覧"
+      @title = "#{params[:school_type]} の授業アイデア"
       @lessons = Lesson.where(school_type: params[:school_type]).includes(:user).order("created_at DESC")
     elsif params[:subject]
-      @title = "#{params[:subject]} の授業アイデア一覧"
+      @title = "#{params[:subject]} の授業アイデア"
       @lessons = Lesson.where(subject: params[:subject]).includes(:user).order("created_at DESC")
     end
     render 'index'

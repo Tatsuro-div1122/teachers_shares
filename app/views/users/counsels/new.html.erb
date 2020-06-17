@@ -1,0 +1,28 @@
+<div class="container">
+  <div class="row">
+    <div class="col-lg-10 col-lg-offset-1">
+      <h1>悩み相談提出</h1>
+      <%= form_with(model: @counsel, url: counsels_path, method: :post, local: true) do |f| %>
+
+      <div class="field">
+        <%= f.label :category, "カテゴリー" %><br />
+        <%= f.select :category, Counsel.categories.keys, {prompt: '選択してください'}, class: 'form-control btn btn-info' %>
+      </div>
+
+      <div class="field">
+        <%= f.label :title, "タイトル" %><br />
+        <%= f.text_field :title, autofocus: true, placeholder: "タイトルを入力してください", class: 'form-control' %>
+      </div>
+
+      <div class="field">
+        <%= f.label :description, "悩みについて" %><br />
+        <%= f.text_area :description, autofocus: true, placeholder: "相談内容を書いてください", class: 'form-control' %>
+      </div>
+
+      <div class="actions">
+        <%= f.submit "提出内容を確認する", class: "btn btn-primary" %>
+      </div>
+      <% end %>
+    </div>
+  </div>
+</div>

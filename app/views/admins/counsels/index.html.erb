@@ -1,0 +1,62 @@
+<div class="container">
+  <div class="row">
+    <div class="col-lg-2">
+      <%= render 'admins/shared/counsel_category' %>
+    </div>
+    <div class="col-lg-10">
+      <h1><%= @title %>一覧</h1>
+      <span>1~10件表示 (全<%= @counsels.count %>件)</span>
+      <table class="table">
+        <thead>
+          <tr>
+            <th><p>ID</p></th>
+            <th><p>投稿者</p></th>
+            <th><p>カテゴリー</p></th>
+            <th><p>タイトル</p></th>
+            <th><p>説明文</p></th>
+            <th><p>投稿日</p></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @counsels.each do |counsel| %>
+            <tr>
+              <td>
+                <p><%= counsel.id %></p>
+              </td>
+              <td>
+                <%= link_to admins_user_path(counsel.user_id) do %>
+                  <% if counsel.user_deleted?(counsel.user)%>
+                    <p><%= counsel.user.last_name+counsel.user.first_name %>(退会済)</p>
+                  <% else %>
+                    <p><%= counsel.user.last_name+counsel.user.first_name %></p>
+                  <% end %>
+                <% end %>
+              </td>
+              <td>
+                <p><%= counsel.category %></p>
+              </td>
+              <td>
+                <p><%= link_to "#{counsel.title}", admins_counsel_path(counsel) %></p>
+              </td>
+              <td>
+                <p><%= counsel.description %></p>
+              </td>
+              <td>
+                <p><%= counsel.created_at.to_s(:datetime) %></p>
+              </td>
+              <td>
+                <%= link_to admins_counsel_path(counsel) do %>
+                  <i class="fas fa-info-circle"></i>
+                <% end %>
+                <%= link_to admins_counsel_path(counsel), method: :delete  do %>
+                    <i class="fas fa-minus-circle"></i>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
