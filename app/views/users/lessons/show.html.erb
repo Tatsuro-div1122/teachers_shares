@@ -89,8 +89,8 @@
                       <%= render 'users/shared/lesson_comment_like', {lesson_comment: lesson_comment} %>
                   <% if lesson_comment.user == current_user %>
                     <span>
-                      <%= link_to lesson_lesson_comment_path(lesson_comment), method: :delete, data: {confirm:"本当に削除してもよろしいですか？"}, class: "btn btn-xs btn-default" do %>
-                        <i class="far fa-trash-alt"></i> 削除する
+                      <%= link_to lesson_lesson_comment_path(lesson_comment), method: :delete, data: {confirm:"本当に削除してもよろしいですか？"} do %>
+                        <i class="far fa-trash-alt"></i>
                       <% end %>
                     </span>
                   <% end %>
