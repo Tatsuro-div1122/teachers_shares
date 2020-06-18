@@ -1,0 +1,10 @@
+<div class="form-group">
+  <%= form_with model: message, url: user_messages_path, local: true do |f| %>
+    <div class="field">
+      <%= f.text_area :content, class: "form-control" %>
+    </div>
+    <div class="field">
+      <%= f.submit '送信', class: 'btn btn-primary btn-xs' %>
+    </div>
+  <% end %>
+</div>

@@ -1,0 +1,47 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-10 col-md-offset-1">
+      <!-- DM一覧 -->
+      <section>
+        <h2>メッセージ一覧</h2>
+        <% user = User.find_by(id: @message.receiver_id) %>
+        <table>
+          <% @messages.each do |message| %>
+            <tr>
+              <td>
+                <% unless message.user_deleted?(message.user) %>
+                  <%= link_to user_path(message.user) do %>
+                    <% if message.user.avatar.attached? %>
+                      <%= image_tag message.user.avatar.variant(resize: "50x50") %>
+                    <% else %>
+                      <%= image_tag("default_user.png", size: "50x50") %>
+                    <% end %>
+                    <ul>
+                      <li><%= message.user.last_name + message.user.first_name %></li>
+                      <li><%= message.user.school_name %></li>
+                  <% end %>
+                      <li><%= message.created_at.to_s(:datetime) %></li>
+                    </ul>
+                    <p><%= message.content %></p>
+                  <span>
+                    <%= link_to user_message_path(current_user, message), method: :delete, data: {confirm:"本当に削除してもよろしいですか？"} do %>
+                      <i class="far fa-trash-alt"></i>
+                    <% end %>
+                  </span>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </table>
+      </section>
+      <!-- DMフォーム -->
+      <section>
+        <h2>メッセージ</h2>
+          <%= render 'users/shared/message_form', message: @message %>
+          <%= link_to "ホームへ戻る", user_path(current_user) %>
+      </section>
+    </div>
+  </div>
+</div>
+
+

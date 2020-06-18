@@ -38,11 +38,11 @@ class User < ApplicationRecord
   #active storageの画像カラム
 
   #フォローフォロワー関連
-  has_many :active_relationships, class_name: "Relationship", foreign_key: :following_id, dependent: :destroy
+  has_many :active_relationships, class_name: 'Relationship', foreign_key: :following_id, dependent: :destroy
     # フォローする側のUserから見て、フォローされる側のUserを(中間テーブルを介して)集める。なので親はfollowing_id(フォローする側)
   has_many :followings, through: :active_relationships, source: :follower
     # 中間テーブルを介して「follower」モデルのUser(フォローされた側)を集めることを「followings」と定義
-  has_many :passive_relationships, class_name: "Relationship", foreign_key: :follower_id, dependent: :destroy
+  has_many :passive_relationships, class_name: 'Relationship', foreign_key: :follower_id, dependent: :destroy
     # フォローされる側のUserから見て、フォローしてくる側のUserを(中間テーブルを介して)集める。なので親はfollower_id(フォローされる側)
   has_many :followers, through: :passive_relationships, source: :following
     # 中間テーブルを介して「following」モデルのUser(フォローする側)を集めることを「followers」と定義
@@ -55,6 +55,10 @@ class User < ApplicationRecord
   has_many :counsels, dependent: :destroy
   has_many :counsel_comments, dependent: :destroy
   has_many :counsel_comment_likes, dependent: :destroy
+  has_many :messages, dependent: :destroy
+  has_many :sent_messages, through: :messages, source: :receiver
+  has_many :reverses_of_message, class_name: 'Message', foreign_key: 'receiver_id'
+  has_many :received_messages, through: :reverses_of_message, source: :user
 
 
 
