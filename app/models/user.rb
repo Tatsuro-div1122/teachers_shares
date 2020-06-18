@@ -52,6 +52,9 @@ class User < ApplicationRecord
   has_many :bookmark_lessons, through: :lesson_bookmarks, source: :lesson
   has_many :lesson_comments, dependent: :destroy
   has_many :lesson_comment_likes, dependent: :destroy
+  has_many :counsels, dependent: :destroy
+  has_many :counsel_comments, dependent: :destroy
+  has_many :counsel_comment_likes, dependent: :destroy
 
 
 
@@ -91,6 +94,10 @@ class User < ApplicationRecord
 
   def own_lesson?(lesson)
     self.id == lesson.user_id
+  end
+
+  def own_counsel?(counsel)
+    self.id == counsel.user_id
   end
 
 end

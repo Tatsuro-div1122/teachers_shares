@@ -6,8 +6,12 @@ class Users::UsersController < ApplicationController
   end
 
   def show
-    @total_likes = LessonLike.where(user_id: current_user.id).count + LessonCommentLike.where(user_id: current_user.id).count
-    @users = User.where(deleted_at: nil, prefecture: current_user.prefecture).where.not(id: current_user.id).order("RANDOM()").limit(5)
+    @total_likes = LessonLike.where(user_id: current_user.id).count
+                   + LessonCommentLike.where(user_id: current_user.id).count
+                   + CounselCommentLike.where(user_id: current_user.id).count
+    @users = User.where(deleted_at: nil, prefecture: current_user.prefecture)
+                 .where.not(id: current_user.id)
+                 .order("RANDOM()").limit(5)
   end
 
   def edit
@@ -52,6 +56,12 @@ class Users::UsersController < ApplicationController
     @title = "#{@user.last_name}  #{@user.first_name} 先生の授業アイデア"
     @lessons = @user.lessons.includes(:user).order("created_at DESC")
     render 'users/lessons/index'
+  end
+
+  def own_counsels
+    @title = "#{@user.last_name}  #{@user.first_name} 先生の悩み相談"
+    @counsels = @user.counsels.includes(:user).order("created_at DESC")
+    render 'users/counsels/index'
   end
 
   def delete_account

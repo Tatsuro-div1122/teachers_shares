@@ -1,0 +1,15 @@
+<section>
+  <div>
+    <p>カテゴリーで探す</p>
+    <ul>
+      <% Counsel.categories.keys.each do |category| %>
+        <li>
+          <%= link_to category_counsels_path(category: category) do %>
+            <%= category %>
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+</section>
+

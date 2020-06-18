@@ -13,7 +13,11 @@
               <%= image_tag("default_user.png", size: "60x60") %>
             <% end %>
           </div>
-          <p><%= @lesson.user.last_name + @lesson.user.first_name %></p>
+          <% if @lesson.user_deleted?(@lesson.user)%>
+            <p><%= @lesson.user.last_name+@lesson.user.first_name %>(退会済)</p>
+          <% else %>
+            <p><%= @lesson.user.last_name+@lesson.user.first_name %></p>
+          <% end %>
           <p><%= @lesson.user.school_name %></p>
         <% end %>
         <p><%= @lesson.school_type %></p>
@@ -43,7 +47,7 @@
            <% @lesson.lesson_comments.each do |lesson_comment| %>
             <tr>
               <td>
-                <%= link_to user_path(lesson_comment.user) do %>
+                <%= link_to admins_user_path(lesson_comment.user) do %>
                   <% if lesson_comment.user.avatar.attached? %>
                     <%= image_tag lesson_comment.user.avatar.variant(resize: "50x50") %>
                   <% else %>

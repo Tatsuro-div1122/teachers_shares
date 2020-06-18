@@ -3,8 +3,8 @@
     <div class="col-md-2">
       <%= render 'admins/shared/lesson_category' %>
     </div>
-    <div class="col-md-10">
-      <h1><%= @title %></h1>
+    <div class="col-lg-10">
+      <h1><%= @title %>一覧</h1>
       <span>1~10件表示 (全<%= @lessons.count %>件)</span>
       <table class="table">
         <thead>
@@ -28,7 +28,11 @@
               </td>
               <td>
                 <%= link_to admins_user_path(lesson.user_id) do %>
-                <p><%= lesson.user.last_name+lesson.user.first_name %></p>
+                  <% if lesson.user_deleted?(lesson.user)%>
+                    <p><%= lesson.user.last_name+lesson.user.first_name %>(退会済)</p>
+                  <% else %>
+                    <p><%= lesson.user.last_name+lesson.user.first_name %></p>
+                  <% end %>
                 <% end %>
               </td>
               <td>
