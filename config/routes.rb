@@ -48,12 +48,16 @@
 #     admins_category_users GET    /admins/category/users(.:format)                                                         admins/users#category_users
 #   admins_category_lessons GET    /admins/category/lessons(.:format)                                                       admins/lessons#category_lessons
 #  admins_category_counsels GET    /admins/category/counsels(.:format)                                                      admins/counsels#category_counsels
+#             user_messages GET    /users/:user_id/messages(.:format)                                                       users/messages#index
+#                           POST   /users/:user_id/messages(.:format)                                                       users/messages#create
+#              user_message DELETE /users/:user_id/messages/:id(.:format)                                                   users/messages#destroy
 #        user_relationships DELETE /users/:user_id/relationships(.:format)                                                  users/relationships#destroy
 #                           POST   /users/:user_id/relationships(.:format)                                                  users/relationships#create
 #              follows_user GET    /users/:id/follows(.:format)                                                             users/users#follows
 #            followers_user GET    /users/:id/followers(.:format)                                                           users/users#followers
 #     lesson_bookmarks_user GET    /users/:id/lesson_bookmarks(.:format)                                                    users/users#lesson_bookmarks
 #          own_lessons_user GET    /users/:id/own_lessons(.:format)                                                         users/users#own_lessons
+#         own_counsels_user GET    /users/:id/own_counsels(.:format)                                                        users/users#own_counsels
 #       delete_account_user GET    /users/:id/delete_account(.:format)                                                      users/users#delete_account
 #                           PATCH  /users/:id/delete_account(.:format)                                                      users/users#update_account
 #                     users GET    /users(.:format)                                                                         users/users#index
@@ -90,6 +94,7 @@
 #                    search GET    /search(.:format)                                                                        users/search#search
 #            category_users GET    /category/users(.:format)                                                                users/users#category_users
 #          category_lessons GET    /category/lessons(.:format)                                                              users/lessons#category_lessons
+#         category_counsels GET    /category/counsels(.:format)                                                             users/counsels#category_counsels
 #      lesson_comment_likes POST   /lesson_comments/:id/lesson_comment_likes(.:format)                                      users/lesson_comment_likes#create
 #       lesson_comment_like DELETE /lesson_comments/:id/lesson_comment_likes(.:format)                                      users/lesson_comment_likes#destroy
 #     counsel_comment_likes POST   /counsel_comments/:id/counsel_comment_likes(.:format)                                    users/counsel_comment_likes#create
@@ -102,6 +107,9 @@
 
 Rails.application.routes.draw do
 
+  namespace :users do
+    get 'messages/index'
+  end
   devise_for :admins, controllers: { sessions: 'admins/sessions' }
   devise_for :users,  controllers: {
    registrations: 'users/registrations',
@@ -124,7 +132,8 @@ Rails.application.routes.draw do
 
   scope module: :users do
     resources :users, only: [:index, :show, :edit, :update] do
-      resource :relationships, only: [:create, :destroy]
+      resources :messages,      only: [:index, :create, :destroy]
+      resource  :relationships, only: [:create, :destroy]
       member do
         get :follows
         get :followers
