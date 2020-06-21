@@ -1,0 +1,55 @@
+<% if lesson_comments.any? %>
+<% lesson_comments.each do |lesson_comment| %>
+  <div class="media">
+    <!-- 退会済ユーザー画像 -->
+    <% if lesson_comment.user_deleted?(lesson_comment.user) %>
+      <%= link_to "#", class: "media-left" do %>
+        <%= image_tag "default_user.png", size: "64x64" %>
+      <% end %>
+    <!-- 会員ユーザー画像 -->
+    <% else %>
+      <% if lesson_comment.user.avatar.attached? %>
+        <%= link_to lesson_comment.user, class: "media-left" do %>
+          <%= image_tag lesson_comment.user.avatar.variant(resize: "64x64") %>
+        <% end %>
+      <% else %>
+        <%= link_to lesson_comment.user, class: "media-left" do %>
+          <%= image_tag "default_user.png", size: "64x64" %>
+        <% end %>
+      <% end %>
+    <% end %>
+
+    <div class="media-body" >
+      <!-- ユーザー情報 -->
+      <ul class="list-unstyled list-inline">
+        <% if lesson_comment.user_deleted?(lesson_comment.user) %>
+          <li>退会済みの先生</li>
+        <% else %>
+          <li>
+            <%= link_to user_path(lesson_comment.user) do %>
+              <%= lesson_comment.user.last_name %> <%= lesson_comment.user.first_name %>
+            <% end %>
+          </li>
+        <% end %>
+          <li><%= lesson_comment.created_at.to_s(:datetime) %></li>
+          <li>
+            <!-- コメント削除ボタン -->
+            <% if lesson_comment.user == current_user %>
+              <%= link_to lesson_lesson_comment_path(lesson_comment), method: :delete, data: {confirm:"本当に削除してもよろしいですか？"} do %>
+                  <i class="fas fa-trash-alt"></i>
+              <% end %>
+            <% end %>
+          </li>
+      </ul>
+      <!-- コメント本文 -->
+      <p><%= lesson_comment.comment %></p>
+
+      <!-- いいねボタン -->
+      <span id="lesson_comment_like_<%= lesson_comment.id %>">
+        <%= render 'users/shared/lesson_comment_like', {lesson_comment: lesson_comment} %>
+      </span>
+    </div>
+  </div>
+  <hr>
+<% end %>
+<% end %>

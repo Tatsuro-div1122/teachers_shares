@@ -1,0 +1,39 @@
+<%# user = User.find_by(id: message.receiver_id) %>
+<% messages.each do |message| %>
+    <div class="media">
+    <!-- プロフィール画像 -->
+    <!-- 退会済みユーザーのメッセージ非表示 -->
+    <% unless message.user_deleted?(message.user) %>
+      <% if message.user.avatar.attached? %>
+      <%= link_to message.user, class: "media-left" do %>
+        <%= image_tag message.user.avatar.variant(resize: "64x64") %>
+      <% end %>
+    <% else %>
+      <%= link_to message.user, class: "media-left" do %>
+        <%= image_tag "default_user.png", size: "64x64" %>
+      <% end %>
+    <% end %>
+    <div class="media-body" >
+
+      <!-- ユーザー情報 -->
+      <ul class="list-unstyled list-inline">
+        <li>
+          <%= link_to user_path(message.user) do %>
+            <%= message.user.last_name %> <%=message.user.first_name %>
+          <% end %>
+        </li>
+        <li><%= message.user.school_name %></li>
+        <li><%= message.created_at.to_s(:datetime) %></li>
+        <li>
+          <%= link_to user_message_path(current_user, message), method: :delete, data: {confirm:"本当に削除してもよろしいですか？"} do %>
+            <i class="fas fa-trash-alt"></i>
+          <% end %>
+        </li>
+      </ul>
+      <p><%= message.content %></p>
+      <% end %>
+
+    </div>
+    <hr>
+  </div>
+<% end %>

@@ -16,14 +16,82 @@
   @import "bootstrap-sprockets";
   @import "bootstrap";
 
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.clearfix::after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+body {
+  font-family: "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "メイリオ", Meiryo, Osaka, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif;
+  font-size: 16px;
+  width: 100%;
+}
+
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "メイリオ", Meiryo, Osaka, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif;
+  font-weight: 700;
+}
+
+//header
+header {
+  height: 50px;
+  width: 100%;
+}
+
+.navbar {
+  background: #007bff;
+  background: linear-gradient(to right, #0062E6, #33AEFF)
+}
+
+.logo-image {
+  width: 300px;
+  height: 50px;
+  padding: 10px 20px 0 0;
+}
+
+.search-bar {
+  height: 50px;
+  text-align: center;
+  padding-top: 15px;
+}
+
+.nav-list {
+  height: 50px;
+  }
+
+.nav-list-item {
+  margin-top: 15px;
+}
+
+
+//main
+main {
+  width: 100%;
+  height: 100%;
+}
+
 .notice {
   color: green;
+  text-align: center;
 }
 
 .alert {
   color: red;
+  text-align: center;
 }
-
 
 .about-image1 {
   background-image: url(top6.jpg);
@@ -43,4 +111,15 @@
 
 .about-image5 {
   background-image: url(top5.jpg);
+}
+
+footer {
+  color: white;
+  width: 100%;
+  height: 90px;
+  margin-top: 40px;
+  text-align: right;
+  line-height: 90px;
+  background: #007bff;
+  background: linear-gradient(to right, #0062E6, #33AEFF)
 }

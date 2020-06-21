@@ -1,92 +1,96 @@
 <div class="container">
   <div class="row">
-    <div class="col-lg-2">
+    <div class="col-md-2">
       <%= render 'users/shared/counsel_category' %>
     </div>
-    <div class="col-lg-9">
+    <div class="col-md-6 col-md-offset-2">
+      <!-- ユーザについて -->
       <section>
-        <% if @counsel.user_deleted?(@user) %>
-          <p>退会済みの先生</p>
+        <div class="media">
+          <!-- 退会済みユーザ対応 -->
+        <% if @counsel.user_deleted?(@counsel.user) %>
+          <%= image_tag "default_user.png", size: "100x100" %>
         <% else %>
-          <%= link_to user_path(@user) do %>
-            <span>
-              <% if @user.avatar.attached? %>
-                <%= image_tag @user.avatar.variant(resize: "60x60") %>
-              <% else %>
-                <%= image_tag("default_user.png", size: "60x60") %>
-              <% end %>
-            </span>
-            <p><strong><%= @user.last_name + @user.first_name %></strong></p>
+          <!-- プロフィール画像 -->
+          <% if @counsel.user.avatar.attached? %>
+            <%= link_to @counsel.user, class: "media-left" do %>
+              <%= image_tag @counsel.user.avatar.variant(resize: "100x100") %>
+            <% end %>
+          <% else %>
+            <%= link_to @counsel.user, class: "media-left" do %>
+              <%= image_tag "default_user.png", size: "64x64" %>
+            <% end %>
           <% end %>
         <% end %>
-        <p><%= @counsel.category %></p>
-        <p><%= @counsel.created_at.to_s(:datetime) %></p>
-        <% unless @counsel.user_deleted?(@user) %>
-          <span><%= render 'users/shared/follow', user: @user %></span>
+        <div class="media-body" >
+          <!-- ユーザー情報 -->
+          <h3 class="media-heading">
+            <h3 class="media-heading">
+            <% if @counsel.user_deleted?(@counsel.user) %>
+              退会済みの先生
+            <% else %>
+              <%= link_to user_path(@counsel.user) do %>
+                <%= @counsel.user.last_name %> <%= @counsel.user.first_name %>
+              <% end %>
+            <% end %>
+            <!-- フォローボタン -->
+            <% unless @counsel.user_deleted?(@counsel.user) %>
+              <span id="follow_<%= @counsel.user.id %>"><%= render 'users/shared/follow', user: @counsel.user %></span>
+            <% end %>
+          </h3>
+          <ul class="list-unstyled list-inline">
+            <li><%= @counsel.category %></li>
+            <li><%= @counsel.created_at.to_s(:datetime) %></li>
+          </ul>
+        </div>
+      </section>
+       <!-- 悩み相談について -->
+      <section>
+        <!-- タイトル -->
+        <h2>
+          <%= @counsel.title %>
+        </h2>
+
+        <!-- 本文 -->
+          <p><%= @counsel.description %></p>
+
+        <!-- 編集・削除ボタン -->
+        <% if current_user.own_counsel?(@counsel) %>
+          <%= link_to edit_counsel_path(@counsel) do %>
+            <i class="fas fa-edit"></i> 編集する
+          <% end %>
+          <%= link_to counsel_path(@counsel), method: :delete, data: {confirm:"本当に削除してもよろしいですか？"} do %>
+            <i class="far fa-trash-alt"></i> 削除する
+          <% end %>
         <% end %>
       </section>
+      <hr>
+
+      <!-- コメント -->
       <section>
-        <h1><%= @counsel.title %></h1>
-        <p><%= @counsel.description %></p>
-        <% if current_user.own_counsel?(@counsel) %>
-          <span>
-            <%= link_to edit_counsel_path(@counsel) do %>
-              <i class="far fa-edit"></i> 編集する
-            <% end %>
-          </span>
-          <span>
-            <%= link_to counsel_path(@counsel), method: :delete, data: {confirm:"本当に削除してもよろしいですか？"} do %>
-              <i class="far fa-trash-alt"></i> 削除する
-            <% end %>
-          </span>
-        <% end %>
-        <!-- コメント -->
         <span>
-          <i class="far fa-comments"></i> コメント 全<%= @counsel.counsel_comments.count %>件
+          <i class="far fa-comments"></i> コメント 全<%= @counsel_comments.count %>件
         </span>
         <!-- コメントフォーム -->
         <div class="form-group">
           <%= form_with model: [@counsel, @counsel_comment], local: true do |f| %>
-            <%= f.text_field :comment, autofocus: true, placeholder: "先生のアドバイスを記入してください", class: "form-control" %>
-            <%= f.submit "コメント", class: "btn btn-sm btn-primary" %>
+          <div class="form-group">
+            <%= f.text_field :comment, autofocus: true, placeholder: "アドバイスを記入してください", class: "form-control" %>
+          </div>
+          <div class="action text-right">
+            <%= f.submit "投稿", class: "btn btn-sm btn-success" %>
+          </div>
           <% end %>
         </div>
         <!-- コメント一覧 -->
-        <% if @counsel_comments.any? %>
-        <table>
-           <% @counsel_comments.each do |counsel_comment| %>
-            <tr>
-              <td>
-                  <% if counsel_comment.user_deleted?(counsel_comment.user) %>
-                    <p>退会済みの先生<p>
-                  <% else %>
-                    <%= link_to user_path(counsel_comment.user) do %>
-                      <% if counsel_comment.user.avatar.attached? %>
-                        <%= image_tag counsel_comment.user.avatar.variant(resize: "50x50") %>
-                      <% else %>
-                        <%= image_tag("default_user.png", size: "50x50") %>
-                      <% end %>
-                      <ul>
-                        <li><%= counsel_comment.user.last_name + counsel_comment.user.first_name %></li>
-                    <% end %>
-                  <% end %>
-                        <li><%= counsel_comment.created_at.to_s(:datetime) %></li>
-                      </ul>
-                      <p><%= counsel_comment.comment %></p>
-                      <%= render 'users/shared/counsel_comment_like', {counsel_comment: counsel_comment} %>
-                  <% if counsel_comment.user == current_user %>
-                    <span>
-                      <%= link_to counsel_counsel_comment_path(counsel_comment), method: :delete, data: {confirm:"本当に削除してもよろしいですか？"}, class: "btn btn-xs btn-default" do %>
-                        <i class="far fa-trash-alt"></i> 削除する
-                      <% end %>
-                    </span>
-                  <% end %>
-              </td>
-            </tr>
-           <% end %>
-         </table>
-         <% end %>
+        <div>
+          <%= render 'users/shared/counsel_comment_index', counsel_comments: @counsel_comments %>
+        </div>
       </section>
+
+      <!-- 戻るボタン -->
+      <div><%= link_to "戻る", counsels_path %></div>
+
     </div>
   </div>
 </div>

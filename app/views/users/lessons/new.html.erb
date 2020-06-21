@@ -1,10 +1,11 @@
 <div class="container">
   <div class="row">
-    <div class="col-md-10 col-md-offset-1">
-      <h1>授業アイデア提出</h1>
-      <%= form_with(model: @lesson, url: lessons_path, method: :post, local: true) do |f| %>
+    <div class="col-md-6 col-md-offset-3">
 
-      <div class="field">
+      <h2>授業アイデア提出</h2>
+      <%= form_with model: @lesson, url: lessons_path, method: :post, local: true do |f| %>
+
+      <div class="form-group">
         <%= f.label :school_type, "学校種" %><br />
         <%= f.radio_button :school_type, :小学校, checked:"checked" %>
         <%= f.label :小学校 %>
@@ -14,35 +15,41 @@
         <%= f.label :高校 %>
       </div>
 
-      <div class="field">
+      <div class="input-group">
         <%= f.label :grade, "学年" %><br />
-        <%= f.select :grade, Lesson.grades.keys, {prompt: '選択してください'}, class: 'form-control btn btn-info' %>
+        <%= f.select :grade, Lesson.grades.keys, {prompt: '選択してください'}, class: 'form-control btn btn-default' %>
       </div>
+      <br>
 
-      <div class="field">
+      <div class="input-group">
         <%= f.label :subject, "教科" %><br />
-        <%= f.select :subject, Lesson.subjects.keys, {prompt: '選択してください'}, class: 'form-control btn btn-info' %>
+        <%= f.select :subject, Lesson.subjects.keys, {prompt: '選択してください'}, class: 'form-control btn btn-default' %>
+      </div>
+      <br>
+
+      <div class="form-group">
+        <%= f.label :file, "添付ファイル" %><br />
+        <%= f.file_field :file %>
       </div>
 
-      <div class="field">
-        <%= f.label :file, "資料アップロード" %><br />
-        <%= f.file_field :file, placeholder: "ファイルを選択" %>
-      </div>
-
-      <div class="field">
+      <div class="form-group">
         <%= f.label :title, "タイトル" %><br />
         <%= f.text_field :title, autofocus: true, placeholder: "わかりやすいタイトルを入力してください", class: 'form-control' %>
       </div>
 
-      <div class="field">
+      <div class="form-group">
         <%= f.label :description, "授業について" %><br />
-        <%= f.text_area :description, autofocus: true, placeholder: "授業について書いてください　例）授業の展開や資料の使い方など", class: 'form-control' %>
+        <%= f.text_area :description, autofocus: true, rows: 10, placeholder: "授業について書いてください　例）授業の展開や資料の使い方など", class: 'form-control' %>
       </div>
 
-      <div class="actions">
-        <%= f.submit "提出内容を確認する", class: "btn btn-primary" %>
+      <div class="actions text-center">
+        <%= f.submit "授業アイデアを提出する", class: "btn btn-success" %>
       </div>
       <% end %>
+
+      <!-- 戻るボタン -->
+      <div><%= link_to "戻る", :back %></div>
+
     </div>
   </div>
 </div>

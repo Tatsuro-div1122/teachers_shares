@@ -6,12 +6,14 @@ class Admins::LessonsController < ApplicationController
 
   def show
     @lesson = Lesson.find(params[:id])
+    @lesson_comments = @lesson.lesson_comments.includes(:user).order("created_at DESC")
+    @accept_image_types = ['.jpeg', '.jpg', '.gif', '.png', '.heic']
+    # 添付ファイルが上記の配列のファイル形式に合うものは表示する
   end
 
   def destroy
     lesson = Lesson.find(params[:id])
     lesson.destroy
-    lesson.file.purge
     redirect_to admins_lessons_path, alert: "授業アイデアを削除しました"
   end
 

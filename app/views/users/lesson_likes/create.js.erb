@@ -1,0 +1,3 @@
+$("#lesson_like_<%= @lesson.id %>").html("<%= j(render 'users/shared/lesson_like', lesson: @lesson, user: @user) %>")
+// $("#user_info_<%= @lesson.user.id %>").html("<%= j(render 'users/shared/user_info', user: @user, total_likes: @total_likes) %>")
+$("#user_info_total_likes").html("<%= @total_likes %>")

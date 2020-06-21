@@ -1,10 +1,12 @@
 <div class="container">
   <div class="row">
-    <div class="col-md-10 col-md-offset-1">
-      <h1>授業アイデア編集</h1>
-      <%= form_with(model: @lesson, url: lesson_path(@lesson), method: :patch, local: true) do |f| %>
+    <div class="col-md-6 col-md-offset-3">
 
-      <div class="field">
+      <h2>授業アイデア編集</h2>
+
+      <%= form_with model: @lesson, url: lesson_path(@lesson), method: :patch, local: true do |f| %>
+
+      <div class="form-group">
         <%= f.label :school_type, "学校種" %><br />
         <%= f.radio_button :school_type, :小学校 %>
         <%= f.label :小学校 %>
@@ -14,34 +16,40 @@
         <%= f.label :高校 %>
       </div>
 
-      <div class="field">
+      <div class="input-group">
         <%= f.label :grade, "学年" %><br />
-        <%= f.select :grade, Lesson.grades.keys, class: 'form-control btn btn-info' %>
+        <%= f.select :grade, Lesson.grades.keys, {}, class: 'form-control' %>
       </div>
+      <br>
 
-      <div class="field">
+      <div class="input-group">
         <%= f.label :subject, "教科" %><br />
-        <%= f.select :subject, Lesson.subjects.keys, class: 'form-control btn btn-info' %>
+        <%= f.select :subject, Lesson.subjects.keys, {}, class: 'form-control' %>
       </div>
+      <br>
 
-      <div class="field">
+      <div class="form-group">
         <%= f.label :file, "資料アップロード" %><br />
         <%= f.file_field :file, placeholder: "ファイルを選択" %>
       </div>
 
-      <div class="field">
+      <div class="form-group">
         <%= f.label :title, "タイトル" %><br />
-        <%= f.text_field :title, autofocus: true %>
+        <%= f.text_field :title, autofocus: true, class: 'form-control' %>
       </div>
 
-      <div class="field">
+      <div class="form-group">
         <%= f.label :description, "授業について" %><br />
-        <%= f.text_area :description, autofocus: true%>
+        <%= f.text_area :description, autofocus: true, rows: 10, class: 'form-control'%>
       </div>
 
-      <div class="actions">
-        <%= f.submit "変更を提出する", class: "btn btn-primary" %>
+      <div class="actions text-center">
+        <%= f.submit "変更を保存する", class: "btn btn-success" %>
       </div>
+
+      <!-- 戻るボタン -->
+      <div><%= link_to "戻る", lesson_path(@lesson) %></div>
+
       <% end %>
     </div>
   </div>

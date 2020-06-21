@@ -32,7 +32,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   validates :last_name, :first_name, :school_type, :prefecture, :school_name, :subject, presence: :true
-  validates :introduction, length: {maximum: 250}
+  validates :introduction, length: {maximum: 400}
 
   has_one_attached :avatar
   #active storageの画像カラム

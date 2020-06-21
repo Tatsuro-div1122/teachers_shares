@@ -13,29 +13,33 @@ class Users::LessonsController < ApplicationController
   def create
     @lesson = Lesson.new(lesson_params)
     @lesson.user_id = current_user.id
+    # if params[:back]
+    #   render 'new'
     if @lesson.save
-      redirect_to lesson_path(@lesson), notice: '新しい授業アイデアが投稿されました'
+      redirect_to @lesson, notice: '新しい授業アイデアが投稿されました'
     else
-      flash.now[:alert] = "必須事項を記入してください"
+      flash[:alert] = '必須事項を入力してください'
       render 'new'
     end
   end
 
   def show
     @lesson = Lesson.find(params[:id])
-    @user = @lesson.user
     @lesson_comment = LessonComment.new
     @lesson_comments = @lesson.lesson_comments.includes(:user).order("created_at DESC")
+    @accept_image_types = ['.jpeg', '.jpg', '.gif', '.png', '.heic']
+    # 添付ファイルが上記の配列のファイル形式に合うものは表示する
   end
 
-  def confirm
-    @lesson = Lesson.new(lesson_params)
-    render 'new' if @lesson.valid?
-  end
+  # def confirm
+  #   @lesson = Lesson.new(lesson_params)
+  #   @lesson.file.attach(params[:lesson][:file])
+  #   # render 'new' if @lesson.invalid?
+  # end
 
-  def back
-    render 'new'
-  end
+  # def back
+  #   render 'new'
+  # end
 
   def edit
     @lesson = Lesson.find(params[:id])
@@ -55,7 +59,6 @@ class Users::LessonsController < ApplicationController
   def destroy
     lesson = Lesson.find(params[:id])
     lesson.destroy
-    lesson.file.purge
     redirect_to lessons_path
   end
 
@@ -73,6 +76,6 @@ class Users::LessonsController < ApplicationController
   private
 
   def lesson_params
-    params.require(:lesson).permit(:title, :description, :school_type, :grade, :subject, :user_id, :file)
+    params.require(:lesson).permit(:title, :description, :school_type, :grade, :subject, :file, :user_id)
   end
 end

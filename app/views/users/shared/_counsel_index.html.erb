@@ -1,0 +1,53 @@
+<% counsels.each do |counsel| %>
+  <div class="media">
+
+    <!-- プロフィール画像 -->
+    <% if counsel.user.avatar.attached? %>
+      <%= link_to counsel.user, class: "media-left" do %>
+        <%= image_tag counsel.user.avatar.variant(resize: "64x64") %>
+      <% end %>
+    <% else %>
+      <%= link_to counsel.user, class: "media-left" do %>
+        <%= image_tag "default_user.png", size: "64x64" %>
+      <% end %>
+    <% end %>
+
+    <!-- 記事 -->
+    <div class="media-body" >
+
+      <!-- ユーザー情報 -->
+      <ul class="list-unstyled list-inline">
+        <li><%= counsel.user.last_name + counsel.user.first_name %></li>
+        <li><%= counsel.created_at.to_s(:datetime) %></li>
+        <!-- 編集/削除ボタン -->
+        <% if current_user.own_counsel?(counsel) %>
+        <li>
+          <%= link_to edit_counsel_path(counsel) do %>
+            <i class="fas fa-edit"></i>
+          <% end %>
+        </li>
+        <li>
+          <%= link_to counsel_path(counsel), method: :delete, data: {confirm:"本当に削除してもよろしいですか？"} do %>
+            <i class="fas fa-trash-alt"></i>
+          <% end %>
+        </li>
+        <% end %>
+      </ul>
+
+      <!-- 相談タイトル -->
+      <h4 class="media-heading title">
+        <%= link_to counsel_path(counsel) do %>
+          <%= counsel.title %>
+        <% end %>
+      </h4>
+
+      <!-- 相談本文 -->
+      <p class="description"><%= counsel.description %></p>
+
+      <!-- 相談情報 -->
+      <p><%= counsel.category %></p>
+
+      <hr>
+    </div>
+  </div>
+<% end %>

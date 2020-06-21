@@ -1,35 +1,131 @@
 <% if user_signed_in? %>
   <div class="container">
     <div class="row">
-      <div class="user-sidebar col-md-3">
-        <%= render 'users/shared/user_info', user: current_user %>
-        <%= render 'users/shared/maybe_friends', users: @users %>
-      </div>
-      <div class="col-md-9">
+      <!-- サイドメニュー -->
+      <div class="col-md-2 text-left">
         <section>
+          <table class="table table-hover">
+            <thead>
+              <tr class="warning">
+                <th>
+                  <%= link_to lessons_path do %>
+                    <i class="fas fa-book-open"></i> 授業アイデア
+                  <% end %>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @lesson_subjects.each do |subject| %>
+                <tr>
+                  <td>
+                    <%= link_to category_lessons_path(subject: subject) do %>
+                      <%= subject %>
+                    <% end %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+          <p class="text-right"><%= link_to "▶もっと見る", lessons_path %></p>
+          <table class="table table-hover">
+            <thead>
+              <tr class="info">
+                <th>
+                  <%= link_to counsels_path do %>
+                    <i class="fas fa-comment-medical"></i> 悩み相談
+                  <% end %>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @counsel_categories.each do |category| %>
+              <tr>
+                <td>
+                  <%= link_to category_counsels_path(category: category) do %>
+                    <%= category[:category] %>
+                  <% end %>
+                </td>
+              </tr>
+              <% end %>
+            </tbody>
+          </table>
+          <p class="text-right"><%= link_to "▶もっと見る", counsels_path %></p>
+          <table class="table table-hover">
+            <thead>
+              <tr class="success">
+                <th>
+                  <%= link_to users_path  do %>
+                    <i class="fas fa-search"></i> 教員仲間を探す
+                  <% end %>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @school_types.each do |school_type| %>
+              <tr>
+                <td>
+                  <%= link_to category_users_path(school_type: school_type) do %>
+                    <%= school_type %>
+                  <% end %>
+                </td>
+              </tr>
+              <% end %>
+            </thead>
+          </table>
+          <p class="text-right"><%= link_to "▶もっと見る", users_path %></p>
+        </section>
+      </div>
+      <!-- おすすめ授業アイデア -->
+      <div class="col-md-7">
+      <section>
           <h1>おすすめ授業</h1>
           <span><%= link_to "▶もっと見る", lessons_path %></span>
-          <div class="recommended-class">
+          <div class="row">
             <% @lessons.each do |lesson| %>
+            <div class="recommended-lesson-box col-md-4">
               <%= link_to lesson_path(lesson) do %>
-                <ul>
-                  <li><%= lesson.title %></li>
-                  <li><%= lesson.created_at.to_s(:datetime) %></li>
-                  <li><%= lesson.description %></li>
-                </ul>
+                  <p class="lesson-title"><%= lesson.title %></p>
+              <% end %>
+                  <p class="lesson-time"><%= lesson.created_at.to_s(:datetime) %></p>
+                  <p class="lesson-description"><%= lesson.description %></p>
+                  <p class="lesson-icons">
                 <span><%= lesson.school_type %></span>
                 <span><%= lesson.grade %></span>
                 <span><%= lesson.subject %></span>
                 <sapn><i class="far fa-lightbulb" aria-hidden="true"></i> <%= lesson.lesson_likes.count %></sapn>
                 <sapn><i class="far fa-comments"></i> <%= lesson.lesson_comments.count %></sapn>
-              <% end %>
+                  </p>
+            </div>
             <% end %>
           </div>
         </section>
+        <!-- 悩み相談 -->
         <section>
-          <h1>悩み相談(coming soon...)</h1>
-          <span><%= link_to "▶もっと見る", "#" %></span>
+            <h1>新着悩み相談</h1>
+            <span><%= link_to "▶もっと見る", counsels_path %></span>
+            <div class="counsel-box">
+              <% @counsels.each do |counsel| %>
+                <div class="counsel-list">
+                  <p class="counsel-title"><%= counsel.title %></p>
+                  <p class="counsel-description"><%= counsel.description %></p>
+                  <hr>
+                </div>
+              <% end %>
+            </div>
         </section>
+          </div>
+      <!-- ユーザーサイドバー -->
+      <div class="col-md-3">
+      <section>
+        <div class="own-info-sidebar">
+          <%= render 'users/shared/own_info', user: current_user %>
+        </div>
+        <div class="maybe-friends-sidebar">
+          <%= render 'users/shared/maybe_friends', users: @users %>
+        </div>
+      </section>
+      </div>
+
       </div>
     </div>
   </div>
