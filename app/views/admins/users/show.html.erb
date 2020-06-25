@@ -1,57 +1,72 @@
 <div class="container">
   <div class="row">
-    <div class="col-lg-2">
+    <div class="col-md-2">
+
+      <!-- サイドバー -->
       <%= render 'admins/shared/user_category' %>
     </div>
-    <div class="col-lg-10">
+
+    <div class="col-md-10">
+      <!-- 会員情報 -->
+      <section>
       <h1>会員情報詳細</h1>
-      <div class="profile_image">
-      <% if @user.avatar.attached? %>
-        <%= image_tag @user.avatar.variant(resize: "400x300") %>
-      <% else %>
-        <%= image_tag("default_user.png", size: "400x300") %>
-      <% end %>
-      </div>
-      <ul class="profile-items">
-        <li>
-          <p>名前</p>
-          <p><%= @user.last_name+@user.first_name %></p>
-        </li>
-        <li>
-          <p>メールアドレス</p>
-          <p><%= @user.email %></p>
-        </li>
-        <li>
-          <p>学校種</p>
-          <p><%= @user.school_type %></p>
-        </li>
-        <li>
-          <p>所属所在地</p>
-          <p><%= @user.prefecture %></p>
-        </li>
-        <li>
-          <p>所属</p>
-          <p><%= @user.school_name %></p>
-        </li>
-        <li>
-          <p>教科</p>
-          <p><%= @user.subject %></p>
-        </li>
-        <li>
-          <p>教員歴</p>
-          <p><%= @user.year %>年</p>
-        </li>
-        <li>
-          <p>自己紹介</p>
-          <p><%= @user.introduction %></p>
-        </li>
-      </ul>
+      <div class="user-image">
+          <% if @user.avatar.attached? %>
+            <%= image_tag @user.avatar.variant(resize: "400x300"), class: "img-responsive img-thumbnail" %>
+          <% else %>
+            <%= image_tag("default_user.png", size: "400x300", class: "img-responsive img-thumbnail") %>
+          <% end %>
+        </div>
+        <ul class="list-unstyled">
+          <li>
+            <p class="user-name"><%= @user.last_name %> <%= @user.first_name %> 先生</p>
+          </li>
+          <li>
+            <p class="profile-item">学校種</p>
+            <p class="user-info"><%= @user.school_type %></p>
+          </li>
+          <li>
+            <p class="profile-item">所属所在地</p>
+            <p class="user-info"><%= @user.prefecture %></p>
+          </li>
+          <li>
+            <p class="profile-item">所属</p>
+            <p class="user-info"><%= @user.school_name %></p>
+          </li>
+          <li>
+            <p class="profile-item">教科</p>
+            <p class="user-info"><%= @user.subject %></p>
+          </li>
+          <li>
+            <p class="profile-item">教員歴</p>
+            <p class="user-info"><%= @user.year %>年</p>
+          </li>
+          <li>
+            <p class="profile-item">自己紹介</p>
+            <p class="user-info"><%= @user.introduction %></p>
+          </li>
+        </ul>
         <% if @user.user_deleted?(@user) %>
-          <%= link_to "会員にする", admins_user_path(@user), method: :patch, class: "btn btn-primary" %>
+          <span>
+            <%= link_to "会員にする", admins_user_path(@user), method: :patch, class: "btn btn-primary" %>
+          </span>
         <% else %>
-          <%= link_to "退会にする", admins_user_path(@user), method: :patch, data: {confirm:"本当に削除してもよろしいですか？"},class: "btn btn-danger" %>
+
+        <!-- 退会ボタン -->
+          <span>
+            <%= link_to admins_user_path(@user), method: :patch, data: {confirm:"本当に削除してもよろしいですか？"}, class: "btn btn-danger" do %>
+              <i class="fas fa-minus-circle fa-lg"></i> 退会にする
+            <% end %>
+          </span>
         <% end %>
-      </span>
+
+      </section>
+      <br>
+      <!-- 戻るボタン -->
+      <div><%= link_to "戻る", admins_users_path %></div>
+
     </div>
   </div>
 </div>
+
+     

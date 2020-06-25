@@ -4,6 +4,7 @@ class ApplicationController < ActionController::Base
   before_action :configure_permitted_parameters, if: :devise_controller?
   # devise利用の機能（ユーザ登録、ログイン認証など）が使われる場合、その前にconfigure_permitted_parametersを実行
 
+  before_action :request_path
   protected
   def configure_permitted_parameters
     devise_parameter_sanitizer.permit(:sign_up, keys: [:last_name, :first_name, :school_type, :prefecture, :school_name, :subject, :year, :user_status])
@@ -13,13 +14,12 @@ class ApplicationController < ActionController::Base
     # アカウント編集するときのストロングパロメーター   avatarはactive_storageのカラム
   end
 
-  # def after_sign_out_path_for(resource_or_scope)
-  #   if resource_or_scope == :user
-  #     new_user_session_path
-  #   elsif resource_or_scope == :admin
-  #     new_admin_session_path
-  #   else
-  #     root_path
-  #   end
-  # end
+  def request_path
+    @path = controller_path + '#' + action_name
+    def @path.is(*str)
+        str.map{|s| self.include?(s)}.include?(true)
+    end
+end
+
+
 end

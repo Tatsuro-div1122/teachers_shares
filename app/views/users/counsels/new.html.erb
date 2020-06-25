@@ -1,28 +1,36 @@
 <div class="container">
   <div class="row">
-    <div class="col-lg-10 col-lg-offset-1">
-      <h1>悩み相談提出</h1>
+    <div class="col-md-6 col-md-offset-3">
+
+      <h2>新規悩み相談</h2>
+
+      <!-- フォーム -->
       <%= form_with(model: @counsel, url: counsels_path, method: :post, local: true) do |f| %>
 
-      <div class="field">
+      <div class="input-group">
         <%= f.label :category, "カテゴリー" %><br />
-        <%= f.select :category, Counsel.categories.keys, {prompt: '選択してください'}, class: 'form-control btn btn-info' %>
+        <%= f.select :category, Counsel.categories.keys, {prompt: '選択してください'}, class: 'form-control btn btn-default' %>
       </div>
+      <br>
 
-      <div class="field">
+      <div class="form-group">
         <%= f.label :title, "タイトル" %><br />
         <%= f.text_field :title, autofocus: true, placeholder: "タイトルを入力してください", class: 'form-control' %>
       </div>
 
-      <div class="field">
+      <div class="form-group">
         <%= f.label :description, "悩みについて" %><br />
-        <%= f.text_area :description, autofocus: true, placeholder: "相談内容を書いてください", class: 'form-control' %>
+        <%= f.text_area :description, autofocus: true, rows: 10, placeholder: "相談内容を書いてください", class: 'form-control' %>
       </div>
 
-      <div class="actions">
-        <%= f.submit "提出内容を確認する", class: "btn btn-primary" %>
+      <div class="actions  text-center">
+        <%= f.submit "悩み相談を提出する", class: "btn btn-success" %>
       </div>
       <% end %>
+
+      <!-- 戻るボタン -->
+      <div><%= link_to "戻る", :back %></div>
+
     </div>
   </div>
 </div>

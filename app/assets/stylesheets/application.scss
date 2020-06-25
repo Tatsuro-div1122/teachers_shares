@@ -16,10 +16,263 @@
   @import "bootstrap-sprockets";
   @import "bootstrap";
 
-.notice {
-  color: green;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-.alert {
+.clearfix::after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  font-family: "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "メイリオ", Meiryo, Osaka, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif;
+  font-size: 16px;
+  width: 100%;
+  margin: 0;
+
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "メイリオ", Meiryo, Osaka, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif;
+  font-weight: 700;
+}
+
+/*ページネーション自体のデザイン*/
+.pagination>li>a {          
+  border: none;     /*枠線をなくす*/
+  color: #696969;   /*文字の色を変える*/
+}
+
+/* 表示しているページ番号のデザイン */
+.pagination>.active>a {     
+  background: #93c9ff;     /*背景の色を変える*/
+  border-radius: 15px;     /*角を丸くする*/
+}
+
+/*ホバー時のデザイン*/
+.pagination>li>a:hover {        
+  border-radius: 15px;    /*角を丸くする*/
+}
+
+header {
+  a:link {
+    color:white;
+    text-decoration:none
+   }
+  a:visited {
+    color:white;
+    text-decoration:none
+   }
+  a:hover {
+   color:blue;
+   text-decoration:none
+   }  
+   a:active {
+   color:blue;
+   text-decoration:none
+   }
+}
+
+.navbar {
+  background: #007bff;
+  background: linear-gradient(to right, #0062E6, #33AEFF);
+  border: none;
+  margin-bottom: 0;
+}
+
+
+main {
+  width: 100%;
+  height: 100%;
+}
+
+.success-message {
+  color: green;
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.failure-message {
   color: red;
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+
+// ゲストのトップ画面
+.guest-top {
+  height: 500px;
+  width: 100%;
+}
+
+
+.slide-image1 {
+  width: 100%;
+  height: 100%;
+  background-image: url(top4.jpg);
+  color: white;
+  background-position: center;
+  background-size: cover;
+  font-size: 18px;
+}
+
+.slide-image2 {
+  width: 100%;
+  height: 100%;
+  background-image: url(top5.jpg);
+  color: white;
+  background-position: center;
+  background-size: cover;
+  font-size: 18px;
+}
+
+.slide-image3 {
+  width: 100%;
+  height: 100%;
+  background-image: url(top2.jpg);
+  color: white;
+  background-position: center;
+  background-size: cover;
+  font-size: 18px;
+}
+
+.slide-image4 {
+  width: 100%;
+  height: 100%;
+  background-image: url(top3.jpg);
+  color: white;
+  background-position: center;
+  background-size: cover;
+  font-size: 18px;
+}
+
+.slide-image5 {
+  width: 100%;
+  height: 100%;
+  background-image: url(top1.jpg);
+  color: white;
+  background-position: center;
+  background-size: cover;
+  font-size: 18px;
+}
+
+
+.image-content {
+  width: 40%;
+  height: 100%;
+  background-color: rgba( 0, 0, 0, 0.5);
+  padding: 5% 1% 0 1%;
+}
+
+
+.feature {
+  margin: 5% 0;
+}
+
+.feature-headline {
+  text-align: center;
+  margin-bottom: 5%;
+}
+
+.feature-box {
+  margin-top: 5%;
+}
+
+.feature-icon {
+  text-align: center;
+}
+
+.feature-title {
+  text-decoration: underline;
+  text-align: center;
+  margin: 3% 0;
+}
+
+.feature-text {
+  font-size: 18px;
+  text-align: justify;
+  text-justify: inter-ideograph;
+  line-height: 2.0;
+}
+
+.about-image1 {
+  height: 300px;
+  background-image: url(top4.jpg);
+  background-position: center;
+  background-size: cover;
+
+}
+
+.about-image2 {
+  height: 300px;
+  background-image: url(top5.jpg);
+  background-position: center;
+  background-size: cover;
+}
+
+.about-image3 {
+  height: 300px;
+  background-image: url(top2.jpg);
+  background-position: center;
+  background-size: cover;
+}
+
+.about-image4 {
+  height: 300px;
+  background-image: url(top3.jpg);
+  background-position: center;
+  background-size: cover;
+}
+
+.about-image5 {
+  height: 300px;
+  background-image: url(top1.jpg);
+  background-position: center;
+  background-size: cover;
+}
+
+.about-introduction {
+  text-align: center;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.about-text {
+  line-height: 2.0;
+  font-size: 18px;
+}
+
+.call-to-action {
+  text-align: center;
+}
+// ゲストのトップ画面
+
+.mypage_nav_titles {
+  font-size: 11px
+}
+
+footer {
+  color: white;
+  width: 100%;
+  height: 90px;
+  margin-top: 40px;
+  text-align: right;
+  line-height: 90px;
+  background: #007bff;
+  background: linear-gradient(to right, #0062E6, #33AEFF)
 }

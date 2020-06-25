@@ -1,3 +1,75 @@
 // Place all the styles related to the home controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+.own-info-sidebar {
+  border: solid 1px;
+}
+
+.maybe-friends-sidebar {
+  margin-top: 30px;
+
+}
+
+.lesson-title {
+  width: 100%;
+  font-weight: bold;
+  font-size: 14px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+
+.lesson-description {
+  height: 40%;
+  width: 100%;
+  font-size: 12px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.lesson-tags {
+  width: 100%;
+  font-size: 10px;
+}
+
+.lesson-tag {
+  display: inline-block;
+  padding-right: 2%;
+}
+
+
+.own-info-sidebar {
+  border: solid 1px;
+}
+
+.maybe-friends-sidebar {
+  margin-top: 30px;
+
+}
+
+.counsel-title {
+  width: 100%;
+  font-weight: bold;
+  font-size: 14px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+
+.counsel-description {
+  height: 40%;
+  width: 100%;
+  font-size: 12px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.counsel-tag {
+  width: 100%;
+  font-size: 10px;
+}

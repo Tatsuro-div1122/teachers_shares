@@ -1,21 +1,18 @@
 class Users::UsersController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_user, except: [:index, :category_users]
+  before_action :correct_user, only: [:edit, :update, :lesson_bookmarks, :update_account]
+  before_action :maybe_friends_users, only: [:show, :follows, :followers, :lesson_bookmarks, :own_lessons, :own_counsels]
+  before_action :count_total_likes, only: [:show, :follows, :followers, :lesson_bookmarks, :own_lessons, :own_counsels]
   def index
-    @users = User.where(deleted_at: nil)
+    @users = User.where(deleted_at: nil).where.not(id: current_user.id).page(params[:page]).reverse_order
     @title = "参加している先生たち"
   end
 
   def show
-    @total_likes = LessonLike.where(user_id: current_user.id).count
-                   + LessonCommentLike.where(user_id: current_user.id).count
-                   + CounselCommentLike.where(user_id: current_user.id).count
-    @users = User.where(deleted_at: nil, prefecture: current_user.prefecture)
-                 .where.not(id: current_user.id)
-                 .order("RANDOM()").limit(5)
   end
 
   def edit
-
   end
 
   def update
@@ -30,45 +27,39 @@ class Users::UsersController < ApplicationController
     @title = "カテゴリー検索結果"
     @users = User.where(school_type: params[:school_type])
                  .where(subject: params[:subject])
-                 .where(prefecture: params[:prefecture])
+                 .where(prefecture: params[:prefecture]).page(params[:page]).reverse_order
+   
     render 'index'
   end
 
   def follows
-    @users = @user.followings.where(deleted_at: nil).order("created_at DESC")
-    @title = "フォロー中の先生たち"
-    render 'index'
+    @title = "フォロー中の先生"
+    @users = @user.followings.where(deleted_at: nil).page(params[:page]).reverse_order
   end
 
   def followers
-    @users = @user.followers.where(deleted_at: nil).order("created_at DESC")
-    @title = "フォロワーの先生たち"
-    render 'index'
-  end
-
-  def lesson_bookmarks
-    @title = "ブックマークリスト"
-    @lessons = @user.bookmark_lessons.includes(:user).order("created_at DESC")
-    render 'users/lessons/index'
+    @title = "フォロワーの先生"
+    @users = @user.followers.where(deleted_at: nil).page(params[:page]).reverse_order
+    render 'follows'
   end
 
   def own_lessons
-    @title = "#{@user.last_name}  #{@user.first_name} 先生の授業アイデア"
-    @lessons = @user.lessons.includes(:user).order("created_at DESC")
-    render 'users/lessons/index'
+    @lessons = @user.lessons.includes(:user).page(params[:page]).reverse_order
+  end
+
+  def lesson_bookmarks
+    @lessons = @user.bookmark_lessons.includes(:user).page(params[:page]).reverse_order
+    render 'own_lessons'
   end
 
   def own_counsels
-    @title = "#{@user.last_name}  #{@user.first_name} 先生の悩み相談"
-    @counsels = @user.counsels.includes(:user).order("created_at DESC")
-    render 'users/counsels/index'
+    @counsels = @user.counsels.includes(:user).page(params[:page]).reverse_order
   end
 
   def delete_account
   end
 
   def update_account
-    if @user == current_user
       @user.update(deleted_at: Time.current)
       reset_session
       redirect_to root_path, notice: "先生のアカウントは削除されました。ご利用ありがとうございました。"
@@ -78,13 +69,44 @@ class Users::UsersController < ApplicationController
   end
 
   private
+
   def set_user
     @user = User.find(params[:id])
-    redirect_to root_path, alert: "すでに退会された先生です" if @user.deleted_at != nil
+    if @user.deleted_at != nil
+    redirect_to root_path, alert: "すでに退会された先生です"
+  end
+
+  def correct_user
+    if @user != current_user
+    redirect_to root_path, alert: "他の先生のアカウントページです。" 
+    end
+  end
+
+  def maybe_friends_users
+    if @user == current_user
+      @users = User.where(deleted_at: nil, prefecture: current_user.prefecture)
+                   .where.not(id: current_user.id)
+                   .order("RANDOM()").limit(5)
+    end
   end
 
   def user_params
     params.require(:user).permit(:last_name, :first_name, :school_type, :prefecture, :school_name, :subject, :year, :introduction, :avatar)
   end
 
+  def count_total_likes
+    @total_likes = 0
+    user_lessons = @user.lessons
+    user_lessons.each do |user_lesson|
+       @total_likes += LessonLike.where(lesson_id: user_lesson.id).count
+    end
+    user_lesson_comments = @user.lesson_comments
+    user_lesson_comments.each do |user_lesson_comment|
+       @total_likes += LessonCommentLike.where(lesson_comment_id: user_lesson_comment.id).count
+    end
+    user_counsel_comments = @user.counsel_comments
+    user_counsel_comments.each do |user_counsel_comment|
+       @total_likes += CounselCommentLike.where(counsel_comment_id: user_counsel_comment.id).count
+    end
+  end
 end

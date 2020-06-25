@@ -1,6 +1,7 @@
 # == Route Map
 #
 #                    Prefix Verb   URI Pattern                                                                              Controller#Action
+#      users_messages_index GET    /users/messages/index(.:format)                                                          users/messages#index
 #         new_admin_session GET    /admins/sign_in(.:format)                                                                admins/sessions#new
 #             admin_session POST   /admins/sign_in(.:format)                                                                admins/sessions#create
 #     destroy_admin_session DELETE /admins/sign_out(.:format)                                                               admins/sessions#destroy
@@ -65,6 +66,7 @@
 #                      user GET    /users/:id(.:format)                                                                     users/users#show
 #                           PATCH  /users/:id(.:format)                                                                     users/users#update
 #                           PUT    /users/:id(.:format)                                                                     users/users#update
+#           confirm_lessons GET    /lessons/confirm(.:format)                                                               users/lessons#confirm
 #       lesson_lesson_likes DELETE /lessons/:lesson_id/lesson_likes(.:format)                                               users/lesson_likes#destroy
 #                           POST   /lessons/:lesson_id/lesson_likes(.:format)                                               users/lesson_likes#create
 #   lesson_lesson_bookmarks DELETE /lessons/:lesson_id/lesson_bookmarks(.:format)                                           users/lesson_bookmarks#destroy
@@ -123,7 +125,7 @@ Rails.application.routes.draw do
     resources :lesson_comments, only: [:destroy]
     resources :counsels, only: [:index, :show, :destroy]
     resources :counsel_comments, only: [:destroy]
-    get 'home/admin_top', as: :admin_top
+    get 'home', to: 'home#top'
     get 'search', to: 'search#search'
     get 'category/users', to: 'users#category_users'
     get 'category/lessons', to: 'lessons#category_lessons'
@@ -144,18 +146,20 @@ Rails.application.routes.draw do
         patch 'delete_account', to: 'users#update_account'
       end
     end
+
     resources :lessons do
-      #   collection do
-      #     post :new, path: :new, as: :new, action: :back
-      #     post :confirm
-      #   end
         resource  :lesson_likes,      only: [:create, :destroy]
         resource  :lesson_bookmarks,  only: [:create, :destroy]
         resources :lesson_comments,   only: [:create, :destroy]
+        # collection do
+        #   post 'confirm', to: 'lessons#confirm', as: :confirm
+        # end
     end
+
     resources :counsels do
         resources :counsel_comments,   only: [:create, :destroy]
     end
+
     root    'home#top'
     get     'about', to: 'home#about'
     get     'search', to: 'search#search'

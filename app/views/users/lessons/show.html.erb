@@ -1,105 +1,127 @@
 <div class="container">
   <div class="row">
-    <div class="col-lg-2">
+    <div class="col-md-2">
       <%= render 'users/shared/lesson_category' %>
     </div>
-    <div class="col-lg-9">
+    <div class="col-md-6 col-md-offset-2">
+      <!-- ユーザについて -->
       <section>
-        <% if @lesson.user_deleted?(@user) %>
-          <p>退会済みの先生</p>
+        <div class="media">
+        <!-- 退会済みユーザ対応 -->
+        <% if @lesson.user_deleted?(@lesson.user) %>
+          <%= link_to "#", class: "media-left" do %>
+            <%= image_tag "default_user.png", size: "100x100" %>
+          <% end %>
         <% else %>
-          <%= link_to user_path(@user) do %>
-            <span>
-              <% if @user.avatar.attached? %>
-                <%= image_tag @user.avatar.variant(resize: "60x60") %>
-              <% else %>
-                <%= image_tag("default_user.png", size: "60x60") %>
+          <!-- プロフィール画像 -->
+          <% if @lesson.user.avatar.attached? %>
+            <%= link_to @lesson.user, class: "media-left" do %>
+              <%= image_tag @lesson.user.avatar.variant(resize: "100x100") %>
+            <% end %>
+          <% else %>
+            <%= link_to @lesson.user, class: "media-left" do %>
+              <%= image_tag "default_user.png", size: "64x64" %>
+            <% end %>
+          <% end %>
+        <% end %>
+
+        <!-- ユーザー情報 -->
+        <div class="media-body" >
+          <h3 class="media-heading">
+            <!-- 退会済みユーザ対応 -->
+            <% if @lesson.user_deleted?(@lesson.user) %>
+              退会済みの先生
+            <% else %>
+              <%= link_to user_path(@lesson.user) do %>
+                <%= @lesson.user.last_name %> <%= @lesson.user.first_name %>
               <% end %>
-            </span>
-            <p><strong><%= @user.last_name + @user.first_name %></strong></p>
-            <p><%= @user.school_name %></p>
-          <% end %>
-        <% end %>
-        <p><%= @lesson.school_type %></p>
-        <p><%= @lesson.subject %></p>
-        <p><%= @lesson.created_at.to_s(:datetime) %></p>
-        <% unless @lesson.user_deleted?(@user) %>
-          <span><%= render 'users/shared/follow', user: @user %></span>
-        <% end %>
-        <span><%= render 'users/shared/lesson_like', lesson: @lesson %></span>
-        <span><%= render 'users/shared/lesson_bookmark', lesson: @lesson %></span>
-      </section>
-      <section>
-        <h1><%= @lesson.title %></h1>
-        <% if @lesson.file.attached? %>
-        <span>
-          <%= link_to  @lesson.file, download: " ", class: "btn btn-secondary" do %>
-            <i class="fas fa-paperclip"></i> 資料をダウンロード
-          <% end %>
-        </span>
-        <% end %>
-        <p><%= @lesson.description %></p>
-        <% if current_user.own_lesson?(@lesson) %>
-          <span>
-            <%= link_to edit_lesson_path(@lesson) do %>
-              <i class="far fa-edit"></i> 編集する
             <% end %>
-          </span>
-          <span>
-            <%= link_to lesson_path(@lesson), method: :delete, data: {confirm:"本当に削除してもよろしいですか？"} do %>
-              <i class="far fa-trash-alt"></i> 削除する
-            <% end %>
-          </span>
-        <% end %>
-      </section>
-      <!-- コメント -->
-      <section>
-        <span>
-          <i class="far fa-comments"></i> コメント 全<%= @lesson_comments.count %>件
-        </span>
-        <!-- コメントフォーム -->
-        <div class="form-group">
-          <%= form_with model: [@lesson, @lesson_comment], local: true do |f| %>
-            <%= f.text_field :comment, autofocus: true, placeholder: "コメントを記入してください", class: "form-control" %>
-            <%= f.submit "コメント", class: "btn btn-sm btn-primary" %>
+            <!-- フォローボタン -->
+            <% unless @lesson.user_deleted?(@lesson.user) %>
+              <span id="follow_<%= @lesson.user.id %>"><%= render 'users/shared/follow', user: @lesson.user %></span>
+          </h3>
+          <p><%= @lesson.user.school_name %></p>
           <% end %>
         </div>
-        <!-- コメント一覧 -->
-        <% if @lesson_comments.any? %>
-        <table>
-           <% @lesson_comments.each do |lesson_comment| %>
-            <tr>
-              <td>
-                  <% if lesson_comment.user_deleted?(lesson_comment.user) %>
-                    <p>退会済みの先生<p>
-                  <% else %>
-                    <%= link_to user_path(lesson_comment.user) do %>
-                      <% if lesson_comment.user.avatar.attached? %>
-                        <%= image_tag lesson_comment.user.avatar.variant(resize: "50x50") %>
-                      <% else %>
-                        <%= image_tag("default_user.png", size: "50x50") %>
-                      <% end %>
-                      <ul>
-                        <li><%= lesson_comment.user.last_name + lesson_comment.user.first_name %></li>
-                    <% end %>
-                  <% end %>
-                        <li><%= lesson_comment.created_at.to_s(:datetime) %></li>
-                      </ul>
-                      <p><%= lesson_comment.comment %></p>
-                      <%= render 'users/shared/lesson_comment_like', {lesson_comment: lesson_comment} %>
-                  <% if lesson_comment.user == current_user %>
-                    <span>
-                      <%= link_to lesson_lesson_comment_path(lesson_comment), method: :delete, data: {confirm:"本当に削除してもよろしいですか？"} do %>
-                        <i class="far fa-trash-alt"></i>
-                      <% end %>
-                    </span>
-                  <% end %>
-              </td>
-            </tr>
-           <% end %>
-         </table>
-         <% end %>
       </section>
+      
+      <!-- 授業について -->
+      <section>
+        <!-- 授業情報 -->
+        <h2>
+          <%= @lesson.title %>
+        </h2>
+        <!-- ブックマークボタン -->
+        <span id="lesson_bookmark_<%= @lesson.id %>" class="pull-right"><%= render 'users/shared/lesson_bookmark', lesson: @lesson %></span>
+
+        <ul class="list-unstyled list-inline">
+          <li><span class="label label-default"><%= @lesson.school_type %></span></li>
+          <li><span class="label label-default"><%= @lesson.subject %></span></li>
+          <li><%= @lesson.created_at.to_s(:datetime) %></li>
+        </ul>
+        <!-- 添付資料 -->
+        <% if @lesson.file.attached? %>
+          <div class="text-center">
+            <% if @accept_image_types.any?(File.extname(@lesson.file.filename.to_s)) %>
+              <%= image_tag @lesson.file %>
+            <% end %>
+            <%= link_to  @lesson.file, download: " ", class: "btn btn-default btn-sm" do %>
+              <i class="fas fa-paperclip"></i> 資料をダウンロード
+            <% end %>
+          </div>
+        <% end %>
+        <br>
+
+        <!-- 本文 -->
+          <p><%= @lesson.description %></p>
+
+        <!-- いいねボタン -->
+        <span id="lesson_like_<%= @lesson.id %>"><%= render 'users/shared/lesson_like', lesson: @lesson, user: @lesson.user  %></span>
+
+        <!-- 編集・削除ボタン -->
+        <% if current_user.own_lesson?(@lesson) %>
+        <ul class="list-unstyled list-inline text-right">
+          <li>
+            <%= link_to edit_lesson_path(@lesson) do %>
+              <i class="fas fa-edit"></i> 編集する
+            <% end %>
+          </li>
+          <li>
+            <%= link_to lesson_path(@lesson), method: :delete, data: {confirm:"本当に削除してもよろしいですか？"} do %>
+              <i class="fas fa-trash-alt"></i> 削除する
+            <% end %>
+          </li>
+        <% end %>
+      </section>
+      <hr>
+
+      <!-- コメント -->
+      <section>
+        <span id="lesson_comment_counts">
+          <i class="far fa-comments"></i> コメント 全<%= @lesson_comments.count %>件
+        </span>
+
+        <!-- コメントフォーム -->
+        <div class="form-group">
+          <%= form_with model: [@lesson, @lesson_comment] do |f| %>
+          <div class="form-group">
+            <%= f.text_field :comment, autofocus: true, placeholder: "コメントを記入してください", class: "form-control" %>
+          </div>
+          <div class="action text-right">
+            <%= f.submit "投稿", class: "btn btn-sm btn-success" %>
+          </div>
+          <% end %>
+        </div>
+        
+        <!-- コメント一覧 -->
+          <div id="lesson_comment_area">
+                <%= render 'users/shared/lesson_comment_index', lesson_comments: @lesson_comments %>
+          </div>
+      </section>
+
+      <!-- 戻るボタン -->
+     <div><%= link_to "戻る", lessons_path %></div>
+
     </div>
   </div>
 </div>

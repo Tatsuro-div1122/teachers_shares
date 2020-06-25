@@ -8,14 +8,14 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # before_action :configure_account_update_params, only: [:update]
 
   # GET /resource/sign_up
-  def new
-    super
-  end
+  # def new
+  #   super
+  # end
 
   # POST /resource
-  def create
-    super
-  end
+  # def create
+  #   super
+  # end
 
   # GET /resource/edit
   # def edit
@@ -58,6 +58,14 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
 
   protected
+  def correct_user
+    user = User.find(params[:id])
+    if user != current_user
+      redirect_to root_path
+    end
+  end
+
+
   #アカウント編集をパスなしで行う
   def update_resource(resource, params)
     resource.update_without_password(params)

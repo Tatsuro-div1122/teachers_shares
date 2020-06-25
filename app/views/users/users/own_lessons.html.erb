@@ -1,0 +1,26 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-2">
+      <section>
+        <div id="user_info_<%= @user.id %>">
+          <%= render 'users/shared/user_info', user: @user, total_likes: @total_likes %>
+        </div>
+        <% if @user == current_user %>
+          <%= render 'users/shared/maybe_friends', users: @users %>
+        <% end %>
+      </section>
+    </div>
+    <div class="col-md-10">
+
+      <!-- メニュータブ -->
+      <section>
+        <%= render 'users/shared/mypage_tab', path: @path, user: @user %>
+      </section>
+
+      <!-- 授業アイデア一覧 -->
+      <section>
+        <%= render 'users/shared/lesson_index', lessons: @lessons %>
+      </section>
+    </div>
+  </div>
+</div>

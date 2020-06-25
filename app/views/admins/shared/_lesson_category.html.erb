@@ -1,22 +1,43 @@
 <section>
-  <div>
-    <p>カテゴリーで探す</p>
-    <ul>
+  <table class="table table-hover text-left">
+    <thead>
+      <tr class="warning">
+        <th>校種から探す</th>
+      </tr>
+    </thead>
+    <tbody>
       <% Lesson.school_types.keys.each do |school_type| %>
-        <li>
-          <%= link_to admins_category_lessons_path(school_type: school_type) do %>
-            <%= school_type %>
-          <% end %>
-        </li>
+        <tr>
+          <td>
+            <%= link_to admins_category_lessons_path(school_type: school_type) do %>
+              <%= school_type %>
+            <% end %>
+          </td>
+        </tr>
       <% end %>
+    </tbody>
+  </table>
+  <table class="table table-hover text-left">
+    <thead>
+      <tr class="warning">
+        <th>教科から探す</th>
+      </tr>
+    </thead>
+    <tbody>
       <% Lesson.subjects.keys.each do |subject| %>
-        <li>
-          <%= link_to admins_category_lessons_path(subject: subject) do %>
-            <%= subject %>
-          <% end %>
-        </li>
+        <tr>
+          <td>
+            <%= link_to admins_category_lessons_path(subject: subject) do %>
+              <%= subject %>
+            <% end %>
+          </td>
+        </tr>
       <% end %>
-    </ul>
-  </div>
+      <tr>
+        <td>
+          <%= link_to "全て", admins_lessons_path %>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </section>
-

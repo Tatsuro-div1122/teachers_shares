@@ -1,0 +1,21 @@
+<div class="container top">
+  <% if admin_signed_in? %>
+      <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+          <h1>管理者画面</h1>
+          <br>
+          <ul class="list-unstyled list-inline">
+            <li>
+              <span><%= link_to "授業", admins_lessons_path, class: "btn btn-warning" %></span>
+            </li>
+            <li>
+              <span><%= link_to "悩み相談",admins_counsels_path, class: "btn btn-info" %></span>
+            </li>
+            <li>
+              <span><%= link_to "先生", admins_users_path, class: "btn btn-success" %></span>
+            </li>
+          </ul>
+        </div>
+      </div>
+  <% end %>
+</div>
