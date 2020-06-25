@@ -26,6 +26,7 @@
           <!-- ユーザー情報 -->
           <div class="media-body" >
             <h3 class="media-heading">
+              <!-- 退会済みユーザ対応 -->
               <% if @lesson.user_deleted?(@lesson.user) %>
                 <%= link_to "#{@lesson.user.last_name} #{@lesson.user.first_name}(退会済)", admins_user_path(@lesson.user) %>
               <% else %>
@@ -34,8 +35,8 @@
             </h3>
             <p><%= @lesson.user.school_name %></p>
             <ul class="list-unstyled list-inline">
-              <li><%= @lesson.school_type %></li>
-              <li><%= @lesson.subject %></li>
+              <li><span class="label label-success"><%= @lesson.school_type %></span></li>
+              <li><span class="label label-danger"><%= @lesson.subject %></span></li>
               <li><%= @lesson.created_at.to_s(:datetime) %></li>
             </ul>
           </div>
@@ -78,7 +79,7 @@
         </span>
         <!-- コメント一覧 -->
         <% if @lesson_comments.any? %>
-        <% lesson_comments.each do |lesson_comment| %>
+        <% @lesson_comments.each do |lesson_comment| %>
           <div class="media">
             <!-- 退会済ユーザー画像 -->
             <% if lesson_comment.user_deleted?(lesson_comment.user) %>

@@ -1,9 +1,11 @@
 class Users::UsersController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_user, except: [:index, :category_users]
+  before_action :correct_user, only: [:edit, :update, :lesson_bookmarks, :update_account]
   before_action :maybe_friends_users, only: [:show, :follows, :followers, :lesson_bookmarks, :own_lessons, :own_counsels]
   before_action :count_total_likes, only: [:show, :follows, :followers, :lesson_bookmarks, :own_lessons, :own_counsels]
   def index
-    @users = User.where(deleted_at: nil).where.not(id: current_user.id).order("created_at DESC")
+    @users = User.where(deleted_at: nil).where.not(id: current_user.id).page(params[:page]).reverse_order
     @title = "参加している先生たち"
   end
 
@@ -25,38 +27,39 @@ class Users::UsersController < ApplicationController
     @title = "カテゴリー検索結果"
     @users = User.where(school_type: params[:school_type])
                  .where(subject: params[:subject])
-                 .where(prefecture: params[:prefecture])
+                 .where(prefecture: params[:prefecture]).page(params[:page]).reverse_order
+   
     render 'index'
   end
 
   def follows
     @title = "フォロー中の先生"
-    @users = @user.followings.where(deleted_at: nil).order("created_at DESC")
+    @users = @user.followings.where(deleted_at: nil).page(params[:page]).reverse_order
   end
 
   def followers
     @title = "フォロワーの先生"
-    @users = @user.followers.where(deleted_at: nil).order("created_at DESC")
+    @users = @user.followers.where(deleted_at: nil).page(params[:page]).reverse_order
     render 'follows'
   end
 
-  def lesson_bookmarks
-    @lessons = @user.bookmark_lessons.includes(:user).order("created_at DESC")
+  def own_lessons
+    @lessons = @user.lessons.includes(:user).page(params[:page]).reverse_order
   end
 
-  def own_lessons
-    @lessons = @user.lessons.includes(:user).order("created_at DESC")
+  def lesson_bookmarks
+    @lessons = @user.bookmark_lessons.includes(:user).page(params[:page]).reverse_order
+    render 'own_lessons'
   end
 
   def own_counsels
-    @counsels = @user.counsels.includes(:user).order("created_at DESC")
+    @counsels = @user.counsels.includes(:user).page(params[:page]).reverse_order
   end
 
   def delete_account
   end
 
   def update_account
-    if @user == current_user
       @user.update(deleted_at: Time.current)
       reset_session
       redirect_to root_path, notice: "先生のアカウントは削除されました。ご利用ありがとうございました。"
@@ -69,7 +72,14 @@ class Users::UsersController < ApplicationController
 
   def set_user
     @user = User.find(params[:id])
-    redirect_to root_path, alert: "すでに退会された先生です" if @user.deleted_at != nil
+    if @user.deleted_at != nil
+    redirect_to root_path, alert: "すでに退会された先生です"
+  end
+
+  def correct_user
+    if @user != current_user
+    redirect_to root_path, alert: "他の先生のアカウントページです。" 
+    end
   end
 
   def maybe_friends_users
@@ -92,7 +102,7 @@ class Users::UsersController < ApplicationController
     end
     user_lesson_comments = @user.lesson_comments
     user_lesson_comments.each do |user_lesson_comment|
-       @total_likes += LessonCommentLike.where(lesson_commet_id: user_lesson_comment.id).count
+       @total_likes += LessonCommentLike.where(lesson_comment_id: user_lesson_comment.id).count
     end
     user_counsel_comments = @user.counsel_comments
     user_counsel_comments.each do |user_counsel_comment|

@@ -11,14 +11,14 @@
       </section>
     </div>
     <div class="col-md-10">
+
+      <!-- メニュータブ -->
       <section>
-        <ul class="nav nav-tabs nav-justified">
-          <li role="presentation"><%= link_to "ホーム", user_path(@user) %></li>
-          <li role="presentation" class="active"><%= link_to "授業アイデア(#{@user.lessons.count})", own_lessons_user_path(@user) %></li>
-          <li role="presentation"><%= link_to "悩み相談(#{@user.counsels.count})", own_counsels_user_path(@user) %></li>
-          <li role="presentation"><%= link_to "メッセージ(#{@user.messages.count})", user_messages_path(@user) %></li>
-          <li role="presentation"><%= link_to "ブックマーク(#{@user.lesson_bookmarks.count})", lesson_bookmarks_user_path(@user) %></li>
-        </ul>
+        <%= render 'users/shared/mypage_tab', path: @path, user: @user %>
+      </section>
+
+      <!-- 授業アイデア一覧 -->
+      <section>
         <%= render 'users/shared/lesson_index', lessons: @lessons %>
       </section>
     </div>

@@ -1,35 +1,57 @@
+<!-- 件数 -->
+<p><%= lessons.offset_value %>〜<%= lessons.offset_value + lessons.length %>件を表示 (全 <%= lessons.total_count %> 件)</p>
+
+<!-- ページャ -->
+<div class="text-center">
+  <%= paginate lessons %>
+</div>
+
 <% lessons.each do |lesson| %>
+
+  <% user = lesson.user %>
   <div class="media">
 
     <!-- プロフィール画像 -->
-    <% if lesson.user.avatar.attached? %>
-      <%= link_to lesson.user, class: "media-left" do %>
-        <%= image_tag lesson.user.avatar.variant(resize: "64x64") %>
-      <% end %>
-    <% else %>
-      <%= link_to lesson.user, class: "media-left" do %>
+    <% if lesson.user_deleted?(lesson.user) %>
+      <%= link_to "#", class: "media-left" do %>
         <%= image_tag "default_user.png", size: "64x64" %>
       <% end %>
+    <% else %>
+      <% if user.avatar.attached? %>
+        <%= link_to user, class: "media-left" do %>
+          <%= image_tag user.avatar.variant(resize: "64x64") %>
+        <% end %>
+      <% else %>
+        <%= link_to user, class: "media-left" do %>
+          <%= image_tag "default_user.png", size: "64x64" %>
+        <% end %>
+      <% end %>
     <% end %>
-    
     <div class="media-body" >
 
       <!-- ユーザー情報 -->
       <ul class="list-unstyled list-inline">
-        <li><%= lesson.user.last_name %> <%= lesson.user.first_name %></li>
-        <li><%= lesson.created_at.to_s(:datetime) %></li>
-        <!-- ブックマークボタン -->
-        <li id="lesson_bookmark_<%= lesson.id %>"><%= render 'users/shared/lesson_bookmark', lesson: lesson %></li>
-        <!-- 編集/削除ボタン -->
-        <% if current_user.own_lesson?(lesson) %>
-        <li>
-          <%= link_to edit_lesson_path(lesson) do %>
-            <i class="fas fa-edit"></i>
+        <!-- 退会済ユーザー対応 -->
+        <% if lesson.user_deleted?(lesson.user) %>
+          <li>退会済みの先生</li>
+        <% else %>
+          <li><%= user.last_name %> <%= user.first_name %></li>
+          <li><%= lesson.created_at.to_s(:datetime) %></li>
+          <!-- ブックマークボタン -->
+          <li id="lesson_bookmark_<%= lesson.id %>"><%= render 'users/shared/lesson_bookmark', lesson: lesson %></li>
+          <!-- 編集/削除ボタン -->
+          <% if current_user.own_lesson?(lesson) %>
+          <li>
+            <%= link_to edit_lesson_path(lesson) do %>
+              <i class="fas fa-edit"></i>
+            <% end %>
+          </li>
+          <li>
+            <%= link_to lesson_path(lesson), method: :delete, data: {confirm:"本当に削除してもよろしいですか？"} do %>
+              <i class="fas fa-trash-alt"></i>
+            <% end %>
+          </li>
           <% end %>
-        </li>
-        <li>
-          
-        </li>
         <% end %>
       </ul>
 
@@ -43,14 +65,19 @@
 
       <!-- 授業情報 -->
       <ul class="list-unstyled list-inline">
-        <li><%= lesson.school_type %></li>
-        <li><%= lesson.grade %></li>
-        <li><%= lesson.subject %></li>
+        <li><span class="label label-default"><%= lesson.school_type %></span></li>
+        <li><span class="label label-default"><%= lesson.grade %></span></li>
+        <li><span class="label label-default"><%= lesson.subject %></span></li>
         <!-- いいねボタン -->
-        <li id="lesson_like_<%= lesson.id %>"><%= render 'users/shared/lesson_like', lesson: lesson, user: lesson.user %></li>
+        <li id="lesson_like_<%= lesson.id %>"><%= render 'users/shared/lesson_like', lesson: lesson, user: user %></li>
       </ul>
 
       <hr>
     </div>
   </div>
 <% end %>
+
+<!-- ページャ -->
+<div class="text-center">
+  <%= paginate lessons %>
+</div>

@@ -1,2 +1,2 @@
 $("#follow_<%= @user.id %>").html("<%= j(render 'users/shared/follow', user: @user) %>")
-$("#user_info_<%= @user.id %>").html("<%= j(render 'users/shared/user_info', user: @user, total_likes: @total_likes) %>")
+$("#user_info_total_follows").html("<%= @user.active_relationships.count %>")

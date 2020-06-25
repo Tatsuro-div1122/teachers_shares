@@ -125,7 +125,7 @@ Rails.application.routes.draw do
     resources :lesson_comments, only: [:destroy]
     resources :counsels, only: [:index, :show, :destroy]
     resources :counsel_comments, only: [:destroy]
-    get 'home/admin_top', as: :admin_top
+    get 'home', to: 'home#top'
     get 'search', to: 'search#search'
     get 'category/users', to: 'users#category_users'
     get 'category/lessons', to: 'lessons#category_lessons'

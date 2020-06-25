@@ -10,9 +10,10 @@
      <!-- 授業アイデア一覧 -->
     <div class="col-md-10">
       <section>
-      <h2><%= @title %>一覧</h2>
-      <span>1~10件表示 (全<%= @lessons.count %>件)</span>
-      <%= render 'users/shared/lesson_index', lessons: @lessons %>
+        <div>
+          <h2><%= @title %></h2>
+        </div>
+        <%= render 'users/shared/lesson_index', lessons: @lessons %>
       </section>
     </div>
   </div>

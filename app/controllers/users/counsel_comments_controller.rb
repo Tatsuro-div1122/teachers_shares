@@ -1,26 +1,27 @@
 class Users::CounselCommentsController < ApplicationController
+  before_action :authenticate_user!
   def create
     @counsel = Counsel.find(params[:counsel_id])
-    counsel_comment = current_user.counsel_comments.new(counsel_comment_params)
-    counsel_comment.counsel_id = @counsel.id
-    if counsel_comment.save
-      redirect_to request.referer, notice: "コメントを投稿しました"
-    else
+    @counsel_comment = current_user.counsel_comments.new(counsel_comment_params)
+    @counsel_comment.counsel_id = @counsel.id
+    @counsel_comments = @counsel.counsel_comments.order("created_at DESC")
+    unless @counsel_comment.save
       flash.now[:alert] = "コメントを入力してください"
       @user = @counsel.user
-      @counsel_comments = @counsel.counsel_comments.includes(:user).order("created_at DESC")
       @counsel_comment = CounselComment.new
       render 'users/counsels/show'
     end
   end
 
   def destroy
-    counsel_comment = CounselComment.find(params[:counsel_id])
-    if counsel_comment.user != current_user
+    @counsel_comment = CounselComment.find(params[:id])
+    counsel = @counsel_comment.counsel
+    @counsel_comments = CounselComment.where(counsel_id: counsel.id).order("created_at DESC")
+    if @counsel_comment.user != current_user
       redirect_to request.referer
     else
-      counsel_comment.destroy
-      redirect_to request.referer, alert: "コメントを削除しました"
+      @counsel_comment.destroy
+      # redirect_to request.referer, alert: "コメントを削除しました"
     end
   end
 

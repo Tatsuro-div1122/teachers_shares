@@ -2,23 +2,21 @@
   <div class="row">
     <div class="col-md-2">
       <section>
-        <div id="user_info_<%= @user.id %>">
-          <%= render 'users/shared/user_info', user: @user, total_likes: @total_likes %>
-        </div>
+        <%= render 'users/shared/user_info', user: @user, total_likes: @total_likes %>
       <% if @user == current_user %>
         <%= render 'users/shared/maybe_friends', users: @users %>
       <% end %>
       </section>
     </div>
     <div class="col-md-10">
+      
+      <!-- メニュータブ -->
       <section>
-        <ul class="nav nav-tabs nav-justified">
-          <li role="presentation"><%= link_to "ホーム", user_path(@user) %></li>
-          <li role="presentation"><%= link_to "授業アイデア(#{@user.lessons.count})", own_lessons_user_path(@user) %></li>
-          <li role="presentation" class="active"><%= link_to "悩み相談(#{@user.counsels.count})", own_counsels_user_path(@user) %></li>
-          <li role="presentation"><%= link_to "メッセージ(#{@user.messages.count})", user_messages_path(@user) %></li>
-          <li role="presentation"><%= link_to "ブックマーク(#{@user.lesson_bookmarks.count})", lesson_bookmarks_user_path(@user) %></li>
-        </ul>
+        <%= render 'users/shared/mypage_tab', path: @path, user: @user %>
+      </section>
+
+      <!-- 相談一覧 -->
+      <section>
         <%= render 'users/shared/counsel_index', counsels: @counsels %>
       </section>
     </div>

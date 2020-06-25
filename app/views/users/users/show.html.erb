@@ -1,24 +1,24 @@
 <div class="container">
   <div class="row">
     <div class="col-md-2">
+      <!-- サイドバー -->
       <section>
       <div id="user_info_<%= @user.id %>">
         <%= render 'users/shared/user_info', user: @user, total_likes: @total_likes %>
       </div>
+      <br>
       <% if @user == current_user %>
         <%= render 'users/shared/maybe_friends', users: @users %>
       <% end %>
       </section>
     </div>
     <div class="col-md-10">
+      <!-- メニュータブ -->
       <section>
-        <ul class="nav nav-tabs nav-justified">
-          <li role="presentation" class="active"><%= link_to "ホーム", user_path(@user) %></li>
-          <li role="presentation"><%= link_to "授業アイデア(#{@user.lessons.count})", own_lessons_user_path(@user) %></li>
-          <li role="presentation"><%= link_to "悩み相談(#{@user.counsels.count})", own_counsels_user_path(@user) %></li>
-          <li role="presentation"><%= link_to "メッセージ(#{@user.messages.count})", user_messages_path(@user) %></li>
-          <li role="presentation"><%= link_to "ブックマーク(#{@user.lesson_bookmarks.count})", lesson_bookmarks_user_path(@user) %></li>
-        </ul>
+        <%= render 'users/shared/mypage_tab', path: @path, user: @user %>
+      </section>
+
+      <!-- ユーザー情報 -->
         <div class="user-image">
           <% if @user.avatar.attached? %>
             <%= image_tag @user.avatar.variant(resize: "400x300"), class: "img-responsive img-thumbnail" %>
@@ -56,10 +56,19 @@
             <p class="user-info"><%= @user.introduction %></p>
           </li>
         </ul>
+
+        <!-- アカウント設定ボタン -->
         <% if @user == current_user %>
-          <span><%= link_to "プロフィールを編集する", edit_user_path(@user), class: "btn btn-default" %></span>
+          <ul class="list-unstyled list-inline">
+            <li><%= link_to "プロフィール編集", edit_user_path(@user), class: "btn btn-default" %></li>
+            <li><%= link_to "アカウント設定", edit_user_registration_path, class: "btn btn-default" %></li>
+          </ul>
         <% end %>
       </section>
+
+      <!-- 戻るボタン -->
+      <div><%= link_to "戻る", users_path %></div>
+
     </div>
   </div>
 </div>

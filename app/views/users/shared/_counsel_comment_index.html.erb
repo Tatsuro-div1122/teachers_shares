@@ -1,56 +1,61 @@
-<% if counsel_comments.any? %>
-<% counsel_comments.each do |counsel_comment| %>
-  <div class="media">
-    <!-- 退会済ユーザー画像 -->
-    <% if counsel_comment.user_deleted?(counsel_comment.user) %>
-      <%= link_to "#", class: "media-left" do %>
-        <%= image_tag "default_user.png", size: "64x64" %>
-      <% end %>
-    <!-- 会員ユーザー画像 -->
-    <% else %>
-      <% if counsel_comment.user.avatar.attached? %>
-        <%= link_to counsel_comment.user, class: "media-left" do %>
-          <%= image_tag counsel_comment.user.avatar.variant(resize: "64x64") %>
-        <% end %>
-      <% else %>
-        <%= link_to counsel_comment.user, class: "media-left" do %>
+<% @counsel_comments.each do |counsel_comment| %>
+  <div id="js_counsel_comment_<%= counsel_comment.id %>">
+
+    <% user = counsel_comment.user %>
+
+    <div class="media">
+      <!-- 退会済ユーザー対応 -->
+      <% if counsel_comment.user_deleted?(user) %>
+        <%= link_to "#", class: "media-left" do %>
           <%= image_tag "default_user.png", size: "64x64" %>
         <% end %>
-      <% end %>
-    <% end %>
-
-    <div class="media-body" >
-
-      <!-- ユーザー情報 -->
-      <ul class="list-unstyled list-inline">
-        <% if counsel_comment.user_deleted?(counsel_comment.user) %>
-          <li>退会済みの先生</li>
+      <!-- 会員ユーザー画像 -->
+      <% else %>
+        <% if user.avatar.attached? %>
+          <%= link_to user, class: "media-left" do %>
+            <%= image_tag user.avatar.variant(resize: "64x64") %>
+          <% end %>
         <% else %>
-          <li>
-            <%= link_to user_path(counsel_comment.user) do %>
-              <%= counsel_comment.user.last_name %> <%= counsel_comment.user.first_name %>
-            <% end %>
-          </li>
+          <%= link_to user, class: "media-left" do %>
+            <%= image_tag "default_user.png", size: "64x64" %>
+          <% end %>
         <% end %>
-          <li><%= counsel_comment.created_at.to_s(:datetime) %></li>
-          <li>
-            <!-- コメント削除ボタン -->
-            <% if counsel_comment.user == current_user %>
-              <%= link_to counsel_counsel_comment_path(counsel_comment), method: :delete, data: {confirm:"本当に削除してもよろしいですか？"} do %>
-                  <i class="fas fa-trash-alt"></i>
-              <% end %>
-            <% end %>
-          </li>
-      </ul>
-      <!-- コメント本文 -->
-      <p><%= counsel_comment.comment %></p>
+      <% end %>
 
-      <!-- いいねボタン -->
-      <span id="counsel_comment_like_<%= counsel_comment.id %>">
-        <%= render 'users/shared/counsel_comment_like', {counsel_comment: counsel_comment} %>
-      </span>
+      <div class="media-body" >
+
+        <!-- ユーザー情報 -->
+        <ul class="list-unstyled list-inline">
+          <!-- 退会済ユーザー対応 -->
+          <% if counsel_comment.user_deleted?(user) %>
+            <li>退会済みの先生</li>
+          <% else %>
+            <li>
+              <%= link_to user_path(user) do %>
+                <%= user.last_name %> <%= user.first_name %>
+              <% end %>
+            </li>
+          <% end %>
+            <li><%= counsel_comment.created_at.to_s(:datetime) %></li>
+            <li>
+              <!-- コメント削除ボタン -->
+              <% if user == current_user %>
+                <%= link_to counsel_counsel_comment_path(counsel_comment.counsel_id, counsel_comment.id), method: :delete, remote: true, data: {confirm:"本当に削除してもよろしいですか？"} do %>
+                    <i class="fas fa-trash-alt"></i>
+                <% end %>
+              <% end %>
+            </li>
+        </ul>
+        <!-- コメント本文 -->
+        <p><%= counsel_comment.comment %></p>
+
+        <!-- いいねボタン -->
+        <span id="counsel_comment_like_<%= counsel_comment.id %>">
+          <%= render 'users/shared/counsel_comment_like', {counsel_comment: counsel_comment} %>
+        </span>
+      </div>
     </div>
-  </div>
-  <hr>
-<% end %>
+    <hr>
+
+ </div>
 <% end %>

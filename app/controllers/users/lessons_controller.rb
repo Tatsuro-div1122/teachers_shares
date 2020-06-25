@@ -1,7 +1,8 @@
 class Users::LessonsController < ApplicationController
+  before_action :authenticate_user!
   def index
     @title = "授業アイデア"
-    @lessons = Lesson.includes(:user).order("created_at DESC")
+    @lessons = Lesson.includes(:user).page(params[:page]).reverse_order
     # @lessons = Lesson.joins(:user).where(users:{deleted_at: nil})
     # deleted_atスタンプがないユーザの投稿一覧を取得
   end
@@ -31,28 +32,21 @@ class Users::LessonsController < ApplicationController
     # 添付ファイルが上記の配列のファイル形式に合うものは表示する
   end
 
-  # def confirm
-  #   @lesson = Lesson.new(lesson_params)
-  #   @lesson.file.attach(params[:lesson][:file])
-  #   # render 'new' if @lesson.invalid?
-  # end
-
-  # def back
-  #   render 'new'
-  # end
-
   def edit
     @lesson = Lesson.find(params[:id])
+    redirect_to lesson_ @lesson.user_id == current_user.id
   end
 
   def update
     @lesson = Lesson.find(params[:id])
-    @lesson.user_id = current_user.id
-    if @lesson.update(lesson_params)
-      redirect_to lesson_path(@lesson), notice: "授業内容が更新されました"
-    else
-      flash.now[:alert] = "必須事項を記入してください"
-      render 'edit'
+      if @lesson.update(lesson_params)
+        redirect_to lesson_path(@lesson), notice: "授業内容が更新されました"
+      else
+        flash.now[:alert] = "必須事項を記入してください"
+        render 'edit'
+      end
+    else 
+      redirect_to root_path
     end
   end
 
@@ -65,10 +59,10 @@ class Users::LessonsController < ApplicationController
   def category_lessons
     if params[:school_type]
       @title = "#{params[:school_type]} の授業アイデア"
-      @lessons = Lesson.where(school_type: params[:school_type]).includes(:user).order("created_at DESC")
+      @lessons = Lesson.where(school_type: params[:school_type]).includes(:user).page(params[:page]).reverse_order
     elsif params[:subject]
       @title = "#{params[:subject]} の授業アイデア"
-      @lessons = Lesson.where(subject: params[:subject]).includes(:user).order("created_at DESC")
+      @lessons = Lesson.where(subject: params[:subject]).includes(:user).page(params[:page]).reverse_order
     end
     render 'index'
   end
@@ -78,4 +72,10 @@ class Users::LessonsController < ApplicationController
   def lesson_params
     params.require(:lesson).permit(:title, :description, :school_type, :grade, :subject, :file, :user_id)
   end
+
+  def correct_lesson_user
+    @lesson = Lesson.find(params[:id])
+    redirect_to root_path if @lesson.user_id != current_user.id
+  end
 end
+

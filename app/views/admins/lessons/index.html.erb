@@ -10,8 +10,15 @@
      <!-- 授業アイデア一覧 -->
     <div class="col-md-10">
       <section>
-        <h2><%= @title %>一覧</h2>
-        <span>1~10件表示 (全<%= @lessons.count %>件)</span>
+        <h2><%= @title %></h2>
+        <!-- 件数 -->
+        <p><%= @lessons.offset_value %>〜<%= @lessons.offset_value + @lessons.length %>件を表示 (全 <%= @lessons.total_count %> 件)</p>
+
+        <!-- ページャ -->
+        <div class="text-center">
+          <%= paginate @lessons %>
+        </div>
+
 
         <% @lessons.each do |lesson| %>
           <div class="media">
@@ -28,7 +35,6 @@
                   <% end %>
                 </li>
                 <li><%= lesson.created_at.to_s(:datetime) %></li>
-                <li></li>
                 <li>
                   <%= link_to admins_lesson_path(lesson), method: :delete, data: {confirm:"本当に削除してもよろしいですか？"} do %>
                     <i class="fas fa-trash-alt"></i>
@@ -45,15 +51,21 @@
 
               <!-- 授業情報 -->
               <ul class="list-unstyled list-inline">
-                <li><%= lesson.school_type %></li>
-                <li><%= lesson.grade %></li>
-                <li><%= lesson.subject %></li>
+                <li><span class="label label-default"><%= lesson.school_type %></span></li>
+                <li><span class="label label-default"><%= lesson.grade %></span></li>
+                <li><span class="label label-default"><%= lesson.subject %></span></li>
               </ul>
 
               <hr>
             </div>
           </div>
         <% end %>
+
+        <!-- ページャ -->
+        <div class="text-center">
+          <%= paginate @lessons %>
+        </div>
+
       </section>
     </div>
   </div>

@@ -1,4 +1,5 @@
 class Admins::LessonCommentsController < ApplicationController
+  before_action :authenticate_admin!
   def destroy
     lesson_comment = LessonComment.find(params[:id])
     lesson_comment.destroy

@@ -1,62 +1,72 @@
 <div class="container">
   <div class="row">
     <div class="col-lg-2">
+
+      <!-- カテゴリーバー -->
+      <section>
       <%= render 'admins/shared/counsel_category' %>
+      </section>
+
     </div>
+
     <div class="col-lg-10">
-      <h1><%= @title %>一覧</h1>
-      <span>1~10件表示 (全<%= @counsels.count %>件)</span>
-      <table class="table">
-        <thead>
-          <tr>
-            <th><p>ID</p></th>
-            <th><p>投稿者</p></th>
-            <th><p>カテゴリー</p></th>
-            <th><p>タイトル</p></th>
-            <th><p>説明文</p></th>
-            <th><p>投稿日</p></th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
+      <!-- 悩み相談一覧 -->
+      <section>
+      <h2><%= @title %></h2>
+      <!-- 件数 -->
+      <p><%= @counsels.offset_value %>〜<%= @counsels.offset_value + @counsels.length %>件を表示 (全 <%= @counsels.total_count %> 件)</p>
+
+      <!-- ページャ -->
+      <div class="text-center">
+        <%= paginate @counsels %>
+      </div>
+
           <% @counsels.each do |counsel| %>
             <tr>
-              <td>
-                <p><%= counsel.id %></p>
-              </td>
-              <td>
-                <%= link_to admins_user_path(counsel.user_id) do %>
-                  <% if counsel.user_deleted?(counsel.user)%>
-                    <p><%= counsel.user.last_name+counsel.user.first_name %>(退会済)</p>
-                  <% else %>
-                    <p><%= counsel.user.last_name+counsel.user.first_name %></p>
+              <div class="media">
+            <div class="media-body">
+              <!-- ユーザー情報 -->
+              <ul class="list-unstyled list-inline">
+                <li>
+                  <%= link_to admins_user_path(counsel.user_id) do %>
+                    <% if counsel.user_deleted?(counsel.user)%>
+                      <%= counsel.user.last_name %> <%= counsel.user.first_name %>(退会済)
+                    <% else %>
+                      <%= counsel.user.last_name %> <%= counsel.user.first_name %>
+                    <% end %>
                   <% end %>
-                <% end %>
-              </td>
-              <td>
-                <p><%= counsel.category %></p>
-              </td>
-              <td>
-                <p><%= link_to "#{counsel.title}", admins_counsel_path(counsel) %></p>
-              </td>
-              <td>
-                <p><%= counsel.description %></p>
-              </td>
-              <td>
-                <p><%= counsel.created_at.to_s(:datetime) %></p>
-              </td>
-              <td>
-                <%= link_to admins_counsel_path(counsel) do %>
-                  <i class="fas fa-info-circle"></i>
-                <% end %>
-                <%= link_to admins_counsel_path(counsel), method: :delete  do %>
-                    <i class="fas fa-minus-circle"></i>
-                <% end %>
-              </td>
-            </tr>
-          <% end %>
-        </tbody>
-      </table>
+                </li>
+                <li><%= counsel.created_at.to_s(:datetime) %></li>
+                <li>
+                  <%= link_to admins_counsel_path(counsel), method: :delete, data: {confirm:"本当に削除してもよろしいですか？"} do %>
+                    <i class="fas fa-trash-alt"></i>
+                  <% end %>
+                </li>
+              </ul>
+
+              <!-- 悩み相談タイトル -->
+              <h4 class="media-heading title">
+                <%= link_to counsel.title, admins_counsel_path(counsel)%>
+              </h4>
+
+              <!-- 悩み相談本文 -->
+              <p class="description"><%= counsel.description %></p>
+
+              <!-- 悩み相談情報 -->
+              <p><span class="label label-default"><%= counsel.category %></span></p>
+
+              <hr>
+            </div>
+          </div>
+        <% end %>
+
+      <!-- ページャ -->
+      <div class="text-center">
+        <%= paginate @counsels %>
+      </div>
+
+      </section>
+
     </div>
   </div>
 </div>

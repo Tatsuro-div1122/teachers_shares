@@ -1,3 +1,12 @@
+<!-- 件数 -->
+<p><%= users.offset_value %>〜<%= users.offset_value + users.length %>件を表示 (全 <%= users.total_count %> 件)</p>
+
+<!-- ページャ -->
+<div class="text-center">
+  <%= paginate users %>
+</div>
+
+
 <% users.each do |user| %>
   <div class="media">
 
@@ -16,7 +25,8 @@
 
       <!-- ユーザー名 -->
       <h4 class="media-heading">
-        <%= user.last_name %> <%= user.first_name %>
+        <%= link_to "#{user.last_name} #{user.first_name}", user  %>
+
         <!-- フォローボタン -->
         <span id="follow_<%= user.id %>">
           <%= render 'users/shared/follow', user: user %>
@@ -33,3 +43,8 @@
   </div>
   <hr>
 <% end %>
+
+<!-- ページャ -->
+<div class="text-center">
+  <%= paginate users %>
+</div>

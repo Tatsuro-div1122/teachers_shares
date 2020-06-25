@@ -29,12 +29,12 @@
   <tr>
     <td>
   <i class="fas fa-user-friends"></i> フォロー中
-  <span class="badge pull-right"><%= link_to user.active_relationships.count, follows_user_path(user) %></span>
+  <span class="badge pull-right" id="user_info_total_follows"><%= user.active_relationships.count %></span>
   </td>
   <tr>
     <td>
   <i class="fas fa-users"></i> フォロワー
-  <span class="badge pull-right"><%= link_to user.passive_relationships.count, followers_user_path(user) %></span>
+  <span class="badge pull-right"><%= user.passive_relationships.count %></span>
   </td>
 </table>
 <% if user == current_user %>

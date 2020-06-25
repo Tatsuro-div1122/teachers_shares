@@ -11,20 +11,34 @@
       </section>
     </div>
     <div class="col-md-10">
+      
+      <!-- メニュータブ -->
       <section>
-        <ul class="nav nav-tabs nav-justified">
-          <li role="presentation"><%= link_to "ホーム", user_path(@user) %></li>
-          <li role="presentation"><%= link_to "授業アイデア(#{@user.lessons.count})", own_lessons_user_path(@user) %></li>
-          <li role="presentation"><%= link_to "悩み相談(#{@user.counsels.count})", own_counsels_user_path(@user) %></li>
-          <li role="presentation" class="active"><%= link_to "メッセージ(#{@user.messages.count})", user_messages_path(@user) %></li>
-          <li role="presentation"><%= link_to "ブックマーク(#{@user.lesson_bookmarks.count})", lesson_bookmarks_user_path(@user) %></li>
-        </ul>
-      <!-- DM一覧 -->
-        <%= render 'users/shared/message_index', messages: @messages %>
+        <%= render 'users/shared/mypage_tab', path: @path, user: @user %>
       </section>
       <!-- DMフォーム -->
+      <br>
       <section>
-        <%= render 'users/shared/message_form', message: @message %>
+        <%= render 'users/shared/message_form', message: @message, user: @user %>
+      </section>
+      <!-- DM一覧 -->
+      <section>
+
+        <!-- 件数 -->
+        <p><%= @messages.offset_value %>〜<%= @messages.offset_value + @messages.length %>件を表示 (全 <%= @messages.total_count %> 件)</p>
+
+        <!-- ページャ -->
+        <div class="text-center">
+          <%= paginate @messages %>
+        </div>
+        <% user = User.find_by(id: @message.receiver_id) %>
+        <%= render 'users/shared/message_index', messages: @messages %>
+
+        <!-- ページャ -->
+        <div class="text-center">
+          <%= paginate @messages %>
+        </div>
+
       </section>
     </div>
   </div>

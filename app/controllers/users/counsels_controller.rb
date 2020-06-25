@@ -1,7 +1,8 @@
 class Users::CounselsController < ApplicationController
+  before_action :authenticate_user!
   def index
     @title = "悩み相談"
-    @counsels = Counsel.includes(:user).order("created_at DESC")
+    @counsels = Counsel.includes(:user).page(params[:page]).reverse_order
   end
 
   def new
@@ -50,7 +51,7 @@ class Users::CounselsController < ApplicationController
   def category_counsels
     if params[:category]
       @title = "#{params[:category]} の悩み相談"
-      @counsels = Counsel.where(category: params[:category]).includes(:user).order("created_at DESC")
+      @counsels = Counsel.where(category: params[:category]).includes(:user).page(params[:page]).reverse_order
     end
     render 'index'
   end

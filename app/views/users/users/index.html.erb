@@ -4,9 +4,9 @@
       <%= render 'users/shared/user_category' %>
     </div>
     <div class="col-md-8">
-      <h1><%= @title %></h1>
-      <span>1~10件表示 (全<%= @users.count %>件)</span>
+        <h2><%= @title %></h2>
       <%= render 'users/shared/user_index', users:@users %>
     </div>
   </div>
 </div>
+

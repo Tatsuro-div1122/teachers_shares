@@ -1,53 +1,77 @@
+<!-- 件数 -->
+<p><%= counsels.offset_value %>〜<%= counsels.offset_value + counsels.length %>件を表示 (全 <%= counsels.total_count %> 件)</p>
+
+<!-- ページャ -->
+<div class="text-center">
+  <%= paginate counsels %>
+</div>
+
 <% counsels.each do |counsel| %>
   <div class="media">
 
     <!-- プロフィール画像 -->
-    <% if counsel.user.avatar.attached? %>
-      <%= link_to counsel.user, class: "media-left" do %>
-        <%= image_tag counsel.user.avatar.variant(resize: "64x64") %>
-      <% end %>
-    <% else %>
-      <%= link_to counsel.user, class: "media-left" do %>
+    <!-- 退会済ユーザー対応 -->
+    <% if counsel.user_deleted?(counsel.user) %>
+      <%= link_to "#", class: "media-left" do %>
         <%= image_tag "default_user.png", size: "64x64" %>
       <% end %>
+    <% else %>
+      <% if counsel.user.avatar.attached? %>
+        <%= link_to counsel.user, class: "media-left" do %>
+          <%= image_tag counsel.user.avatar.variant(resize: "64x64") %>
+        <% end %>
+      <% else %>
+        <%= link_to counsel.user, class: "media-left" do %>
+          <%= image_tag "default_user.png", size: "64x64" %>
+        <% end %>
+      <% end %>
     <% end %>
-
     <!-- 記事 -->
     <div class="media-body" >
 
       <!-- ユーザー情報 -->
       <ul class="list-unstyled list-inline">
-        <li><%= counsel.user.last_name + counsel.user.first_name %></li>
-        <li><%= counsel.created_at.to_s(:datetime) %></li>
-        <!-- 編集/削除ボタン -->
-        <% if current_user.own_counsel?(counsel) %>
-        <li>
-          <%= link_to edit_counsel_path(counsel) do %>
-            <i class="fas fa-edit"></i>
+        <!-- 退会済ユーザー対応 -->
+        <% if counsel.user_deleted?(counsel.user) %>
+          <li>退会済みの先生</li>
+        <% else %>
+          <li><%= counsel.user.last_name + counsel.user.first_name %></li>
+          <li><%= counsel.created_at.to_s(:datetime) %></li>
+          <!-- 編集/削除ボタン -->
+          <% if current_user.own_counsel?(counsel) %>
+          <li>
+            <%= link_to edit_counsel_path(counsel) do %>
+              <i class="fas fa-edit"></i>
+            <% end %>
+          </li>
+          <li>
+            <%= link_to counsel_path(counsel), method: :delete, data: {confirm:"本当に削除してもよろしいですか？"}, remote: true do %>
+              <i class="fas fa-trash-alt"></i>
+            <% end %>
+          </li>
           <% end %>
-        </li>
-        <li>
-          <%= link_to counsel_path(counsel), method: :delete, data: {confirm:"本当に削除してもよろしいですか？"} do %>
-            <i class="fas fa-trash-alt"></i>
-          <% end %>
-        </li>
         <% end %>
       </ul>
 
       <!-- 相談タイトル -->
       <h4 class="media-heading title">
-        <%= link_to counsel_path(counsel) do %>
-          <%= counsel.title %>
-        <% end %>
+       <%= link_to counsel_path(counsel) do %>
+            <%= counsel.title %>
+       <% end %>
       </h4>
 
       <!-- 相談本文 -->
       <p class="description"><%= counsel.description %></p>
 
       <!-- 相談情報 -->
-      <p><%= counsel.category %></p>
+      <p><span class="label label-default"><%= counsel.category %></span></p>
 
       <hr>
     </div>
   </div>
 <% end %>
+
+<!-- ページャ -->
+<div class="text-center">
+  <%= paginate counsels %>
+</div>

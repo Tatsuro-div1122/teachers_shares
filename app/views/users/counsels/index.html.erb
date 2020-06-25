@@ -4,8 +4,9 @@
       <%= render 'users/shared/counsel_category' %>
     </div>
     <div class="col-lg-8">
-      <h1><%= @title %>一覧</h1>
-      <span>1~10件表示 (全<%= @counsels.count %>件)</span>
+      <div>
+        <h2><%= @title %>一覧</h2>
+      </div>
       <%= render 'users/shared/counsel_index', counsels: @counsels %>
     </div>
   </div>
