@@ -1,0 +1,61 @@
+<ul class="nav nav-tabs nav-justified mypage_nav_titles">
+  
+  <% if path.is('users#show') %>
+    <li role="presentation" class="active">
+  <% else %>
+    <li role="presentation">
+  <% end %>
+      <%= link_to "ホーム", user_path(user) %>
+    </li>
+
+  <% if path.is('users#own_lessons') %>
+    <li role="presentation" class="active">
+  <% else %>
+    <li role="presentation">
+  <% end %>
+      <%= link_to "授業アイデア", own_lessons_user_path(user) %>
+    </li>
+
+  <% if path.is('users#own_counsels') %>
+    <li role="presentation" class="active">
+  <% else %>
+    <li role="presentation">
+  <% end %>
+      <%= link_to "悩み相談", own_counsels_user_path(user) %>
+    </li>
+
+
+  <% if path.is('messages#index') %>
+    <li role="presentation" class="active">
+  <% else %>
+    <li role="presentation">
+  <% end %>
+      <%= link_to "メッセージ", user_messages_path(user) %>
+    </li>
+
+  <% if user == current_user %>
+    <% if path.is('users#lesson_bookmarks') %>
+      <li role="presentation" class="active">
+    <% else %>
+      <li role="presentation">
+    <% end %>
+        <%= link_to "ブックマーク", lesson_bookmarks_user_path(user) %>
+      </li>
+  <% end %>
+  <% if path.is('users#follows') %>
+    <li role="presentation" class="active">
+  <% else %>
+    <li role="presentation">
+  <% end %>
+      <%= link_to "フォロー中", follows_user_path(user) %>
+    </li>
+
+  <% if path.is('users#followers') %>
+    <li role="presentation" class="active">
+  <% else %>
+    <li role="presentation">
+  <% end %>
+      <%= link_to "フォロワー", followers_user_path(user) %>
+    </li>
+
+</ul>

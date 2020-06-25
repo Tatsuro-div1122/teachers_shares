@@ -1,0 +1,28 @@
+<section>
+  <div class="text-left">
+    <table class="table table-hover">
+      <thead>
+        <tr class="info">
+          <th>カテゴリーから探す</th>
+        </tr>
+      </thead>
+      <tbody>
+      <% Counsel.categories.keys.each do |category| %>
+        <tr>
+          <td>
+            <%= link_to category_counsels_path(category: category) do %>
+              <%= category %>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+       <tr>
+          <td>
+            <%= link_to "全て", counsels_path %>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+

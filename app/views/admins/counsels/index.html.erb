@@ -1,0 +1,72 @@
+<div class="container">
+  <div class="row">
+    <div class="col-lg-2">
+
+      <!-- カテゴリーバー -->
+      <section>
+      <%= render 'admins/shared/counsel_category' %>
+      </section>
+
+    </div>
+
+    <div class="col-lg-10">
+      <!-- 悩み相談一覧 -->
+      <section>
+      <h2><%= @title %></h2>
+      <!-- 件数 -->
+      <p><%= @counsels.offset_value %>〜<%= @counsels.offset_value + @counsels.length %>件を表示 (全 <%= @counsels.total_count %> 件)</p>
+
+      <!-- ページャ -->
+      <div class="text-center">
+        <%= paginate @counsels %>
+      </div>
+
+          <% @counsels.each do |counsel| %>
+            <tr>
+              <div class="media">
+            <div class="media-body">
+              <!-- ユーザー情報 -->
+              <ul class="list-unstyled list-inline">
+                <li>
+                  <%= link_to admins_user_path(counsel.user_id) do %>
+                    <% if counsel.user_deleted?(counsel.user)%>
+                      <%= counsel.user.last_name %> <%= counsel.user.first_name %>(退会済)
+                    <% else %>
+                      <%= counsel.user.last_name %> <%= counsel.user.first_name %>
+                    <% end %>
+                  <% end %>
+                </li>
+                <li><%= counsel.created_at.to_s(:datetime) %></li>
+                <li>
+                  <%= link_to admins_counsel_path(counsel), method: :delete, data: {confirm:"本当に削除してもよろしいですか？"} do %>
+                    <i class="fas fa-trash-alt"></i>
+                  <% end %>
+                </li>
+              </ul>
+
+              <!-- 悩み相談タイトル -->
+              <h4 class="media-heading title">
+                <%= link_to counsel.title, admins_counsel_path(counsel)%>
+              </h4>
+
+              <!-- 悩み相談本文 -->
+              <p class="description"><%= counsel.description %></p>
+
+              <!-- 悩み相談情報 -->
+              <p><span class="label label-default"><%= counsel.category %></span></p>
+
+              <hr>
+            </div>
+          </div>
+        <% end %>
+
+      <!-- ページャ -->
+      <div class="text-center">
+        <%= paginate @counsels %>
+      </div>
+
+      </section>
+
+    </div>
+  </div>
+</div>

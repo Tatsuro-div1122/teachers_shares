@@ -1,71 +1,68 @@
 class Users::LessonsController < ApplicationController
+  before_action :authenticate_user!
   def index
     @title = "授業アイデア"
-    @lessons = Lesson.includes(:user).order("created_at DESC")
+    @lessons = Lesson.includes(:user).page(params[:page]).reverse_order
     # @lessons = Lesson.joins(:user).where(users:{deleted_at: nil})
     # deleted_atスタンプがないユーザの投稿一覧を取得
-  end
-
-  def show
-    @lesson = Lesson.find(params[:id])
-    @user = @lesson.user
-    @lesson_comment = LessonComment.new
-    @lesson_comments = @lesson.lesson_comments.includes(:user).order("created_at DESC")
   end
 
   def new
     @lesson = Lesson.new
   end
 
-  def confirm
-    @lesson = Lesson.new(lesson_params)
-    render 'new' if @lesson.valid?
-  end
-
-  def back
-    render 'new'
-  end
-
   def create
     @lesson = Lesson.new(lesson_params)
     @lesson.user_id = current_user.id
+    # if params[:back]
+    #   render 'new'
     if @lesson.save
-      redirect_to lesson_path(@lesson), notice: '新しい授業アイデアが投稿されました'
+      redirect_to @lesson, notice: '新しい授業アイデアが投稿されました'
     else
-      flash.now[:alert] = "必須事項を記入してください"
+      flash[:alert] = '必須事項を入力してください'
       render 'new'
     end
   end
 
+  def show
+    @lesson = Lesson.find(params[:id])
+    @lesson_comment = LessonComment.new
+    @lesson_comments = @lesson.lesson_comments.includes(:user).order("created_at DESC")
+    @accept_image_types = ['.jpeg', '.jpg', '.gif', '.png', '.heic']
+    # 添付ファイルが上記の配列のファイル形式に合うものは表示する
+  end
+
   def edit
     @lesson = Lesson.find(params[:id])
+    redirect_to lesson_ @lesson.user_id == current_user.id
   end
 
   def update
     @lesson = Lesson.find(params[:id])
-    @lesson.user_id = current_user.id
-    if @lesson.update(lesson_params)
-      redirect_to lesson_path(@lesson), notice: "授業内容が更新されました"
-    else
-      flash.now[:alert] = "必須事項を記入してください"
-      render 'edit'
+      if @lesson.update(lesson_params)
+        redirect_to lesson_path(@lesson), notice: "授業内容が更新されました"
+      else
+        flash.now[:alert] = "必須事項を記入してください"
+        render 'edit'
+      end
+    else 
+      redirect_to root_path
     end
   end
 
   def destroy
     lesson = Lesson.find(params[:id])
     lesson.destroy
-    lesson.file.purge
     redirect_to lessons_path
   end
 
   def category_lessons
     if params[:school_type]
-      @title = "#{params[:school_type]} の授業アイデア一覧"
-      @lessons = Lesson.where(school_type: params[:school_type]).includes(:user).order("created_at DESC")
+      @title = "#{params[:school_type]} の授業アイデア"
+      @lessons = Lesson.where(school_type: params[:school_type]).includes(:user).page(params[:page]).reverse_order
     elsif params[:subject]
-      @title = "#{params[:subject]} の授業アイデア一覧"
-      @lessons = Lesson.where(subject: params[:subject]).includes(:user).order("created_at DESC")
+      @title = "#{params[:subject]} の授業アイデア"
+      @lessons = Lesson.where(subject: params[:subject]).includes(:user).page(params[:page]).reverse_order
     end
     render 'index'
   end
@@ -73,6 +70,12 @@ class Users::LessonsController < ApplicationController
   private
 
   def lesson_params
-    params.require(:lesson).permit(:title, :description, :school_type, :grade, :subject, :user_id, :file)
+    params.require(:lesson).permit(:title, :description, :school_type, :grade, :subject, :file, :user_id)
+  end
+
+  def correct_lesson_user
+    @lesson = Lesson.find(params[:id])
+    redirect_to root_path if @lesson.user_id != current_user.id
   end
 end
+

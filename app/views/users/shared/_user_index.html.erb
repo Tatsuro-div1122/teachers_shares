@@ -1,0 +1,50 @@
+<!-- 件数 -->
+<p><%= users.offset_value %>〜<%= users.offset_value + users.length %>件を表示 (全 <%= users.total_count %> 件)</p>
+
+<!-- ページャ -->
+<div class="text-center">
+  <%= paginate users %>
+</div>
+
+
+<% users.each do |user| %>
+  <div class="media">
+
+    <!-- プロフィール画像 -->
+    <% if user.avatar.attached? %>
+      <%= link_to user, class: "media-left" do %>
+        <%= image_tag user.avatar.variant(resize: "64x64") %>
+      <% end %>
+    <% else %>
+      <%= link_to user, class: "media-left" do %>
+        <%= image_tag "default_user.png", size: "64x64" %>
+      <% end %>
+    <% end %>
+
+    <div class="media-body" >
+
+      <!-- ユーザー名 -->
+      <h4 class="media-heading">
+        <%= link_to "#{user.last_name} #{user.first_name}", user  %>
+
+        <!-- フォローボタン -->
+        <span id="follow_<%= user.id %>">
+          <%= render 'users/shared/follow', user: user %>
+        </span>
+      </h4>
+
+      <!-- ユーザー情報 -->
+      <ul class="list-unstyled">
+        <li><%= user.school_type %></li>
+        <li><%= user.school_name %></li>
+        <li><%= user.subject %></li>
+      </ul>
+    </div>
+  </div>
+  <hr>
+<% end %>
+
+<!-- ページャ -->
+<div class="text-center">
+  <%= paginate users %>
+</div>

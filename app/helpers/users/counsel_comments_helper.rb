@@ -1,0 +1,2 @@
+module Users::CounselCommentsHelper
+end

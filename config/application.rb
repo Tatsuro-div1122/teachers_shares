@@ -18,6 +18,6 @@ module TeachersShares
     config.time_zone = 'Tokyo'
     #　日本時間に設定
     config.i18n.default_locale = :ja
-    # deviseの日本語化
+    # 日本語化
   end
 end

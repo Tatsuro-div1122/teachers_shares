@@ -1,75 +1,137 @@
 <div class="container">
   <div class="row">
-    <div class="col-lg-2">
+    <div class="col-md-2">
       <%= render 'admins/shared/lesson_category' %>
     </div>
-    <div class="col-lg-10">
+    <div class="col-md-6 col-md-offset-2">
+      <!-- ユーザについて -->
       <section>
-         <%= link_to admins_user_path(@lesson.user_id) do %>
-          <div>
+        <div class="media">
+          <!-- 退会済みユーザ対応 -->
+          <% if @lesson.user_deleted?(@lesson.user) %>
+            <%= image_tag "default_user.png", size: "100x100" %>
+          <% else %>
+            <!-- プロフィール画像 -->
             <% if @lesson.user.avatar.attached? %>
-              <%= image_tag @lesson.user.avatar.variant(resize: "60x60") %>
+              <%= link_to admins_user_path(@lesson.user), class: "media-left" do %>
+                <%= image_tag @lesson.user.avatar.variant(resize: "100x100") %>
+              <% end %>
             <% else %>
-              <%= image_tag("default_user.png", size: "60x60") %>
+              <%= link_to admins_user_path(@lesson.user), class: "media-left" do %>
+                <%= image_tag "default_user.png", size: "64x64" %>
+              <% end %>
             <% end %>
+          <% end %>
+
+          <!-- ユーザー情報 -->
+          <div class="media-body" >
+            <h3 class="media-heading">
+              <!-- 退会済みユーザ対応 -->
+              <% if @lesson.user_deleted?(@lesson.user) %>
+                <%= link_to "#{@lesson.user.last_name} #{@lesson.user.first_name}(退会済)", admins_user_path(@lesson.user) %>
+              <% else %>
+                <%= link_to "#{@lesson.user.last_name} #{@lesson.user.first_name}", admins_user_path(@lesson.user) %>
+              <% end %>
+            </h3>
+            <p><%= @lesson.user.school_name %></p>
+            <ul class="list-unstyled list-inline">
+              <li><span class="label label-success"><%= @lesson.school_type %></span></li>
+              <li><span class="label label-danger"><%= @lesson.subject %></span></li>
+              <li><%= @lesson.created_at.to_s(:datetime) %></li>
+            </ul>
           </div>
-          <p><%= @lesson.user.last_name + @lesson.user.first_name %></p>
-          <p><%= @lesson.user.school_name %></p>
-        <% end %>
-        <p><%= @lesson.school_type %></p>
-        <p><%= @lesson.subject %></p>
-        <p><%= @lesson.created_at.to_s(:datetime) %></p>
+        </div>
       </section>
+
+        <!-- 授業について -->
       <section>
-        <h1><%= @lesson.title %></h1>
+        <!-- タイトル -->
+        <h2>
+          <%= @lesson.title %>
+        </h2>
+
+        <!-- 添付資料 -->
         <% if @lesson.file.attached? %>
-          <span>
-            <%= link_to  @lesson.file, download: " ", class: "btn btn-secondary" do %>
+          <div class="text-center">
+            <% if @accept_image_types.any?(File.extname(@lesson.file.filename.to_s)) %>
+              <%= image_tag @lesson.file %>
+            <% end %>
+            <%= link_to  @lesson.file, download: " ", class: "btn btn-default btn-sm" do %>
               <i class="fas fa-paperclip"></i> 資料をダウンロード
             <% end %>
-          </span>
+          </div>
         <% end %>
+
+        <!-- 本文 -->
         <p><%= @lesson.description %></p>
-        <span>
-          <%= link_to "削除する", admins_lesson_path(@lesson), method: :delete, data: {confirm:"本当に削除してもよろしいですか？"}, class: "btn btn-danger" %>
-        </span>
+
+        <!-- 削除ボタン -->
+        <%= link_to admins_lesson_path(@lesson), method: :delete, data: {confirm:"本当に削除してもよろしいですか？"} do %>
+          <i class="fas fa-trash-alt"></i> 削除する
+        <% end %>
       </section>
+      <hr>
+
+      <!-- コメント -->
       <section>
         <span>
-          <i class="far fa-comments"></i> コメント 全<%= @lesson.lesson_comments.count %>件
+          <i class="far fa-comments"></i> コメント 全<%= @lesson_comments.count %>件
         </span>
-        <% if @lesson.lesson_comments.any? %>
-        <table>
-           <% @lesson.lesson_comments.each do |lesson_comment| %>
-            <tr>
-              <td>
-                <%= link_to user_path(lesson_comment.user) do %>
-                  <% if lesson_comment.user.avatar.attached? %>
-                    <%= image_tag lesson_comment.user.avatar.variant(resize: "50x50") %>
-                  <% else %>
-                    <%= image_tag("default_user.png", size: "50x50") %>
-                  <% end %>
-                  <ul>
-                    <li>
-                      <% if lesson_comment.user_deleted?(lesson_comment.user) %>
-                        <p><%= lesson_comment.user.last_name + lesson_comment.user.first_name %> (退会済)<p>
-                      <% else %>
-                        <p><%= lesson_comment.user.last_name + lesson_comment.user.first_name %><p>
-                      <% end %>
-                    </li>
+        <!-- コメント一覧 -->
+        <% if @lesson_comments.any? %>
+        <% @lesson_comments.each do |lesson_comment| %>
+          <div class="media">
+            <!-- 退会済ユーザー画像 -->
+            <% if lesson_comment.user_deleted?(lesson_comment.user) %>
+              <%= link_to "#", class: "media-left" do %>
+                <%= image_tag "default_user.png", size: "64x64" %>
+              <% end %>
+            <!-- 会員ユーザー画像 -->
+            <% else %>
+              <% if lesson_comment.user.avatar.attached? %>
+                <%= link_to admins_user_path(lesson_comment.user), class: "media-left" do %>
+                  <%= image_tag lesson_comment.user.avatar.variant(resize: "64x64") %>
                 <% end %>
-                    <li><%= lesson_comment.created_at.to_s(:datetime) %></li>
-                  </ul>
-                <p><%= lesson_comment.comment %></p>
-                <span>
-                  <%= link_to "削除", admins_lesson_comment_path(lesson_comment.id), method: :delete, data: {confirm:"本当に削除してもよろしいですか？"}, class: "btn btn-xs btn-danger" %>
-                </span>
-              </td>
-            </tr>
-           <% end %>
-        </table>
+              <% else %>
+                <%= link_to admins_user_path(lesson_comment.user), class: "media-left" do %>
+                  <%= image_tag "default_user.png", size: "64x64" %>
+                <% end %>
+              <% end %>
+            <% end %>
+
+            <div class="media-body" >
+              <!-- ユーザー情報 -->
+              <ul class="list-unstyled list-inline">
+                <% if lesson_comment.user_deleted?(lesson_comment.user) %>
+                  <li>
+                    <%= link_to "#{lesson_comment.user.last_name} #{lesson_comment.user.first_name}(退会済)", admins_user_path(lesson_comment.user) %>
+                  </li>
+                <% else %>
+                  <li>
+                    <%= link_to "#{lesson_comment.user.last_name} #{lesson_comment.user.first_name}", admins_user_path(lesson_comment.user) %>
+                  </li>
+                <% end %>
+                  <li><%= lesson_comment.created_at.to_s(:datetime) %></li>
+                  <li>
+                    <!-- コメント削除ボタン -->
+                    <%= link_to admins_lesson_comment_path(lesson_comment), method: :delete, data: {confirm:"本当に削除してもよろしいですか？"} do %>
+                      <i class="fas fa-trash-alt"></i>
+                    <% end %>
+                  </li>
+              </ul>
+              <!-- コメント本文 -->
+              <p><%= lesson_comment.comment %></p>
+
+            </div>
+          </div>
+          <hr>
+        <% end %>
         <% end %>
       </section>
+
+      <!-- 戻るボタン -->
+     <div><%= link_to "戻る", admins_lessons_path %></div>
+
     </div>
   </div>
 </div>

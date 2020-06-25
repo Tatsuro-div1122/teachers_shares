@@ -6,49 +6,131 @@
     <%= csp_meta_tag %>
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
-    <script src="https://kit.fontawesome.com/22bae51414.js" crossorigin="anonymous"></script>
   </head>
 
   <body>
     <header>
-      <h1 class="headline"><%= link_to "TEACHERS' SHARES", root_path %></h1>
-      <p>先生のアイデア共有サイト<p>
+      <!-- 管理者画面 -->
       <% if admin_signed_in? %>
-        <%= link_to "ログアウト", destroy_admin_session_path, method: :delete, class: "btn btn-primary" %>
-        <%= render 'admins/shared/search_form' %>
+      <nav class="navbar navbar-static-top">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#top-nav">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <%= link_to admins_home_path do %>
+              <%= image_tag "logo.png", size: "300x60" %>
+            <% end %>
+          </div>
+
+          <div class="collapse navbar-collapse" id="top-nav">
+            <ul class="nav navbar-nav">
+              <li><%= link_to "授業", admins_lessons_path %></li>
+              <li><%= link_to "悩み相談", admins_counsels_path %></li>
+              <li><%= link_to "先生", admins_users_path %></li>
+              <li>
+                <%= link_to destroy_admin_session_path, method: :delete do %>
+                    <i class="fa fa-sign-out"></i>  ログアウト
+                <% end %>
+              </li>
+            </ul>
+
+            <!-- 検索バー -->
+            <div>
+              <%= render 'admins/shared/search_form' %>
+            </div>            
+
+          </div>
+        </div>
+      </nav>
+
+      <!-- ユーザー画面 -->
       <% elsif user_signed_in? %>
-        <%= link_to "ログアウト", destroy_user_session_path, method: :delete, class: "btn btn-primary" %>
-        <%= render 'users/shared/search_form' %>
+
+        <!-- ナビゲーションバー -->
+        <nav class="navbar navbar-static-top">
+          <div class="container-fluid">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#top-nav">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <%= link_to root_path do %>
+                <%= image_tag "logo.png", size: "200x50" %>
+              <% end %>
+            </div>
+
+            <div class="collapse navbar-collapse" id="top-nav">
+              <ul class="nav navbar-nav">
+                <li><%= link_to "マイページ", user_path(current_user) %></li>
+                <li><%= link_to "授業アイデア", lessons_path %></li>
+                <li><%= link_to "悩み相談", counsels_path %></li>
+                <li><%= link_to "先生を探す", users_path %></li>
+              </ul>
+
+              <!-- 検索バー -->
+              <div class="text-right"><%= render 'users/shared/search_form' %></div>
+
+            </div>
+          </div>
+        </nav>
+      <!-- ビジター画面 -->
       <% else %>
-        <%= link_to "新規登録", new_user_registration_path, class: "btn btn-success" %>
-        <%= link_to "ログイン", new_user_session_path, class: "btn btn-primary" %>
+        <!-- ナビゲーションバー -->
+        <nav class="navbar navbar-static-top">
+          <div class="container-fluid">
+            <div class="navbar-header">
+              <%= link_to root_path do %>
+                <%= image_tag "logo.png", size: "300x60" %>
+              <% end %>
+
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#top-nav">
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+              </button>
+            </div>
+            <div class="collapse navbar-collapse" id="top-nav">
+              <ul class="nav navbar-nav navbar-right">
+                <li>
+                  <%= link_to  new_user_registration_path do %>
+                    <i class="fas fa-user-plus"></i> 新規会員登録
+                  <% end %>
+                </li>
+                <li>
+                  <%= link_to new_user_session_path do %>
+                      <i class="fa fa-sign-in"></i>  ログイン
+                  <% end %>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+
       <% end %>
     </header>
-      <% if admin_signed_in? %>
-        <nav>
-          <ul>
-            <li><%= link_to "トップ", admins_admin_top_path, class: "btn btn-default" %></li>
-            <li><%= link_to "先生一覧", admins_users_path, class: "btn btn-default" %></li>
-            <li><%= link_to "授業一覧", admins_lessons_path, class: "btn btn-default" %></li>
-            <li><%= link_to "悩み相談一覧", "#", class: "btn btn-default" %></li>
-          </ul>
-        </nav>
-      <% elsif user_signed_in? %>
-        <nav>
-          <ul>
-            <li><%= link_to "トップ", root_path, class: "btn btn-default" %></li>
-            <li><%= link_to "授業アイデア", lessons_path, class: "btn btn-default" %></li>
-            <li><%= link_to "つながる", users_path, class: "btn btn-default" %></li>
-            <li><%= link_to "マイページ", user_path(current_user), class: "btn btn-default" %></li>
-          </ul>
-        </nav>
-      <% else %>
+    <main>
+      <% if notice%>
+        <p class="success-message"><%= notice %></p>
+      <% elsif alert %>
+        <p class="failure-message"><%= alert %></p>
       <% end %>
-    <p class="notice"><%= notice %></p>
-    <p class="alert"><%= alert %></p>
     <%= yield %>
+    </main>
     <footer>
-      <p><%= link_to "TEACHERS' SHARESとは？", "#"%> | お問い合わせ | 運営会社 | 利用規約 | サイトマップ</p>
+      <% unless admin_signed_in? %>
+      <div class="container-fluid">
+        <p> お問い合わせ | 運営会社 | 利用規約 | サイトマップ</p>
+      </div>
+      <% end %>
     </footer>
+
+    <script src="https://kit.fontawesome.com/22bae51414.js" crossorigin="anonymous"></script>
+
   </body>
 </html>

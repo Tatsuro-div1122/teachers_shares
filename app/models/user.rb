@@ -32,17 +32,17 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   validates :last_name, :first_name, :school_type, :prefecture, :school_name, :subject, presence: :true
-  validates :introduction, length: {maximum: 250}
+  validates :introduction, length: {maximum: 400}
 
   has_one_attached :avatar
   #active storageの画像カラム
 
   #フォローフォロワー関連
-  has_many :active_relationships, class_name: "Relationship", foreign_key: :following_id, dependent: :destroy
+  has_many :active_relationships, class_name: 'Relationship', foreign_key: :following_id, dependent: :destroy
     # フォローする側のUserから見て、フォローされる側のUserを(中間テーブルを介して)集める。なので親はfollowing_id(フォローする側)
   has_many :followings, through: :active_relationships, source: :follower
     # 中間テーブルを介して「follower」モデルのUser(フォローされた側)を集めることを「followings」と定義
-  has_many :passive_relationships, class_name: "Relationship", foreign_key: :follower_id, dependent: :destroy
+  has_many :passive_relationships, class_name: 'Relationship', foreign_key: :follower_id, dependent: :destroy
     # フォローされる側のUserから見て、フォローしてくる側のUserを(中間テーブルを介して)集める。なので親はfollower_id(フォローされる側)
   has_many :followers, through: :passive_relationships, source: :following
     # 中間テーブルを介して「following」モデルのUser(フォローする側)を集めることを「followers」と定義
@@ -52,6 +52,13 @@ class User < ApplicationRecord
   has_many :bookmark_lessons, through: :lesson_bookmarks, source: :lesson
   has_many :lesson_comments, dependent: :destroy
   has_many :lesson_comment_likes, dependent: :destroy
+  has_many :counsels, dependent: :destroy
+  has_many :counsel_comments, dependent: :destroy
+  has_many :counsel_comment_likes, dependent: :destroy
+  has_many :messages
+  has_many :sent_messages, through: :messages, source: :receiver
+  has_many :reverses_of_message, class_name: 'Message', foreign_key: 'receiver_id'
+  has_many :received_messages, through: :reverses_of_message, source: :user
 
 
 
@@ -93,5 +100,14 @@ class User < ApplicationRecord
     self.id == lesson.user_id
   end
 
+  def own_counsel?(counsel)
+    self.id == counsel.user_id
+  end
+
+  def sent_messages(other_user, content)
+    unless self == other_user
+      self.messages.find_or_create_by(receiver_id: other_user.id, content: content)
+    end
+  end
 end
 
