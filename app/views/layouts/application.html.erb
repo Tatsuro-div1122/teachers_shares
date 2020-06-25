@@ -32,9 +32,7 @@
               <li><%= link_to "悩み相談", admins_counsels_path %></li>
               <li><%= link_to "先生", admins_users_path %></li>
               <li>
-                <%= link_to destroy_admin_session_path, method: :delete do %>
-                    <i class="fa fa-sign-out"></i>  ログアウト
-                <% end %>
+                <%= link_to "ログアウト", destroy_admin_session_path, method: :delete%>
               </li>
             </ul>
 
@@ -111,16 +109,15 @@
             </div>
           </div>
         </nav>
-
       <% end %>
     </header>
+    <% if notice%>
+      <p class="success-message"><%= notice %></p>
+    <% elsif alert %>
+      <p class="failure-message"><%= alert %></p>
+    <% end %>
     <main>
-      <% if notice%>
-        <p class="success-message"><%= notice %></p>
-      <% elsif alert %>
-        <p class="failure-message"><%= alert %></p>
-      <% end %>
-    <%= yield %>
+      <%= yield %>
     </main>
     <footer>
       <% unless admin_signed_in? %>

@@ -1,5 +1,4 @@
 class Users::HomeController < ApplicationController
-  before_action :authenticate_user!
   def top
     if user_signed_in?
       @lessons = Lesson.find(LessonLike.group(:lesson_id).order('count(lesson_id) desc').limit(6).pluck(:lesson_id))

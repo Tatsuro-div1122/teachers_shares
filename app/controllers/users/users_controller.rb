@@ -24,10 +24,59 @@ class Users::UsersController < ApplicationController
   end
 
   def category_users
+   # query = "SELECT * FROM users u"
+   #  condtions = []
+   #  paramaters = {}
+   #  if params[:school_type].present?
+   #    condtions.push('u.school_type = :school_type')
+   #    paramaters[:scool_type] = params[:scool_type]
+   #  end
+   #  if params[:subject].present?
+   #    condtions.push('u.subject = :subject')
+   #    paramaters["subject"] = "#{params[:subject]}"
+   #  end
+   #  if params[:prefecture].present?
+   #    condtions.push('u.prefecture = :prefecture')
+   #    paramaters[:prefecture] = params[:prefecture]
+   #  end
+   #  if condtions.length != 0
+   #    condtions = condtions.join('and')
+   #    query += ' WHERE '
+   #    query += condtions
+   #    @users = User.find_by_sql(query, paramaters)
+   #  else
+   #    @users = User.find_by_sql(query).page(params[:page]).reverse_order
+   #  end
+
+
+     @users = User.all
+     if params[:school_type].present?
+      @users.where!(school_type: params[:school_type])
+      # conditions.push("users.school_type = :school_type")
+      # place_holder[:school_type] = params[:school_type]
+     end
+     if params[:subject].present?
+      @users.where!(subject: params[:subject])
+      # conditions.push("users.subject = :subject")
+      # place_holder[:subject] = params[:subject]
+     end
+     if params[:prefecture].present?
+      @users.where!(prefecture: params[:prefecture])
+      # conditions.push("users.prefecture = :prefecture")
+      # place_holder[:prefecture] = params[:prefecture]
+     end
+     @users = @users.page(params[:page]).reverse_order
+     # if conditions.length == 0
+     #  @users = User.all
+     # else
+     #  @users = User.where("#{conditions.join(' AND')}", place_holder)
+     #  byebug
+     # end
+
     @title = "カテゴリー検索結果"
-    @users = User.where(school_type: params[:school_type])
-                 .where(subject: params[:subject])
-                 .where(prefecture: params[:prefecture]).page(params[:page]).reverse_order
+    # @users = User.where(school_type: params[:school_type])
+    #              .where(subject: params[:subject])
+    #              .where(prefecture: params[:prefecture]).page(params[:page]).reverse_order
    
     render 'index'
   end

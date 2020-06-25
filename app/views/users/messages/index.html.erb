@@ -31,7 +31,18 @@
         <div class="text-center">
           <%= paginate @messages %>
         </div>
-        <% user = User.find_by(id: @message.receiver_id) %>
+
+        <!-- 全件削除ボタン -->
+        <% if @user == current_user %>
+          <div>
+            <%= link_to delete_all_messages_user_path(@user), method: :delete, data: {confirm:"本当に削除してもよろしいですか？"}, class: "btn btn-default btn-sm" do %>
+              <i class="fas fa-trash-alt"></i> 全て削除
+            <% end %>
+          </div>
+          <br>
+        <% end %>
+
+        <!-- メッセージ一覧 -->
         <%= render 'users/shared/message_index', messages: @messages %>
 
         <!-- ページャ -->

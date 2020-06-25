@@ -1,5 +1,7 @@
 class Users::CounselsController < ApplicationController
   before_action :authenticate_user!
+  before_action :correct_counsel_user, only: [:edit, :update, :destroy]
+
   def index
     @title = "悩み相談"
     @counsels = Counsel.includes(:user).page(params[:page]).reverse_order
@@ -15,7 +17,7 @@ class Users::CounselsController < ApplicationController
     if @counsel.save
       redirect_to counsel_path(@counsel), notice: '先生の悩みが投稿されました'
     else
-      flash.now[:alert] = "必須事項を記入してください"
+      flash.now[:alert] = "記入事項を確認してください"
       render 'new'
     end
   end
@@ -28,23 +30,19 @@ class Users::CounselsController < ApplicationController
   end
 
   def edit
-    @counsel = Counsel.find(params[:id])
   end
 
   def update
-    @counsel = Counsel.find(params[:id])
-    @counsel.user_id = current_user.id
     if @counsel.update(counsel_params)
       redirect_to counsel_path(@counsel), notice: "相談内容が更新されました"
     else
-      flash.now[:alert] = "必須事項を記入してください"
+      flash.now[:alert] = "記入事項を確認してください"
       render 'edit'
     end
   end
 
   def destroy
-    counsel = Counsel.find(params[:id])
-    counsel.destroy
+    @counsel.destroy
     redirect_to counsels_path
   end
 
@@ -61,4 +59,10 @@ class Users::CounselsController < ApplicationController
   def counsel_params
     params.require(:counsel).permit(:title, :description, :category, :user_id)
   end
+
+  def correct_counsel_user
+    @counsel = Counsel.find(params[:id])
+    redirect_to root_path, alert: "他の先生のアカウントページです。" if @counsel.user_id != current_user.id
+  end
+
 end

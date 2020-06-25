@@ -20,4 +20,5 @@ class Counsel < ApplicationRecord
 
   enum category: {授業: 0, 学級経営: 1, 生徒指導: 2, 部活動: 3, 進路指導: 4, 校務分掌: 5, 行事: 6, 職員関係: 7, その他: 8}
 
+  validates :category, :description, :title, presence: :true
 end

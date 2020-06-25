@@ -18,6 +18,7 @@ class CounselComment < ApplicationRecord
   belongs_to :user
   belongs_to :counsel
   has_many :counsel_comment_likes, dependent: :destroy
+  
   validates :comment, presence: :true
 
   def counsel_comment_liked_by?(user)

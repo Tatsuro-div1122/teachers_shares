@@ -1,5 +1,7 @@
 class Users::LessonsController < ApplicationController
   before_action :authenticate_user!
+  before_action :correct_lesson_user, only: [:edit, :update, :destroy]
+
   def index
     @title = "授業アイデア"
     @lessons = Lesson.includes(:user).page(params[:page]).reverse_order
@@ -19,7 +21,7 @@ class Users::LessonsController < ApplicationController
     if @lesson.save
       redirect_to @lesson, notice: '新しい授業アイデアが投稿されました'
     else
-      flash[:alert] = '必須事項を入力してください'
+      flash[:alert] = '記入事項を確認してください'
       render 'new'
     end
   end
@@ -33,27 +35,20 @@ class Users::LessonsController < ApplicationController
   end
 
   def edit
-    @lesson = Lesson.find(params[:id])
-    redirect_to lesson_ @lesson.user_id == current_user.id
   end
 
   def update
-    @lesson = Lesson.find(params[:id])
       if @lesson.update(lesson_params)
         redirect_to lesson_path(@lesson), notice: "授業内容が更新されました"
       else
-        flash.now[:alert] = "必須事項を記入してください"
+        flash.now[:alert] = "記入事項を確認してください"
         render 'edit'
       end
-    else 
-      redirect_to root_path
-    end
   end
 
   def destroy
-    lesson = Lesson.find(params[:id])
-    lesson.destroy
-    redirect_to lessons_path
+    @lesson.destroy
+    redirect_to lessons_path, alert: "授業アイデアを削除しました。"
   end
 
   def category_lessons
@@ -75,7 +70,7 @@ class Users::LessonsController < ApplicationController
 
   def correct_lesson_user
     @lesson = Lesson.find(params[:id])
-    redirect_to root_path if @lesson.user_id != current_user.id
+    redirect_to root_path, alert: "他の先生のアカウントページです。" if @lesson.user_id != current_user.id
   end
 end
 
