@@ -19,7 +19,7 @@ class Users::LessonCommentsController < ApplicationController
     lesson = @lesson_comment.lesson
     @lesson_comments = LessonComment.where(lesson_id: lesson.id).order("created_at DESC")
     if @lesson_comment.user != current_user
-      redirect_to request.referer
+      redirect_to root_path, alert: "他の先生のアカウントページです。"
     else
       @lesson_comment.destroy
       #redirect_to request.referer, alert: "コメントを削除しました"

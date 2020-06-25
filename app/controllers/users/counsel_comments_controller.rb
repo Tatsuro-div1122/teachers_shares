@@ -18,10 +18,9 @@ class Users::CounselCommentsController < ApplicationController
     counsel = @counsel_comment.counsel
     @counsel_comments = CounselComment.where(counsel_id: counsel.id).order("created_at DESC")
     if @counsel_comment.user != current_user
-      redirect_to request.referer
+      redirect_to root_path, alert: "他の先生のアカウントページです。"
     else
       @counsel_comment.destroy
-      # redirect_to request.referer, alert: "コメントを削除しました"
     end
   end
 

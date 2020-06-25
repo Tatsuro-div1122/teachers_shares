@@ -97,20 +97,20 @@ header {
 main {
   width: 100%;
   height: 100%;
+  margin-top: 20px;
 }
 
 .success-message {
-  color: green;
+  color: white;
   text-align: center;
-  margin-top: 0;
-  margin-bottom: 0;
+  background-color: #008000;
 }
 
 .failure-message {
-  color: red;
+  color: white;
   text-align: center;
-  margin-top: 0;
-  margin-bottom: 0;
+  background-color: #ff4500;
+
 }
 
 
@@ -264,6 +264,15 @@ main {
 
 .mypage_nav_titles {
   font-size: 11px
+}
+
+.maybe-friends-sidebar {
+  margin-top: 30px;
+}
+
+.screen-size {
+  height: 100vh;
+  width: 100%;
 }
 
 footer {

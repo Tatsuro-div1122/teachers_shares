@@ -144,6 +144,7 @@ Rails.application.routes.draw do
         get :own_counsels
         get   'delete_account', to: 'users#delete_account'
         patch 'delete_account', to: 'users#update_account'
+        delete 'delete_all_messages', to: 'messages#destroy_all'
       end
     end
 
