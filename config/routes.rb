@@ -44,7 +44,7 @@
 #            admins_counsel GET    /admins/counsels/:id(.:format)                                                           admins/counsels#show
 #                           DELETE /admins/counsels/:id(.:format)                                                           admins/counsels#destroy
 #    admins_counsel_comment DELETE /admins/counsel_comments/:id(.:format)                                                   admins/counsel_comments#destroy
-#          admins_admin_top GET    /admins/home/admin_top(.:format)                                                         admins/home#admin_top
+#               admins_home GET    /admins/home(.:format)                                                                   admins/home#top
 #             admins_search GET    /admins/search(.:format)                                                                 admins/search#search
 #     admins_category_users GET    /admins/category/users(.:format)                                                         admins/users#category_users
 #   admins_category_lessons GET    /admins/category/lessons(.:format)                                                       admins/lessons#category_lessons
@@ -61,12 +61,12 @@
 #         own_counsels_user GET    /users/:id/own_counsels(.:format)                                                        users/users#own_counsels
 #       delete_account_user GET    /users/:id/delete_account(.:format)                                                      users/users#delete_account
 #                           PATCH  /users/:id/delete_account(.:format)                                                      users/users#update_account
+#  delete_all_messages_user DELETE /users/:id/delete_all_messages(.:format)                                                 users/messages#destroy_all
 #                     users GET    /users(.:format)                                                                         users/users#index
 #                 edit_user GET    /users/:id/edit(.:format)                                                                users/users#edit
 #                      user GET    /users/:id(.:format)                                                                     users/users#show
 #                           PATCH  /users/:id(.:format)                                                                     users/users#update
 #                           PUT    /users/:id(.:format)                                                                     users/users#update
-#           confirm_lessons GET    /lessons/confirm(.:format)                                                               users/lessons#confirm
 #       lesson_lesson_likes DELETE /lessons/:lesson_id/lesson_likes(.:format)                                               users/lesson_likes#destroy
 #                           POST   /lessons/:lesson_id/lesson_likes(.:format)                                               users/lesson_likes#create
 #   lesson_lesson_bookmarks DELETE /lessons/:lesson_id/lesson_bookmarks(.:format)                                           users/lesson_bookmarks#destroy

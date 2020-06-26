@@ -6,19 +6,19 @@ class Admins::SessionsController < Devise::SessionsController
   # skip_before_action :check_user, only: :destroy
 
   # GET /resource/sign_in
-  def new
-    super
-  end
+  # def new
+  #   super
+  # end
 
   # POST /resource/sign_in
-  def create
-    super
-  end
+  # def create
+  #   super
+  # end
 
   # DELETE /resource/sign_out
-  def destroy
-    super
-  end
+  # def destroy
+  #   super
+  # end
 
   # ログイン後の遷移先設定
   def after_sign_in_path_for(resource)

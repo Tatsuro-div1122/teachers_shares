@@ -22,17 +22,17 @@ class Admins::UsersController < ApplicationController
 
   def category_users
     @title = "カテゴリー検索結果"
-    if params[:school_type]
-      @users = User.where(school_type: params[:school_type])
-    elsif params[:subject]
-      @users = User.where(subject: params[:subject])
-    elsif params[:prefecture]
-      @users = User.where(prefecture: params[:prefecture])
-    else
-      @users = User.where(school_type: params[:school_type])
-                   .where(subject: params[:subject])
-                   .where(prefecture: params[:prefecture]).page(params[:page]).reverse_order
+    @users = User.all
+    if params[:school_type].present?
+      @users.where!(school_type: params[:school_type])
     end
+    if params[:subject].present?
+      @users.where!(subject: params[:subject])
+    end
+    if params[:prefecture].present?
+      @users.where!(prefecture: params[:prefecture])
+    end
+     @users = @users.page(params[:page]).reverse_order
     render 'index'
   end
 end
