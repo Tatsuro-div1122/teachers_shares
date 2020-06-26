@@ -4,7 +4,7 @@ class Users::MessagesController < ApplicationController
     @title = "メッセージボックス"
     @user = User.find(params[:user_id])
 
-    # 知っているかも？用の@users
+    # 知り合いかも？用の@users
     if @user == current_user
       @users = User.where(deleted_at: nil, prefecture: current_user.prefecture)
                    .where.not(id: current_user.id)

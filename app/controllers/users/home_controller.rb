@@ -8,10 +8,7 @@ class Users::HomeController < ApplicationController
       @counsels = Counsel.includes(:user).order("created_at DESC").limit(5)
       @lesson_subjects = ["国語", "社会", "算数/数学", "理科", "英語"]
       @counsel_categories = ["授業", "学級経営", "生徒指導", "部活動", "校務分掌", "職員関係"]
-      # 投稿された悩み相談のうち新しい５つのジャンルを取ってくる
-      # counselのすべて、取り出し、categoryカラムで絞ってデータをまとめている（新しいもの順でまとまる）。
-      # sampleメソッドはそのうちの新しい投稿を任意の数字分取り出している。
-      @school_types = ["小学校", "中学校", "高等学校"]
+      @school_types = ["小学校", "中学校", "高校"]
       @total_likes = 0
       user_lessons = current_user.lessons
       user_lessons.each do |user_lesson|
