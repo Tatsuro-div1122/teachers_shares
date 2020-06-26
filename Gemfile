@@ -42,6 +42,10 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'hirb'
   gem 'hirb-unicode'
+  gem 'capistrano'
+  gem 'capistrano-rails'
+  gem 'capistrano3-puma'
+  gem 'capistrano-rbenv'
 end
 
 group :development do
