@@ -20,7 +20,7 @@
             <% end %>
           <% else %>
             <%= link_to @lesson.user, class: "media-left" do %>
-              <%= image_tag "default_user.png", size: "64x64" %>
+              <%= image_tag "default_user.png", size: "100x100" %>
             <% end %>
           <% end %>
         <% end %>
@@ -59,16 +59,24 @@
           <li><span class="label label-default"><%= @lesson.subject %></span></li>
           <li><%= @lesson.created_at.to_s(:datetime) %></li>
         </ul>
+
         <!-- 添付資料 -->
-        <% if @lesson.file.attached? %>
-          <div class="text-center">
-            <% if @accept_image_types.any?(File.extname(@lesson.file.filename.to_s)) %>
-              <%= image_tag @lesson.file %>
-            <% end %>
-            <%= link_to  @lesson.file, download: " ", class: "btn btn-default btn-sm" do %>
-              <i class="fas fa-paperclip"></i> 資料をダウンロード
-            <% end %>
-          </div>
+        <% if @lesson.files.attached? %>
+          <% @lesson.files.each do |file| %>
+            <div class="text-center">
+              <% if @accept_image_types.any?(File.extname(file.filename.to_s)) %>
+                <%= image_tag file.variant(resize: "400x500") %>
+              <% else %>
+                <ul class="list-inline">
+                  <li>
+                    <%= link_to file, download: " ", class: "btn btn-default btn-sm" do %>
+                      <i class="fas fa-paperclip"></i> 資料をダウンロード
+                    <% end %>
+                  </li>
+                </ul>
+              <% end %>
+            </div>
+          <% end %>
         <% end %>
         <br>
 

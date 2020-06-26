@@ -21,7 +21,7 @@ class Lesson < ApplicationRecord
   validates :school_type, :grade, :subject, :title, :description, presence: :true
 
   belongs_to :user
-  has_one_attached :file
+  has_many_attached :files
   has_many :lesson_likes, dependent: :destroy
   has_many :lesson_bookmarks, dependent: :destroy
   has_many :lesson_comments, dependent: :destroy

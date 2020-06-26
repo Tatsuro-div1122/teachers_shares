@@ -60,8 +60,16 @@
         <!-- アカウント設定ボタン -->
         <% if @user == current_user %>
           <ul class="list-unstyled list-inline">
-            <li><%= link_to "プロフィール編集", edit_user_path(@user), class: "btn btn-default" %></li>
-            <li><%= link_to "アカウント設定", edit_user_registration_path, class: "btn btn-default" %></li>
+            <li>
+              <%= link_to edit_user_path(@user), class: "btn btn-default" do %>
+                <i class="fas fa-user-circle"></i> プロフィール編集
+              <% end %>
+            </li>
+            <li>
+              <%= link_to edit_user_registration_path, class: "btn btn-default" do %>
+                <i class="fas fa-id-card"></i> アカウント設定
+              <% end %>
+            </li>
           </ul>
         <% end %>
       </section>

@@ -16,8 +16,6 @@ class Users::LessonsController < ApplicationController
   def create
     @lesson = Lesson.new(lesson_params)
     @lesson.user_id = current_user.id
-    # if params[:back]
-    #   render 'new'
     if @lesson.save
       redirect_to @lesson, notice: '新しい授業アイデアが投稿されました'
     else
@@ -65,7 +63,7 @@ class Users::LessonsController < ApplicationController
   private
 
   def lesson_params
-    params.require(:lesson).permit(:title, :description, :school_type, :grade, :subject, :file, :user_id)
+    params.require(:lesson).permit(:title, :description, :school_type, :grade, :subject, :user_id, files: [])
   end
 
   def correct_lesson_user

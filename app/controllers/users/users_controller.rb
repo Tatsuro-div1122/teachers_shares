@@ -1,7 +1,7 @@
 class Users::UsersController < ApplicationController
   before_action :authenticate_user!
   before_action :set_user, except: [:index, :category_users]
-  before_action :correct_user, only: [:edit, :update, :lesson_bookmarks, :update_account]
+  before_action :correct_user, only: [:edit, :update, :lesson_bookmarks, :update_account, :delete_account]
   before_action :maybe_friends_users, only: [:show, :follows, :followers, :lesson_bookmarks, :own_lessons, :own_counsels]
   before_action :count_total_likes, only: [:show, :follows, :followers, :lesson_bookmarks, :own_lessons, :own_counsels]
   def index
@@ -24,60 +24,19 @@ class Users::UsersController < ApplicationController
   end
 
   def category_users
-   # query = "SELECT * FROM users u"
-   #  condtions = []
-   #  paramaters = {}
-   #  if params[:school_type].present?
-   #    condtions.push('u.school_type = :school_type')
-   #    paramaters[:scool_type] = params[:scool_type]
-   #  end
-   #  if params[:subject].present?
-   #    condtions.push('u.subject = :subject')
-   #    paramaters["subject"] = "#{params[:subject]}"
-   #  end
-   #  if params[:prefecture].present?
-   #    condtions.push('u.prefecture = :prefecture')
-   #    paramaters[:prefecture] = params[:prefecture]
-   #  end
-   #  if condtions.length != 0
-   #    condtions = condtions.join('and')
-   #    query += ' WHERE '
-   #    query += condtions
-   #    @users = User.find_by_sql(query, paramaters)
-   #  else
-   #    @users = User.find_by_sql(query).page(params[:page]).reverse_order
-   #  end
-
-
-     @users = User.all
-     if params[:school_type].present?
-      @users.where!(school_type: params[:school_type])
-      # conditions.push("users.school_type = :school_type")
-      # place_holder[:school_type] = params[:school_type]
-     end
-     if params[:subject].present?
-      @users.where!(subject: params[:subject])
-      # conditions.push("users.subject = :subject")
-      # place_holder[:subject] = params[:subject]
-     end
-     if params[:prefecture].present?
-      @users.where!(prefecture: params[:prefecture])
-      # conditions.push("users.prefecture = :prefecture")
-      # place_holder[:prefecture] = params[:prefecture]
-     end
-     @users = @users.page(params[:page]).reverse_order
-     # if conditions.length == 0
-     #  @users = User.all
-     # else
-     #  @users = User.where("#{conditions.join(' AND')}", place_holder)
-     #  byebug
-     # end
-
     @title = "カテゴリー検索結果"
-    # @users = User.where(school_type: params[:school_type])
-    #              .where(subject: params[:subject])
-    #              .where(prefecture: params[:prefecture]).page(params[:page]).reverse_order
-   
+    @users = User.all
+    if params[:school_type].present?
+      @users.where!(school_type: params[:school_type])
+    end
+    if params[:subject].present?
+      @users.where!(subject: params[:subject])
+    end
+    if params[:prefecture].present?
+      @users.where!(prefecture: params[:prefecture])
+    end
+     @users = @users.page(params[:page]).reverse_order
+
     render 'index'
   end
 
@@ -109,12 +68,9 @@ class Users::UsersController < ApplicationController
   end
 
   def update_account
-      @user.update(deleted_at: Time.current)
-      reset_session
-      redirect_to root_path, notice: "先生のアカウントは削除されました。ご利用ありがとうございました。"
-    else
-      redirect_to root_path, alert: "他の先生のアカウントページです。"
-    end
+    @user.update(deleted_at: Time.current)
+    reset_session
+    redirect_to root_path, alert: "先生のアカウントは削除されました。ご利用ありがとうございました。"
   end
 
   private
@@ -122,12 +78,13 @@ class Users::UsersController < ApplicationController
   def set_user
     @user = User.find(params[:id])
     if @user.deleted_at != nil
-    redirect_to root_path, alert: "すでに退会された先生です"
+      redirect_to root_path, alert: "すでに退会された先生です"
+    end
   end
 
   def correct_user
     if @user != current_user
-    redirect_to root_path, alert: "他の先生のアカウントページです。" 
+      redirect_to root_path, alert: "他の先生のアカウントページです。" 
     end
   end
 
