@@ -6,7 +6,6 @@ class Users::LessonCommentsController < ApplicationController
     @lesson_comment.lesson_id = @lesson.id
     @lesson_comments = @lesson.lesson_comments.order("created_at DESC")
     unless @lesson_comment.save
-      #redirect_to request.referer, notice: "コメントを投稿しました"
       flash.now[:alert] = "コメントを入力してください"
       @user = @lesson.user
       @lesson_comment = LessonComment.new
