@@ -141,18 +141,18 @@ ActiveRecord::Schema.define(version: 2020_06_18_010607) do
   end
 
   create_table "users", force: :cascade do |t|
-    t.string "email", default: "", null: false
-    t.string "encrypted_password", default: "", null: false
+    t.string "email", default: ""
+    t.string "encrypted_password", default: ""
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.string "last_name", null: false
-    t.string "first_name", null: false
-    t.integer "school_type", null: false
-    t.integer "prefecture", null: false
-    t.string "school_name", null: false
-    t.integer "subject", null: false
-    t.string "year", null: false
+    t.string "last_name"
+    t.string "first_name"
+    t.integer "school_type"
+    t.integer "prefecture"
+    t.string "school_name"
+    t.integer "subject"
+    t.string "year"
     t.text "introduction"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
