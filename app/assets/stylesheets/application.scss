@@ -124,7 +124,7 @@ main {
 .slide-image1 {
   width: 100%;
   height: 100%;
-  background-image: url(top4.jpg);
+  background-image: image-url(top4.jpg);
   color: white;
   background-position: center;
   background-size: cover;
@@ -134,7 +134,7 @@ main {
 .slide-image2 {
   width: 100%;
   height: 100%;
-  background-image: url(top5.jpg);
+  background-image: image-url(top5.jpg);
   color: white;
   background-position: center;
   background-size: cover;
@@ -144,7 +144,7 @@ main {
 .slide-image3 {
   width: 100%;
   height: 100%;
-  background-image: url(top2.jpg);
+  background-image: image-url(top2.jpg);
   color: white;
   background-position: center;
   background-size: cover;
@@ -154,7 +154,7 @@ main {
 .slide-image4 {
   width: 100%;
   height: 100%;
-  background-image: url(top3.jpg);
+  background-image: image-url(top3.jpg);
   color: white;
   background-position: center;
   background-size: cover;
@@ -164,7 +164,7 @@ main {
 .slide-image5 {
   width: 100%;
   height: 100%;
-  background-image: url(top1.jpg);
+  background-image: image-url(top1.jpg);
   color: white;
   background-position: center;
   background-size: cover;
@@ -212,7 +212,7 @@ main {
 
 .about-image1 {
   height: 300px;
-  background-image: url(top4.jpg);
+  background-image: image-url(top4.jpg);
   background-position: center;
   background-size: cover;
 
@@ -220,28 +220,28 @@ main {
 
 .about-image2 {
   height: 300px;
-  background-image: url(top5.jpg);
+  background-image: image-url(top5.jpg);
   background-position: center;
   background-size: cover;
 }
 
 .about-image3 {
   height: 300px;
-  background-image: url(top2.jpg);
+  background-image: image-url(top2.jpg);
   background-position: center;
   background-size: cover;
 }
 
 .about-image4 {
   height: 300px;
-  background-image: url(top3.jpg);
+  background-image: image-url(top3.jpg);
   background-position: center;
   background-size: cover;
 }
 
 .about-image5 {
   height: 300px;
-  background-image: url(top1.jpg);
+  background-image: image-url(top1.jpg);
   background-position: center;
   background-size: cover;
 }
