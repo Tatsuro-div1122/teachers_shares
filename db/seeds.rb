@@ -8,3 +8,21 @@
 Admin.create!(
    email: 'admin@admin.com',
    password: 'admins')
+
+require "csv"
+
+CSV.foreach('db/users.csv', headers: true) do |row|
+  User.create!(
+    id: row['id'],
+    last_name: row['last_name'],
+    first_name: row['first_name'],
+    prefecture: row['prefecture'],
+    school_type: row['school_type']
+    school_name: row['school_name']
+    subject: row['subject']
+    year: row['year']
+    email: row['email']
+    password: row['password']
+    introduction: row['introduction']
+    created_at: row['created_at'])
+end
