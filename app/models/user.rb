@@ -4,19 +4,19 @@
 #
 #  id                     :integer          not null, primary key
 #  deleted_at             :datetime
-#  email                  :string           default(""), not null
-#  encrypted_password     :string           default(""), not null
-#  first_name             :string           not null
+#  email                  :string           default("")
+#  encrypted_password     :string           default("")
+#  first_name             :string
 #  introduction           :text
-#  last_name              :string           not null
-#  prefecture             :integer          not null
+#  last_name              :string
+#  prefecture             :integer
 #  remember_created_at    :datetime
 #  reset_password_sent_at :datetime
 #  reset_password_token   :string
-#  school_name            :string           not null
-#  school_type            :integer          not null
-#  subject                :integer          not null
-#  year                   :string           not null
+#  school_name            :string
+#  school_type            :integer
+#  subject                :integer
+#  year                   :string
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #
@@ -31,7 +31,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  validates :last_name, :first_name, :school_type, :prefecture, :school_name, :subject, presence: :true
+  validates :last_name, :first_name, :school_type, :prefecture, :school_name, :subject, :year, presence: :true
   validates :introduction, length: {maximum: 400}
 
   has_one_attached :avatar

@@ -29,7 +29,7 @@ gem 'jbuilder', '~> 2.5'
 
 # Use ActiveStorage variant
 gem 'mini_magick', '~> 4.8'
-
+gem 'aws-sdk-s3', require: false
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
@@ -75,6 +75,8 @@ gem 'jquery-rails'
 gem 'kaminari','~> 1.2.1'
 gem 'devise'
 gem 'dotenv-rails'
+gem 'devise-i18n'
+gem 'devise-i18n-views'
 
 group :production do
   gem 'mysql2'
