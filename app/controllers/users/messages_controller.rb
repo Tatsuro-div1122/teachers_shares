@@ -8,7 +8,7 @@ class Users::MessagesController < ApplicationController
     if @user == current_user
       @users = User.where(deleted_at: nil, prefecture: current_user.prefecture)
                    .where.not(id: current_user.id)
-                   .order("RANDOM()").limit(5)
+                   .sample(5)
     end
     @messages = Message.where(receiver_id: @user.id).page(params[:page]).reverse_order
     @message = Message.new

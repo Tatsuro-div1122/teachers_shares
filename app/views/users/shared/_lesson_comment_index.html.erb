@@ -1,9 +1,8 @@
-<% @lesson_comments.each do |lesson_comment| %>
-  <div id="js_lesson_comment_<%= lesson_comment.id %>">
+<div id="js_lesson_comment_<%= lesson_comment.id %>">
 
-    <% user = lesson_comment.user %>
-    
-    <div class="media">
+  <% user = lesson_comment.user %>
+
+  <div class="media">
     <!-- 退会済ユーザー対応 -->
     <% if lesson_comment.user_deleted?(user) %>
       <%= link_to "#", class: "media-left" do %>
@@ -55,5 +54,4 @@
     </div>
   </div>
   <hr>
-  </div>
-<% end %>
+</div>
