@@ -93,7 +93,7 @@ ActiveRecord::Schema.define(version: 2020_06_18_010607) do
   end
 
   create_table "lesson_comments", force: :cascade do |t|
-    t.text "comment", default: "", null: false
+    t.text "comment", null: false
     t.integer "user_id", null: false
     t.integer "lesson_id", null: false
     t.datetime "created_at", null: false
