@@ -8,10 +8,25 @@ class Users::MessagesController < ApplicationController
     if @user == current_user
       @users = User.where(deleted_at: nil, prefecture: current_user.prefecture)
                    .where.not(id: current_user.id)
-                   .order("RANDOM()").limit(5)
+                   .sample(5)
     end
     @messages = Message.where(receiver_id: @user.id).page(params[:page]).reverse_order
     @message = Message.new
+
+    @total_likes = 0
+    user_lessons = @user.lessons
+    user_lessons.each do |user_lesson|
+       @total_likes += LessonLike.where(lesson_id: user_lesson.id).count
+    end
+    user_lesson_comments = @user.lesson_comments
+    user_lesson_comments.each do |user_lesson_comment|
+       @total_likes += LessonCommentLike.where(lesson_comment_id: user_lesson_comment.id).count
+    end
+    user_counsel_comments = @user.counsel_comments
+    user_counsel_comments.each do |user_counsel_comment|
+       @total_likes += CounselCommentLike.where(counsel_comment_id: user_counsel_comment.id).count
+       byebug
+    end
   end
 
   def create

@@ -42,12 +42,12 @@ class Users::UsersController < ApplicationController
 
   def follows
     @title = "フォロー中の先生"
-    @users = @user.followings.where(deleted_at: nil).page(params[:page]).reverse_order
+    @follow_users = @user.followings.where(deleted_at: nil).page(params[:page]).reverse_order
   end
 
   def followers
     @title = "フォロワーの先生"
-    @users = @user.followers.where(deleted_at: nil).page(params[:page]).reverse_order
+    @follow_users = @user.followers.where(deleted_at: nil).page(params[:page]).reverse_order
     render 'follows'
   end
 
@@ -92,7 +92,7 @@ class Users::UsersController < ApplicationController
     if @user == current_user
       @users = User.where(deleted_at: nil, prefecture: current_user.prefecture)
                    .where.not(id: current_user.id)
-                   .order("RANDOM()").limit(5)
+                   .sample(5)
     end
   end
 

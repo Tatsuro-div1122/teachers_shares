@@ -10,7 +10,7 @@ class Users::SearchController < ApplicationController
         users = []
         keyword.each do |keyword|
           next if keyword == ""
-           users += User.where(['last_name LIKE ? OR first_name LIKE ? OR introduction LIKE ? OR school_name LIKE ?', "%#{keyword}%", "%#{keyword}%", "%#{keyword}%", "%#{keyword}%"]).or(User.where(subject: keyword)).or(User.where(school_type: keyword)).or(User.where(prefecture: keyword)).where.not(id: current_user).order("created_at DESC")
+           users += User.where(['last_name LIKE ? OR first_name LIKE ? OR introduction LIKE ? OR school_name LIKE ?', "%#{keyword}%", "%#{keyword}%", "%#{keyword}%", "%#{keyword}%"]).or(User.where(subject: keyword)).or(User.where(school_type: keyword)).or(User.where(prefecture: keyword)).where(deleted_at: nil).where.not(id: current_user).order("created_at DESC")
         end
         users.uniq!
         @users = Kaminari.paginate_array(users).page(params[:page]).per(10)

@@ -93,7 +93,9 @@
         </div>
         <!-- コメント一覧 -->
         <div id="counsel_comment_area">
-          <%= render 'users/shared/counsel_comment_index', counsel_comments: @counsel_comments %>
+          <% @counsel_comments.each do |counsel_comment| %>
+            <%= render 'users/shared/counsel_comment_index', counsel_comment: counsel_comment %>
+          <% end %>
         </div>
       </section>
 

@@ -123,7 +123,9 @@
         
         <!-- コメント一覧 -->
           <div id="lesson_comment_area">
-                <%= render 'users/shared/lesson_comment_index', lesson_comments: @lesson_comments %>
+            <% @lesson_comments.each do |lesson_comment| %>
+                <%= render 'users/shared/lesson_comment_index', lesson_comment: lesson_comment %>
+            <% end %>
           </div>
       </section>
 

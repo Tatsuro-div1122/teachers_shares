@@ -16,8 +16,6 @@ class Users::RelationshipsController < ApplicationController
     @user = User.find(params[:user_id])
     if @user.deleted_at != nil
       redirect_to root_path, alert: "すでに退会された先生です"
-    elsif  @user != current_user
-      redirect_to root_path, alert: "他の先生のアカウントページです。"
     end
   end
 
