@@ -5,7 +5,7 @@ class Users::HomeController < ApplicationController
       # ﾚｯｽﾝﾗﾝｷﾝｸﾞLessonLike.groupでlesson_idを持った「参考になった！」をまとめて、.orderでproduct_idを持つbookmarkを降順に並べる｡
       # .limit(6)で上から6つ取得、.pluckでlesson_idのみを数字で取り出すように指定。
       @users = User.where(deleted_at: nil, prefecture: current_user.prefecture).where.not(id: current_user.id).sample(5)
-      @counsels = Counsel.includes(:user).order("created_at DESC").limit(5)
+      @counsels = Counsel.includes(:user).order("created_at DESC").limit(6)
       @lesson_subjects = ["国語", "社会", "算数/数学", "理科", "英語"]
       @counsel_categories = ["授業", "学級経営", "生徒指導", "部活動", "校務分掌", "職員関係"]
       @school_types = ["小学校", "中学校", "高校"]
