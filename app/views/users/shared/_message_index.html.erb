@@ -27,7 +27,7 @@
           <li><%= user.school_name %></li>
           <li><%= message.created_at.to_s(:datetime) %></li>
           <li>
-            <% if message.receiver_id == current_user.id %>
+            <% if message.receiver_id == current_user.id || message.user_id == current_user.id %>
               <%= link_to user_message_path(current_user, message), method: :delete, data: {confirm:"本当に削除してもよろしいですか？"}, remote: true do %>
                 <i class="fas fa-trash-alt"></i>
               <% end %>
