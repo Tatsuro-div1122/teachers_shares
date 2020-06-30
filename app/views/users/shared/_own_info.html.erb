@@ -14,7 +14,7 @@
 <ul class="profile-list list-unstyled text-center">
   <li>
     <%= link_to user_path(user) do %>
-      <p><strong><%= user.last_name + user.first_name %> 先生</strong></p>
+      <p><strong><%= user.last_name %> <%= user.first_name %> 先生</strong></p>
     <% end %>
   </li>
   <li>
