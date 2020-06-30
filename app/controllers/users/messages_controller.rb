@@ -25,7 +25,6 @@ class Users::MessagesController < ApplicationController
     user_counsel_comments = @user.counsel_comments
     user_counsel_comments.each do |user_counsel_comment|
        @total_likes += CounselCommentLike.where(counsel_comment_id: user_counsel_comment.id).count
-       byebug
     end
   end
 
