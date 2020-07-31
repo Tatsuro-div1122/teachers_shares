@@ -73,5 +73,6 @@ https://drive.google.com/file/d/1UVSHv8_fjxHDCd32cwreHC8D7EoVNbMS/view?usp=shari
 ### 機能一覧
 https://docs.google.com/spreadsheets/d/1EHGCKpph9-QmkHaEJD1cXBsULRUQgJNDMXLhhly1IcE/edit?usp=sharing
 
-
+### サイトURL
+https://teachers-shares.net
 
